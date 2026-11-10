@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explorar Reclamos — SoluciónSegura</title>
+  <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body class="app-shell">
+
+  <!-- Cabecera -->
+  <header class="site-header" role="banner">
+    <div class="container-desktop site-header__inner">
+      <a href="../index.html" class="brand-link" aria-label="SoluciónSegura: Inicio">
+        <img src="../assets/img/branding/logo-soluciones-segura.png" alt="SoluciónSegura: Reclamos Urbanos La Matanza" class="brand-logo-img">
+      </a>
+
+      <nav class="desktop-nav" role="navigation" aria-label="Navegación principal">
+        <a href="../index.html" class="nav-link" data-page="inicio">Inicio</a>
+        <a href="explorar.html" class="nav-link is-active" data-page="explorar">Explorar</a>
+        <a href="estadisticas.html" class="nav-link" data-page="estadisticas">Estadísticas</a>
+        <a href="ayuda.html" class="nav-link" data-page="ayuda">Ayuda</a>
+        <a href="nuevo-reclamo.html" class="btn btn--primary btn--sm">Realizar reclamo</a>
+      </nav>
+
+      <div class="header-actions"></div>
+    </div>
+  </header>
+
+  <!-- Contenido -->
+  <main class="main-content" id="main-content" role="main">
+    <div class="container-desktop section-spacer">
+      
+      <div class="section-header">
+        <h1 class="section-header__title">Explorar reclamos en La Matanza</h1>
+        <p class="section-header__subtitle">Consultá los problemas informados por los vecinos, conocé su estado y sumate con un toque.</p>
+      </div>
+
+      <!-- Barra de herramientas (selector de localidad, filtros y alternador de vista) -->
+      <section class="card" style="margin-bottom: var(--space-6); padding: var(--space-4);">
+        <div style="display: flex; gap: var(--space-4); flex-wrap: wrap; justify-content: space-between; align-items: center;">
+          
+          <!-- Selector de Localidad trasladado del Hero -->
+          <form id="form-filtro-localidad" action="explorar.html" method="get" style="display: flex; gap: var(--space-2); align-items: center; flex-wrap: wrap;">
+            <label for="filtro-localidad" style="font-size: var(--font-size-sm); font-weight: var(--font-weight-medium); color: var(--color-text-secondary); white-space: nowrap;">
+              Localidad:
+            </label>
+            <select id="filtro-localidad" name="localidad" style="padding: 6px 12px; border-radius: var(--radius-sm); border: 1px solid var(--color-border); font-size: var(--font-size-sm); background-color: var(--color-surface-card); color: var(--color-text-main); outline: none;">
+              <option value="">Todas las localidades</option>
+              <option value="san-justo">San Justo</option>
+              <option value="ramos-mejia">Ramos Mejía</option>
+              <option value="laferrere">Gregorio de Laferrere</option>
+              <option value="gonzalez-catan">González Catán</option>
+              <option value="isidro-casanova">Isidro Casanova</option>
+              <option value="virrey-del-pino">Virrey del Pino</option>
+              <option value="villa-luzuriaga">Villa Luzuriaga</option>
+              <option value="ciudad-evita">Ciudad Evita</option>
+              <option value="tapiales">Tapiales</option>
+              <option value="aldo-bonzi">Aldo Bonzi</option>
+              <option value="lomas-del-mirador">Lomas del Mirador</option>
+              <option value="villa-madero">Villa Madero</option>
+            </select>
+            <button type="submit" class="btn btn--secondary btn--sm">Ir al mapa</button>
+          </form>
+
+          <!-- Categorías y Alternador de vista -->
+          <div style="display: flex; gap: var(--space-3); flex-wrap: wrap; align-items: center;">
+            <div style="display: flex; gap: var(--space-2); flex-wrap: wrap;">
+              <span class="badge badge--recibido">Todos</span>
+              <span class="badge badge--cat-pavimento">Calles</span>
+              <span class="badge badge--cat-residuos">Basura</span>
+              <span class="badge badge--cat-alumbrado">Alumbrado</span>
+            </div>
+            <div style="display: flex; gap: var(--space-2);">
+              <button type="button" class="btn btn--secondary btn--sm">Vista Lista</button>
+              <button type="button" class="btn btn--primary btn--sm">Vista Mapa</button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Placeholder del mapa/lista -->
+      <div id="explorar-container" class="card" style="min-height: 400px; display: flex; align-items: center; justify-content: center; text-align: center;">
+        <p style="color: var(--color-text-secondary);">
+          Módulo de mapa interactivo y listado sincronizado preparado para la etapa de desarrollo funcional.
+        </p>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Navegación móvil fija -->
+  <nav class="mobile-bottom-nav" role="navigation" aria-label="Navegación inferior móvil">
+    <a href="../index.html" class="mobile-nav-item" data-page="inicio">
+      <span class="mobile-nav-item__icon" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+      </span>
+      <span>Inicio</span>
+    </a>
+    <a href="explorar.html" class="mobile-nav-item is-active" data-page="explorar">
+      <span class="mobile-nav-item__icon" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      </span>
+      <span>Explorar</span>
+    </a>
+    <a href="nuevo-reclamo.html" class="mobile-nav-item" data-page="reportar">
+      <span class="mobile-nav-item__icon" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
+      </span>
+      <span>Reportar</span>
+    </a>
+  </nav>
+
+  <script type="module">
+    import { setupNavigation } from '../assets/js/main.js';
+    setupNavigation({ activePage: 'explorar', basePath: '../' });
+
+    // Sincronizar selector con query param si existe
+    const params = new URLSearchParams(window.location.search);
+    const loc = params.get('localidad');
+    if (loc) {
+      const select = document.getElementById('filtro-localidad');
+      if (select) select.value = loc;
+    }
+  </script>
+</body>
+</html>
+

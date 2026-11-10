@@ -1,0 +1,185 @@
+/* ==========================================================================
+   SoluciónSegura — Componente de Navegación
+   Cabecera superior (Desktop) y Barra inferior fija (Mobile)
+   ========================================================================== */
+
+/* Enlace de accesibilidad para saltar al contenido principal (WCAG 2.2 AA) */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: var(--space-4);
+  background-color: var(--color-accent);
+  color: var(--color-text-inverse);
+  padding: var(--space-3) var(--space-4);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-sm);
+  border-radius: var(--radius-sm);
+  z-index: 1000;
+  text-decoration: none;
+  box-shadow: var(--shadow-hover);
+  transition: top var(--duration-fast) var(--ease-out);
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  top: var(--space-3);
+  outline: 3px solid var(--color-text-inverse);
+  outline-offset: 2px;
+}
+
+/* Marca / Logo */
+.brand-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--color-text-inverse);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-lg);
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) var(--space-2);
+  margin-left: calc(-1 * var(--space-2));
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.brand-link:hover {
+  text-decoration: none;
+  color: var(--color-text-inverse);
+  opacity: 0.95;
+}
+
+.brand-link:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.brand-logo-img {
+  height: 38px;
+  width: auto;
+  max-width: 190px;
+  object-fit: contain;
+  display: block;
+}
+
+/* Enlaces de Navegación Desktop */
+.desktop-nav {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .desktop-nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+}
+
+.nav-link {
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-sm);
+  letter-spacing: -0.01em;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  transition: color var(--duration-fast) var(--ease-out),
+              background-color var(--duration-fast) var(--ease-out);
+  text-decoration: none;
+}
+
+.nav-link:hover {
+  color: #FFFFFF;
+  background-color: rgba(255, 255, 255, 0.08);
+  text-decoration: none;
+}
+
+.nav-link:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.icon-btn:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.nav-link.is-active {
+  color: #FFFFFF;
+  font-weight: var(--font-weight-semibold);
+  background-color: rgba(255, 255, 255, 0.14);
+}
+
+/* Acciones en Cabecera */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--touch-target-min);
+  height: var(--touch-target-min);
+  border-radius: var(--radius-full);
+  color: var(--color-text-inverse);
+  background: transparent;
+  transition: background-color var(--duration-fast) var(--ease-out);
+  position: relative;
+}
+
+.icon-btn:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.icon-btn:active {
+  transform: scale(0.95);
+}
+
+.icon-btn__badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-accent);
+}
+
+/* Navegación Inferior Móvil */
+.mobile-nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  height: 100%;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.mobile-nav-item:hover {
+  text-decoration: none;
+}
+
+.mobile-nav-item:active {
+  transform: scale(0.96);
+}
+
+.mobile-nav-item.is-active {
+  color: var(--color-accent);
+  font-weight: var(--font-weight-bold);
+}
+
+.mobile-nav-item__icon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+

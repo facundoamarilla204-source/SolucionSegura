@@ -1,0 +1,77 @@
+/* ==========================================================================
+   SoluciónSegura — Componente de Modales y Diálogos
+   Criterio Emil Kowalski:
+   - transform-origin: center
+   - Animar desde scale(0.95), nunca scale(0)
+   - Transiciones ágiles (< 250ms) con curva cubic-bezier
+   ========================================================================== */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(6, 47, 102, 0.45);
+  backdrop-filter: blur(3px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--duration-fast) var(--ease-out),
+              visibility var(--duration-fast) var(--ease-out);
+}
+
+.modal-backdrop.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-dialog {
+  background-color: var(--color-surface-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-modal);
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  transform: scale(0.95);
+  transform-origin: center;
+  transition: transform var(--duration-normal) var(--ease-out);
+}
+
+.modal-backdrop.is-open .modal-dialog {
+  transform: scale(1);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-5);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.modal-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary-dark);
+}
+
+.modal-body {
+  padding: var(--space-5);
+  color: var(--color-text-secondary);
+}
+
+.modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-top: 1px solid var(--color-border);
+  background-color: var(--color-bg-body);
+  border-bottom-left-radius: var(--radius-lg);
+  border-bottom-right-radius: var(--radius-lg);
+}
+

@@ -1,0 +1,404 @@
+/* ==========================================================================
+   SoluciónSegura — Componente de Pasos de Proceso («¿Cómo funciona?»)
+   Diseño de secuencia numerada con conexión visual continua y fluida.
+   Diferenciado de las tarjetas de categorías: no interactivo, guiado y sereno.
+   Tokens institucionales: #EFF6FF (fondo claro), #062F66 (títulos), #0284C7 (acento)
+   Accesibilidad WCAG 2.2 AA / Principios de Emil Kowalski & antislop-ui
+   ========================================================================== */
+
+/* Contenedor de la sección */
+.section-how-it-works {
+  width: 100%;
+  background-color: #EFF6FF;
+  border-top: 1px solid #DBEAFE;
+  border-bottom: 1px solid #DBEAFE;
+  padding-top: var(--space-12);
+  padding-bottom: var(--space-16);
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .section-how-it-works {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-16);
+  }
+}
+
+/* Encabezado centrado y balanceado */
+.section-how-it-works__header {
+  max-width: 680px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  margin-bottom: var(--space-10);
+}
+
+.section-how-it-works__header .section-kicker,
+.section-how-it-works__kicker {
+  display: inline-block;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #0369A1; /* Contraste robusto > 5.5:1 sobre #EFF6FF */
+  margin-bottom: var(--space-2);
+}
+
+.section-how-it-works__title {
+  font-family: var(--font-family-display);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  color: var(--color-primary-dark);
+  margin-bottom: var(--space-3);
+  text-wrap: balance;
+}
+
+@media (min-width: 768px) {
+  .section-how-it-works__title {
+    font-size: 2.35rem;
+  }
+}
+
+.section-how-it-works__subtitle {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-secondary);
+  max-width: 52ch;
+  margin-left: auto;
+  margin-right: auto;
+  text-wrap: pretty;
+}
+
+@media (min-width: 768px) {
+  .section-how-it-works__subtitle {
+    font-size: 1.0625rem;
+  }
+}
+
+/* ==========================================================================
+   Flujo de Pasos (Lista Ordenada Semántica <ol>)
+   ========================================================================== */
+.steps-flow {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: relative;
+}
+
+/* ==========================================================================
+   Disposición Desktop (>= 1024px): Horizontal con conectores precisos
+   ========================================================================== */
+@media (min-width: 1024px) {
+  .steps-flow {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-8);
+  }
+
+  /* Conector horizontal discreto entre nodos adyacentes */
+  .step-item:not(:last-child) .step-node-wrapper::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: calc(50% + 36px);
+    width: calc(100% + var(--space-8) - 72px);
+    height: 2px;
+    background: #BFDBFE;
+    z-index: 1;
+    transform: translateY(-50%);
+  }
+}
+
+/* ==========================================================================
+   Disposición Tablet y Móvil (< 1024px): Recorrido vertical conectado
+   ========================================================================== */
+@media (max-width: 1023px) {
+  .steps-flow {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Conector vertical continuo entre nodos en móviles */
+  .step-item:not(:last-child) .step-node-wrapper::after {
+    content: "";
+    position: absolute;
+    top: 58px;
+    bottom: calc(-1 * var(--space-6));
+    left: 28px;
+    width: 2px;
+    background: #BFDBFE;
+    z-index: 1;
+  }
+}
+
+/* ==========================================================================
+   Elemento de Paso Individual (.step-item)
+   ========================================================================== */
+.step-item {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 1023px) {
+  .step-item {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+}
+
+/* ==========================================================================
+   Nodo Conector Visual (.step-node): Ícono y Número de Etapa
+   ========================================================================== */
+.step-node-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: var(--space-4);
+}
+
+@media (max-width: 1023px) {
+  .step-node-wrapper {
+    margin-bottom: 0;
+    flex-shrink: 0;
+    align-self: stretch; /* Permite que el conector vertical cubra todo el alto */
+    justify-content: flex-start;
+  }
+}
+
+.step-node {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface-card);
+  border: 2px solid var(--color-accent);
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.12), 0 1px 3px rgba(6, 47, 102, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+  transition: transform var(--duration-fast) var(--ease-out),
+              box-shadow var(--duration-fast) var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out);
+}
+
+@media (max-width: 1023px) {
+  .step-node {
+    width: 58px;
+    height: 58px;
+  }
+}
+
+/* Insignia numérica superior */
+.step-node__badge {
+  position: absolute;
+  top: -8px;
+  background-color: var(--color-primary-dark);
+  color: var(--color-text-inverse);
+  font-family: var(--font-family-display);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 1px 7px;
+  border-radius: var(--radius-full);
+  border: 2px solid #EFF6FF;
+  box-shadow: 0 1px 2px rgba(6, 47, 102, 0.15);
+}
+
+@media (max-width: 1023px) {
+  .step-node__badge {
+    top: -6px;
+    font-size: 0.625rem;
+    padding: 1px 6px;
+  }
+}
+
+/* Ícono temático central del nodo */
+.step-node__icon {
+  color: var(--color-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.step-node__icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+@media (max-width: 1023px) {
+  .step-node__icon svg {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+/* ==========================================================================
+   Cuerpo de la Tarjeta de Paso (.step-card)
+   Diseño de superficie sobria con alta legibilidad
+   ========================================================================== */
+.step-card {
+  background-color: var(--color-surface-card);
+  border: 1px solid #DBEAFE;
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+  box-shadow: 0 1px 3px rgba(6, 47, 102, 0.04), 0 1px 2px rgba(6, 47, 102, 0.02);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  transition: transform var(--duration-fast) var(--ease-out),
+              box-shadow var(--duration-fast) var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out);
+}
+
+@media (min-width: 1024px) {
+  .step-card {
+    text-align: center;
+    padding: var(--space-8) var(--space-6);
+  }
+}
+
+@media (max-width: 1023px) {
+  .step-card {
+    padding: var(--space-5);
+  }
+}
+
+/* Etiqueta de orden del paso */
+.step-card__label {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #0369A1; /* WCAG AA accesible (5.7:1 sobre fondo blanco) */
+  margin-bottom: var(--space-2);
+}
+
+/* Título de la acción principal (Outfit) */
+.step-card__title {
+  font-family: var(--font-family-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  color: var(--color-primary-dark);
+  margin-bottom: var(--space-2);
+  text-wrap: balance;
+}
+
+@media (min-width: 768px) {
+  .step-card__title {
+    font-size: 1.35rem;
+  }
+}
+
+/* Texto explicativo (Inter) */
+.step-card__description {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-4);
+  text-wrap: pretty;
+}
+
+@media (min-width: 768px) {
+  .step-card__description {
+    font-size: 0.9375rem;
+  }
+}
+
+/* Píldoras de contexto / significantes adicionales (Donald Norman & Jakob Nielsen) */
+.step-card__features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: auto;
+}
+
+@media (min-width: 1024px) {
+  .step-card__features {
+    justify-content: center;
+  }
+}
+
+.step-card__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-family-base);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #334155;
+  background-color: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  padding: 3px 8px;
+  border-radius: var(--radius-xs);
+}
+
+.step-card__tag-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-accent);
+}
+
+/* ==========================================================================
+   Micro-interacciones discretas y Motion Craft (Emil Kowalski)
+   Hover suave sin saltos bruscos ni simular botones clickeables
+   ========================================================================== */
+.step-item:hover .step-node {
+  transform: translateY(-2px);
+  border-color: #0369A1;
+  box-shadow: 0 6px 16px rgba(2, 132, 199, 0.18);
+}
+
+.step-item:hover .step-card {
+  border-color: #BFDBFE;
+  box-shadow: 0 6px 16px -2px rgba(6, 47, 102, 0.08);
+}
+
+/* ==========================================================================
+   Animación Progresiva con IntersectionObserver (Accesibilidad Fail-Open)
+   ========================================================================== */
+/* Estado inicial solo si el navegador soporta JS y el observer está activo */
+.has-motion .step-item {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+.has-motion .step-item.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 420ms var(--ease-out),
+              transform 420ms var(--ease-out);
+}
+
+/* Respeto estricto de prefers-reduced-motion (WCAG 2.2 AA) */
+@media (prefers-reduced-motion: reduce) {
+  .step-item,
+  .has-motion .step-item {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .step-item:hover .step-node,
+  .step-item:hover .step-card {
+    transform: none !important;
+  }
+}

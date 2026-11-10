@@ -1,0 +1,394 @@
+/* ==========================================================================
+   SoluciónSegura — Componente de Estadísticas y Actividad Comunitaria
+   Visualización de datos cívicos: métricas destacadas y gráfico de distribución
+   Tokens: #062F66 (títulos), #0284C7 (acento), #F8FAFC (fondo neutro suave)
+   Accesibilidad WCAG 2.2 AA / Principios de Emil Kowalski & antislop-ui
+   ========================================================================== */
+
+.section-stats {
+  width: 100%;
+  background-color: var(--color-bg-body);
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--space-12);
+  padding-bottom: var(--space-16);
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .section-stats {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-16);
+  }
+}
+
+.section-stats__header {
+  max-width: 680px;
+  margin-bottom: var(--space-8);
+}
+
+.section-stats__title {
+  font-family: var(--font-family-display);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  color: var(--color-primary-dark);
+  margin-top: var(--space-2);
+  margin-bottom: var(--space-3);
+  text-wrap: balance;
+}
+
+@media (min-width: 768px) {
+  .section-stats__title {
+    font-size: 2.35rem;
+  }
+}
+
+.section-stats__subtitle {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-secondary);
+  max-width: 52ch;
+  text-wrap: pretty;
+}
+
+@media (min-width: 768px) {
+  .section-stats__subtitle {
+    font-size: 1.0625rem;
+  }
+}
+
+/* Grilla principal de dos columnas: 4 Métricas (izq) y Gráfico Proporcional (der) */
+.stats-editorial-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-8);
+  align-items: stretch;
+}
+
+@media (min-width: 1024px) {
+  .stats-editorial-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-10);
+  }
+}
+
+/* ==========================================================================
+   Panel Cívico Unificado de Indicadores Numéricos (2x2 con divisores sutiles)
+   Rompe el patrón monótono de 4 tarjetas flotantes repetitivas
+   ========================================================================== */
+.stats-metric-panel {
+  background-color: var(--color-surface-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 1px 3px rgba(6, 47, 102, 0.04);
+  display: grid;
+  grid-template-columns: 1fr;
+  overflow: hidden;
+}
+
+@media (min-width: 540px) {
+  .stats-metric-panel {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.stat-metric-cell {
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--color-border);
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+@media (min-width: 540px) {
+  .stat-metric-cell:nth-child(odd) {
+    border-right: 1px solid var(--color-border);
+  }
+  .stat-metric-cell:nth-last-child(-n+2) {
+    border-bottom: none;
+  }
+}
+
+@media (max-width: 539px) {
+  .stat-metric-cell:last-child {
+    border-bottom: none;
+  }
+}
+
+.stat-metric-cell:hover {
+  background-color: rgba(2, 132, 199, 0.02);
+}
+
+.stat-metric-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+}
+
+.stat-metric-card__icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #F1F5F9;
+  color: var(--color-primary-dark);
+}
+
+.stat-metric-card__icon--primary {
+  background-color: #E0F2FE;
+  color: #0369A1;
+}
+
+.stat-metric-card__icon--success {
+  background-color: #DCFCE7;
+  color: #16A34A;
+}
+
+.stat-metric-card__icon--amber {
+  background-color: #FEF3C7;
+  color: #D97706;
+}
+
+.stat-metric-card__icon--purple {
+  background-color: #EDE9FE;
+  color: #7C3AED;
+}
+
+.stat-metric-card__number {
+  font-family: var(--font-family-display);
+  font-size: 2.25rem;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--color-primary-dark);
+  margin-bottom: var(--space-1);
+}
+
+.stat-metric-card__label {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-main);
+  margin-bottom: 2px;
+}
+
+.stat-metric-card__desc {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* ==========================================================================
+   Tarjeta del Gráfico Proporcional de Categorías
+   ========================================================================== */
+.stats-chart-card {
+  background-color: var(--color-surface-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-6) var(--space-6) var(--space-8);
+  box-shadow: 0 1px 3px rgba(6, 47, 102, 0.04);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+@media (min-width: 768px) {
+  .stats-chart-card {
+    padding: var(--space-8);
+  }
+}
+
+.stats-chart-card__header {
+  margin-bottom: var(--space-6);
+}
+
+.stats-chart-card__title {
+  font-family: var(--font-family-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  margin-bottom: var(--space-2);
+}
+
+.stats-chart-card__subtitle {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* Barra continua segmentada (Stacked Bar) */
+.distribution-stacked-bar {
+  width: 100%;
+  height: 20px;
+  background-color: #E2E8F0;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  display: flex;
+  margin-bottom: var(--space-6);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.distribution-segment {
+  height: 100%;
+  transition: width 600ms var(--ease-out);
+}
+
+.distribution-segment--pavimento {
+  background-color: #B45309;
+}
+
+.distribution-segment--residuos {
+  background-color: #047857;
+}
+
+.distribution-segment--alumbrado {
+  background-color: #6D28D9;
+}
+
+/* Lista de Desglose con Barras Horizontales Individuales */
+.distribution-breakdown {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--space-8) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.distribution-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.distribution-item__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+}
+
+.distribution-item__name {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 600;
+  color: var(--color-text-main);
+}
+
+.distribution-item__bullet {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+.distribution-item__bullet--pavimento {
+  background-color: #B45309;
+}
+
+.distribution-item__bullet--residuos {
+  background-color: #047857;
+}
+
+.distribution-item__bullet--alumbrado {
+  background-color: #6D28D9;
+}
+
+.distribution-item__values {
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-secondary);
+}
+
+.distribution-item__percentage {
+  font-weight: 700;
+  color: var(--color-primary-dark);
+}
+
+.distribution-item__track {
+  width: 100%;
+  height: 8px;
+  background-color: #F1F5F9;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.distribution-item__fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+}
+
+.distribution-item__fill--pavimento {
+  background-color: #B45309;
+}
+
+.distribution-item__fill--residuos {
+  background-color: #047857;
+}
+
+.distribution-item__fill--alumbrado {
+  background-color: #6D28D9;
+}
+
+/* Enlace a la vista completa de estadísticas */
+.stats-chart-card__footer {
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stats-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--ease-out),
+              gap var(--duration-fast) var(--ease-out);
+}
+
+.stats-link:hover {
+  color: var(--color-accent-hover);
+  gap: 9px;
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   Animación de Entrada Progresiva (Emil Kowalski & Motion Craft)
+   ========================================================================== */
+.has-motion .stats-editorial-grid {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+.has-motion .stats-editorial-grid.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 450ms var(--ease-out),
+              transform 450ms var(--ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stats-editorial-grid,
+  .has-motion .stats-editorial-grid {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+

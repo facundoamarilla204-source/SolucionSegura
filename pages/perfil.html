@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Perfil — SoluciónSegura</title>
+  <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body class="app-shell">
+
+  <header class="site-header" role="banner">
+    <div class="container-desktop site-header__inner">
+      <a href="../index.html" class="brand-link" aria-label="SoluciónSegura - Inicio">
+        <svg class="brand-logo" width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+          <rect width="32" height="32" rx="8" fill="#078DFA"/>
+          <path d="M16 6L24 10V16C24 21 20.5 25.5 16 27C11.5 25.5 8 21 8 16V10L16 6Z" fill="#FFFFFF"/>
+          <path d="M14 16.5L12 14.5L10.5 16L14 19.5L21.5 12L20 10.5L14 16.5Z" fill="#062F66"/>
+        </svg>
+        <span>SoluciónSegura</span>
+      </a>
+
+      <nav class="desktop-nav" role="navigation" aria-label="Navegación principal">
+        <a href="../index.html" class="nav-link" data-page="inicio">Inicio</a>
+        <a href="explorar.html" class="nav-link" data-page="explorar">Explorar</a>
+        <a href="estadisticas.html" class="nav-link" data-page="estadisticas">Estadísticas</a>
+        <a href="ayuda.html" class="nav-link" data-page="ayuda">Ayuda</a>
+        <a href="nuevo-reclamo.html" class="btn btn--primary btn--sm">Realizar reclamo</a>
+      </nav>
+
+      <div class="header-actions"></div>
+    </div>
+  </header>
+
+  <main class="main-content" id="main-content" role="main">
+    <div class="container-desktop section-spacer" style="max-width: 680px;">
+      
+      <div class="section-header">
+        <h1 class="section-header__title">Mi perfil</h1>
+        <p class="section-header__subtitle">Gestioná tus datos personales, preferencias de notificación y localidad habitual.</p>
+      </div>
+
+      <div class="card" style="margin-bottom: var(--space-6);">
+        <div style="display: flex; align-items: center; gap: var(--space-4); margin-bottom: var(--space-6);">
+          <div style="width: 56px; height: 56px; border-radius: var(--radius-full); background-color: var(--color-surface-light); color: var(--color-primary-dark); display: flex; align-items: center; justify-content: center; font-size: var(--font-size-xl); font-weight: bold;">
+            MG
+          </div>
+          <div>
+            <h2 style="font-size: var(--font-size-lg); margin-bottom: 2px;" id="profile-name">Mariana Gómez</h2>
+            <p style="color: var(--color-text-secondary); font-size: var(--font-size-sm);" id="profile-email">mariana.gomez@ejemplo.com</p>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="profile-localidad">Localidad preferida (para centrar el mapa)</label>
+          <select id="profile-localidad" class="form-select">
+            <option value="san-justo" selected>San Justo</option>
+            <option value="ramos-mejia">Ramos Mejía</option>
+            <option value="gonzalez-catan">González Catán</option>
+            <option value="isidro-casanova">Isidro Casanova</option>
+            <option value="laferrere">Gregorio de Laferrere</option>
+            <option value="virrey-del-pino">Virrey del Pino</option>
+          </select>
+          <span class="form-help">Al ingresar a «Explorar», el mapa iniciará enfocado en esta zona.</span>
+        </div>
+
+        <div style="border-top: 1px solid var(--color-border); padding-top: var(--space-4); margin-top: var(--space-4); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-3);">
+          <button type="button" class="btn btn--danger btn--sm" id="btn-logout">
+            Cerrar sesión
+          </button>
+          <button type="button" class="btn btn--primary btn--sm" id="btn-save-profile">
+            Guardar preferencias
+          </button>
+        </div>
+      </div>
+
+      <!-- Control de reinicio académico de datos de prueba -->
+      <aside class="card" style="background-color: var(--color-bg-body); border-style: dashed;">
+        <h3 style="font-size: var(--font-size-sm); margin-bottom: var(--space-2); color: var(--color-text-secondary);">Herramientas de evaluación docente</h3>
+        <p style="font-size: var(--font-size-xs); color: var(--color-text-muted); margin-bottom: var(--space-3);">
+          Permite restablecer los reclamos simulados a su estado original de demostración.
+        </p>
+        <button type="button" class="btn btn--outline btn--sm" id="btn-reset-seed">
+          Restablecer datos de prueba
+        </button>
+      </aside>
+
+    </div>
+  </main>
+
+  <nav class="mobile-bottom-nav" role="navigation" aria-label="Navegación inferior móvil">
+    <a href="../index.html" class="mobile-nav-item" data-page="inicio">
+      <span class="mobile-nav-item__icon" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+      </span>
+      <span>Inicio</span>
+    </a>
+    <a href="explorar.html" class="mobile-nav-item" data-page="explorar">
+      <span class="mobile-nav-item__icon" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      </span>
+      <span>Explorar</span>
+    </a>
+    <a href="nuevo-reclamo.html" class="mobile-nav-item" data-page="reportar">
+      <span class="mobile-nav-item__icon" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
+      </span>
+      <span>Reportar</span>
+    </a>
+  </nav>
+
+  <script type="module">
+    import { setupNavigation, auth, claimsService, showToast } from '../assets/js/main.js';
+    setupNavigation({ activePage: 'perfil', basePath: '../' });
+
+    const user = auth.getCurrentUser();
+    if (user) {
+      document.getElementById('profile-name').textContent = user.nombre;
+      document.getElementById('profile-email').textContent = user.email;
+    }
+
+    document.getElementById('btn-logout').addEventListener('click', () => {
+      auth.logout();
+      window.location.href = '../index.html';
+    });
+
+    document.getElementById('btn-reset-seed').addEventListener('click', () => {
+      claimsService.resetToSeed();
+      showToast({ message: 'Datos de prueba restablecidos correctamente.', type: 'success' });
+    });
+  </script>
+</body>
+</html>
+

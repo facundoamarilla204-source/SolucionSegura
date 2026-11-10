@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Informar un nuevo problema urbano en La Matanza — SoluciónSegura: calles, residuos y alumbrado público.">
+  <title>Realizar Nuevo Reclamo — SoluciónSegura</title>
+  
+  <!-- Estilos del Sistema -->
+  <link rel="stylesheet" href="../assets/css/main.css">
+  
+  <!-- Leaflet OpenStreetMap CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+</head>
+<body class="app-shell">
+
+  <!-- Header Institucional Inyectado dinámicamente -->
+  <header class="site-header" role="banner"></header>
+
+  <main class="main-content" id="main-content" role="main">
+    <div class="container-desktop section-spacer">
+      
+      <div class="claim-form-container">
+
+        <!-- Encabezado de la Pantalla -->
+        <header class="claim-form-header">
+          <div class="claim-form-header__top">
+            <a href="../index.html" class="claim-back-link" aria-label="Volver a la página principal">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m15 18-6-6 6-6"/>
+              </svg>
+              <span>Volver al inicio</span>
+            </a>
+
+            <!-- Estado de Autoguardado Discreto -->
+            <div id="draft-status-indicator" class="claim-draft-status" aria-live="polite">
+              <span class="claim-draft-status__dot" aria-hidden="true"></span>
+              <span id="draft-status-text">Borrador listo</span>
+            </div>
+          </div>
+
+          <h1 class="claim-form-title">Informar un nuevo problema</h1>
+          <p class="claim-form-subtitle">
+            Completá los tres pasos para publicar tu reclamo barrial en La Matanza. Tu avance se guarda automáticamente.
+          </p>
+
+          <!-- Indicador de Sesión Activa -->
+          <div id="user-session-badge" style="display: none; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-2); padding: var(--space-2) var(--space-4); background-color: var(--color-surface-card); border: 1px solid var(--color-border); border-radius: var(--radius-md); font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-bottom: var(--space-5);">
+            <span style="display: flex; align-items: center; gap: var(--space-2);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-accent);" aria-hidden="true">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              <span>Reportando como vecino: <strong id="user-session-name" style="color: var(--color-primary-dark);">Vecino</strong></span>
+            </span>
+            <span id="cat-preselected-tag" style="display: none; background-color: var(--color-accent-subtle); color: var(--color-accent-dark); padding: 2px 8px; border-radius: var(--radius-full); font-weight: var(--font-weight-medium);"></span>
+          </div>
+        </header>
+
+        <!-- FORMULARIO EN VISTA ÚNICA: 3 BLOQUES -->
+        <form id="nuevo-reclamo-form" novalidate>
+          <div class="claim-blocks-stack">
+
+            <!-- ========================================================
+                 BLOQUE 1: Ubicación del problema (Obligatorio)
+                 ======================================================== -->
+            <section class="claim-block" id="block-location" aria-labelledby="block-location-title">
+              <div class="claim-block__header">
+                <div class="claim-block__number" aria-hidden="true">1</div>
+                <div class="claim-block__info">
+                  <h2 class="claim-block__title" id="block-location-title">
+                    <span>Ubicación del problema</span>
+                    <span class="claim-block__required" title="Campo obligatorio">*</span>
+                  </h2>
+                  <p class="claim-block__subtitle">
+                    Buscá la calle y altura, usá tu ubicación o arrastrá el marcador sobre el mapa.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Buscador de Dirección y Botón GPS -->
+              <div class="location-search-group">
+                <div class="location-search-input-wrapper">
+                  <svg class="location-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.3-4.3"></path>
+                  </svg>
+                  <input
+                    type="text"
+                    id="input-address-search"
+                    class="form-input location-search-input"
+                    placeholder="Ej: Almafuerte 3150, San Justo"
+                    autocomplete="off"
+                    aria-label="Buscar dirección o calle en La Matanza"
+                    aria-describedby="location-error-msg"
+                  >
+                  <button type="button" class="location-clear-btn" id="btn-clear-address" aria-label="Limpiar dirección">
+                    ✕
+                  </button>
+                  <!-- Sugerencias desplegables -->
+                  <ul class="address-suggestions-list" id="address-suggestions" role="listbox" aria-label="Sugerencias de direcciones"></ul>
+                </div>
+
+                <button type="button" class="btn btn--secondary btn-gps" id="btn-use-gps" title="Obtener mi posición geográfica actual">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <polygon points="3 11 22 2 13 21 11 13 3 11"/>
+                  </svg>
+                  <span>Usar mi ubicación</span>
+                </button>
+              </div>
+
+              <!-- Alerta comprensible si rechaza geolocalización -->
+              <div id="geo-denied-alert" class="geo-alert" role="alert">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink: 0; margin-top: 1px;" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10"/>
+                  <line x1="12" y1="8" x2="12" y2="12"/>
+                  <line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+                <div style="flex: 1;">
+                  <strong style="display: block; margin-bottom: 2px;">Permiso de ubicación no concedido</strong>
+                  <span>No te preocupes: podés escribir la calle en el buscador o hacer clic directamente en el mapa para ubicar el problema.</span>
+                </div>
+              </div>
+
+              <!-- Mapa Interactivo Leaflet -->
+              <div class="claim-map-wrapper">
+                <div class="claim-map-tip" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                  </svg>
+                  <span>Mové el marcador o tocá en el mapa para fijar el punto</span>
+                </div>
+                <div id="claim-interactive-map" class="claim-map" role="application" aria-label="Mapa para seleccionar la ubicación exacta del reclamo"></div>
+              </div>
+
+              <!-- Resumen de Ubicación Seleccionada -->
+              <div class="location-summary-card" id="location-summary-card">
+                <div class="location-summary-card__left">
+                  <div class="location-summary-card__icon" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                      <circle cx="12" cy="10" r="3"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="location-summary-card__title" id="summary-address-text">Almafuerte 3150, San Justo</p>
+                    <p class="location-summary-card__coords" id="summary-coords-text">La Matanza · -34.6791, -58.5574</p>
+                  </div>
+                </div>
+                <button type="button" class="btn btn--ghost btn--sm" id="btn-refocus-map">
+                  Ajustar en mapa
+                </button>
+              </div>
+
+              <!-- Mensaje de Error Accesible de Ubicación -->
+              <div id="location-error-msg" class="auth-field-error" style="margin-top: var(--space-3);" role="alert">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                <span class="error-text">Por favor, seleccioná una ubicación en La Matanza antes de continuar.</span>
+              </div>
+            </section>
+
+            <!-- ========================================================
+                 BLOQUE 2: Categoría del reclamo (Obligatorio)
+                 ======================================================== -->
+            <section class="claim-block" id="block-category" aria-labelledby="block-category-title">
+              <div class="claim-block__header">
+                <div class="claim-block__number" aria-hidden="true">2</div>
+                <div class="claim-block__info">
+                  <h2 class="claim-block__title" id="block-category-title">
+                    <span>Categoría del reclamo</span>
+                    <span class="claim-block__required" title="Campo obligatorio">*</span>
+                  </h2>
+                  <p class="claim-block__subtitle">
+                    Elegí el tipo de servicio para canalizar la incidencia adecuadamente.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Selector Visual de 3 Categorías -->
+              <div class="category-selector-grid" role="radiogroup" aria-labelledby="block-category-title">
+                
+                <!-- Opción 1: Calles y pavimento -->
+                <button
+                  type="button"
+                  class="category-option-card category-option-card--pavimento"
+                  data-category="pavimento"
+                  role="radio"
+                  aria-checked="false"
+                  aria-label="Categoría: Calles y pavimento"
+                >
+                  <div class="category-option-card__check" aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                  </div>
+                  <div class="category-option-card__icon" aria-hidden="true">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M4 20L8 4h8l4 16"/>
+                      <line x1="12" y1="6" x2="12" y2="8"/>
+                      <line x1="12" y1="11" x2="12" y2="14"/>
+                      <line x1="12" y1="17" x2="12" y2="19"/>
+                    </svg>
+                  </div>
+                  <h3 class="category-option-card__title">Calles y pavimento</h3>
+                  <p class="category-option-card__desc">Baches, calzadas deterioradas y problemas de infraestructura vial.</p>
+                </button>
+
+                <!-- Opción 2: Basura y residuos -->
+                <button
+                  type="button"
+                  class="category-option-card category-option-card--residuos"
+                  data-category="residuos"
+                  role="radio"
+                  aria-checked="false"
+                  aria-label="Categoría: Basura y residuos"
+                >
+                  <div class="category-option-card__check" aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                  </div>
+                  <div class="category-option-card__icon" aria-hidden="true">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M3 6h18"/>
+                      <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                      <path d="M5 6l1.2 13.2A2 2 0 0 0 8.2 21h7.6a2 2 0 0 0 2-1.8L19 6"/>
+                      <line x1="10" y1="11" x2="10" y2="16"/>
+                      <line x1="14" y1="11" x2="14" y2="16"/>
+                    </svg>
+                  </div>
+                  <h3 class="category-option-card__title">Basura y residuos</h3>
+                  <p class="category-option-card__desc">Acumulación de basura o residuos abandonados en la vía pública.</p>
+                </button>
+
+                <!-- Opción 3: Alumbrado público -->
+                <button
+                  type="button"
+                  class="category-option-card category-option-card--alumbrado"
+                  data-category="alumbrado"
+                  role="radio"
+                  aria-checked="false"
+                  aria-label="Categoría: Alumbrado público"
+                >
+                  <div class="category-option-card__check" aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                  </div>
+                  <div class="category-option-card__icon" aria-hidden="true">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M6 21V5a3 3 0 0 1 3-3h7a2 2 0 0 1 2 2v3"/>
+                      <path d="M15 7h6l-1.5 5h-3z"/>
+                      <line x1="15" y1="15" x2="13" y2="19"/>
+                      <line x1="18" y1="15" x2="18" y2="20"/>
+                      <line x1="21" y1="15" x2="23" y2="19"/>
+                    </svg>
+                  </div>
+                  <h3 class="category-option-card__title">Alumbrado público</h3>
+                  <p class="category-option-card__desc">Luminarias apagadas, dañadas o columnas de alumbrado con fallas.</p>
+                </button>
+
+              </div>
+
+              <!-- Mensaje de Error Accesible de Categoría -->
+              <div id="category-error-msg" class="auth-field-error" style="margin-top: var(--space-3);" role="alert">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                <span class="error-text">Por favor, elegí una categoría para tu reclamo.</span>
+              </div>
+            </section>
+
+            <!-- ========================================================
+                 BLOQUE 3: Descripción y Fotografías (Opcionales)
+                 ======================================================== -->
+            <section class="claim-block" id="block-details" aria-labelledby="block-details-title">
+              <div class="claim-block__header">
+                <div class="claim-block__number" aria-hidden="true">3</div>
+                <div class="claim-block__info">
+                  <h2 class="claim-block__title" id="block-details-title">
+                    <span>Descripción y fotografías</span>
+                    <span class="claim-block__optional">Opcional</span>
+                  </h2>
+                  <p class="claim-block__subtitle">
+                    Añadí referencias o detalles útiles y adjuntá fotos para facilitar la verificación vecinal.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Campo Descripción Multilínea -->
+              <div class="desc-textarea-wrapper">
+                <label class="form-label" for="claim-description">
+                  <span>Contanos un poco más (opcional)</span>
+                </label>
+                <textarea
+                  id="claim-description"
+                  class="form-textarea"
+                  placeholder="Por ejemplo: esquina de cruce transitado, hace 3 semanas que se junta agua y dificulta el paso de colectivos..."
+                  maxlength="500"
+                  rows="4"
+                ></textarea>
+                <div class="desc-char-counter">
+                  <span id="char-counter-text">0 / 500 caracteres</span>
+                </div>
+              </div>
+
+              <!-- Fotografías Adjuntas al Reclamo -->
+              <div class="photos-upload-wrapper">
+                <div class="form-label" style="margin-bottom: var(--space-2);">
+                  <span>Fotografías adjuntas</span>
+                  <span id="photos-counter-badge" class="claim-block__optional">3 fotografías adjuntas</span>
+                </div>
+                <p style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-bottom: var(--space-3); line-height: var(--line-height-normal);">
+                  Imágenes registradas del lugar para la inspección y verificación técnica del caso.
+                </p>
+
+                <!-- Grilla de Fotografías Adjuntas -->
+                <div class="photos-preview-grid" id="photos-preview-container" aria-live="polite"></div>
+              </div>
+            </section>
+
+          </div>
+
+          <!-- ========================================================
+               BARRA DE ACCIONES FINALES
+               ======================================================== -->
+          <div class="claim-form-actions">
+            <a href="../index.html" class="btn btn--outline" id="btn-cancel-claim">
+              Cancelar
+            </a>
+            <button type="submit" class="btn btn--primary btn--lg btn-submit-auth" id="btn-submit-claim">
+              <span class="btn-spinner" aria-hidden="true"></span>
+              <span class="btn-text">Enviar reclamo</span>
+            </button>
+          </div>
+        </form>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ========================================================
+       MODAL DE RECLAMOS SIMILARES CERCANOS (Prevención de Duplicados)
+       ======================================================== -->
+  <div id="modal-similar-claim" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modal-similar-title">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-similar-title">Posible reclamo existente en tu zona</h3>
+        <button type="button" class="icon-btn" id="btn-close-modal-similar" aria-label="Cerrar ventana">
+          ✕
+        </button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: var(--font-size-sm); margin-bottom: var(--space-3);">
+          Detectamos que otros vecinos ya informaron un problema similar a pocos metros de esta ubicación. Si se trata del mismo hecho, podés sumarte para darle mayor prioridad vecinal.
+        </p>
+
+        <!-- Tarjeta del Reclamo Coincidente -->
+        <div class="similar-claim-card" id="similar-claim-card">
+          <div class="similar-claim-card__meta">
+            <span id="similar-cat-badge" class="badge">Categoría</span>
+            <span id="similar-state-badge" class="badge">Estado</span>
+          </div>
+          <h4 id="similar-claim-title" class="similar-claim-card__title">Título del reclamo</h4>
+          <p id="similar-claim-address" class="similar-claim-card__address">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            <span id="similar-address-text">Dirección</span>
+          </p>
+          <div id="similar-claim-support" class="similar-claim-card__support">
+            👥 <strong>4 vecinos</strong> ya se sumaron a este caso
+          </div>
+        </div>
+
+        <p style="font-size: var(--font-size-xs); color: var(--color-text-muted);">
+          Si tu problema es distinto (otra calzada, otra luminaria o un evento separado), podés continuar con la creación de un nuevo reclamo independiente.
+        </p>
+      </div>
+      <div class="modal-footer" style="flex-wrap: wrap; gap: var(--space-2);">
+        <button type="button" class="btn btn--outline btn--sm" id="btn-continue-create-new">
+          Es otro problema, crear uno nuevo
+        </button>
+        <button type="button" class="btn btn--primary btn--sm" id="btn-join-existing-claim">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <line x1="19" y1="8" x2="19" y2="14"/>
+            <line x1="22" y1="11" x2="16" y2="11"/>
+          </svg>
+          <span>Sumarme a este reclamo</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       LIGHTBOX ACCESIBLE DE FOTOGRAFÍA EN PANTALLA COMPLETA
+       ======================================================== -->
+  <div id="photo-lightbox" class="photo-lightbox" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Fotografía ampliada">
+    <div class="photo-lightbox__content">
+      <button type="button" class="photo-lightbox__close" id="btn-close-lightbox" aria-label="Cerrar imagen">✕</button>
+      <img id="lightbox-img" class="photo-lightbox__img" src="" alt="Fotografía en tamaño completo">
+      <p id="lightbox-caption" class="photo-lightbox__caption"></p>
+    </div>
+  </div>
+
+  <!-- SCRIPT ES MODULE -->
+  <script type="module">
+    import { setupNavigation, auth, claimsService, showToast } from '../assets/js/main.js';
+    import { LOCALIDADES_LA_MATANZA, MAPA_CONFIG } from '../assets/js/data/localidades.js';
+    import { storage } from '../assets/js/utils/storage.js';
+    import { formatters } from '../assets/js/utils/formatters.js';
+    import { modal } from '../assets/js/components/modal.js';
+    import { getSamplePhotosForCategory } from '../assets/js/data/sample-photos.js';
+
+    // 1. Configurar barra institucional
+    setupNavigation({ activePage: 'reportar', basePath: '../' });
+
+    // 2. Comprobación estricta de sesión simulada
+    if (!auth.isLoggedIn()) {
+      auth.setRedirectUrl(window.location.href);
+      window.location.href = `iniciar-sesion.html?redirect=${encodeURIComponent(window.location.href)}`;
+    } else {
+      const user = auth.getCurrentUser();
+      const userBadge = document.getElementById('user-session-badge');
+      const userName = document.getElementById('user-session-name');
+      if (user && userBadge && userName) {
+        userName.textContent = user.nombre || user.email || 'Vecino';
+        userBadge.style.display = 'flex';
+      }
+    }
+
+    // =========================================================================
+    // Base de datos de direcciones curadas de La Matanza para búsqueda rápida
+    // =========================================================================
+    const DIRECCIONES_LA_MATANZA = [
+      { direccion: 'Almafuerte 3150, San Justo', localidadId: 'san-justo', lat: -34.6791, lng: -58.5574 },
+      { direccion: 'Av. Dr. Ignacio Arieta 2200, San Justo', localidadId: 'san-justo', lat: -34.6745, lng: -58.5598 },
+      { direccion: 'Monseñor Marcón 3050, San Justo', localidadId: 'san-justo', lat: -34.6812, lng: -58.5541 },
+      { direccion: 'Av. de Mayo y Humboldt, Ramos Mejía', localidadId: 'ramos-mejia', lat: -34.6512, lng: -58.5621 },
+      { direccion: 'Av. de Mayo y Belgrano, Ramos Mejía', localidadId: 'ramos-mejia', lat: -34.6480, lng: -58.5645 },
+      { direccion: 'Av. Rivadavia 14200, Ramos Mejía', localidadId: 'ramos-mejia', lat: -34.6465, lng: -58.5682 },
+      { direccion: 'República de Portugal 2800, Isidro Casanova', localidadId: 'isidro-casanova', lat: -34.7095, lng: -58.5815 },
+      { direccion: 'Av. Juan Manuel de Rosas 10500, Isidro Casanova', localidadId: 'isidro-casanova', lat: -34.7125, lng: -58.5770 },
+      { direccion: 'Av. Luro y Pedro Luro, Gregorio de Laferrere', localidadId: 'laferrere', lat: -34.7505, lng: -58.5865 },
+      { direccion: 'José Equiza 4100, González Catán', localidadId: 'gonzalez-catan', lat: -34.7712, lng: -58.6260 },
+      { direccion: 'Av. Cristianía y Crovara, Ciudad Evita', localidadId: 'ciudad-evita', lat: -34.7180, lng: -58.5295 },
+      { direccion: 'Av. Monseñor Bufano 2400, Villa Luzuriaga', localidadId: 'villa-luzuriaga', lat: -34.6802, lng: -58.5962 },
+      { direccion: 'Av. Villegas 300, Lomas del Mirador', localidadId: 'lomas-del-mirador', lat: -34.6645, lng: -58.5372 },
+      { direccion: 'Ruta 3 Km 38, Virrey del Pino', localidadId: 'virrey-del-pino', lat: -34.8258, lng: -58.6540 }
+    ];
+
+    // =========================================================================
+    // Estado del Formulario
+    // =========================================================================
+    const formState = {
+      direccion: 'Almafuerte 3150, San Justo',
+      localidadId: 'san-justo',
+      lat: -34.6791,
+      lng: -58.5574,
+      categoria: null,
+      descripcion: '',
+      fotos: [] // Rutas relativas a fotos curadas de ejemplo (sin binarios ni Base64)
+    };
+
+    let leafletMap = null;
+    let marker = null;
+    let autoSaveTimer = null;
+    let detectedSimilarClaim = null;
+
+    // Elementos DOM
+    const addressInput = document.getElementById('input-address-search');
+    const addressClearBtn = document.getElementById('btn-clear-address');
+    const addressSuggestions = document.getElementById('address-suggestions');
+    const summaryAddressText = document.getElementById('summary-address-text');
+    const summaryCoordsText = document.getElementById('summary-coords-text');
+    const btnRefocusMap = document.getElementById('btn-refocus-map');
+    const btnUseGps = document.getElementById('btn-use-gps');
+    const geoAlert = document.getElementById('geo-denied-alert');
+    const locationError = document.getElementById('location-error-msg');
+    const categoryError = document.getElementById('category-error-msg');
+    const descTextarea = document.getElementById('claim-description');
+    const charCounterText = document.getElementById('char-counter-text');
+    const photosPreviewContainer = document.getElementById('photos-preview-container');
+    const photosCounterBadge = document.getElementById('photos-counter-badge');
+    const draftStatusText = document.getElementById('draft-status-text');
+    const draftStatusIndicator = document.getElementById('draft-status-indicator');
+    const submitBtn = document.getElementById('btn-submit-claim');
+    const submitBtnText = submitBtn.querySelector('.btn-text');
+    const categoryButtons = document.querySelectorAll('.category-option-card');
+
+    // =========================================================================
+    // 3. Inicialización del Mapa Interactivo Leaflet
+    // =========================================================================
+    function initClaimMap(initialLat, initialLng) {
+      if (typeof L === 'undefined') return;
+
+      const mapContainer = document.getElementById('claim-interactive-map');
+      if (!mapContainer) return;
+
+      leafletMap = L.map('claim-interactive-map', {
+        center: [initialLat, initialLng],
+        zoom: 15,
+        minZoom: 11,
+        maxZoom: 18,
+        scrollWheelZoom: false, // Previene scroll-trap en navegación vertical
+        zoomControl: true
+      });
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap',
+        maxZoom: 19
+      }).addTo(leafletMap);
+
+      // Icono de Pin Destacado Arrastrable
+      const customPinIcon = L.divIcon({
+        className: 'custom-map-pin custom-map-pin--target',
+        html: `
+          <div class="pin-marker" style="transform: scale(1.15);">
+            <div class="pin-marker__body" style="background-color: var(--color-accent); border: 2px solid #FFFFFF;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>
+              </svg>
+            </div>
+            <div class="pin-marker__tip" style="border-top: 8px solid var(--color-accent);"></div>
+          </div>
+        `,
+        iconSize: [36, 44],
+        iconAnchor: [18, 44]
+      });
+
+      marker = L.marker([initialLat, initialLng], {
+        draggable: true,
+        icon: customPinIcon,
+        title: 'Mover para ajustar ubicación'
+      }).addTo(leafletMap);
+
+      // Al arrastrar el marcador (dragend)
+      marker.on('dragend', () => {
+        const pos = marker.getLatLng();
+        updateLocationFromCoords(pos.lat, pos.lng, true);
+      });
+
+      // Al hacer clic en cualquier parte del mapa
+      leafletMap.on('click', (e) => {
+        marker.setLatLng(e.latlng);
+        updateLocationFromCoords(e.latlng.lat, e.latlng.lng, true);
+      });
+    }
+
+    function updateLocationFromCoords(lat, lng, synthesizeAddress = false) {
+      formState.lat = Number(lat.toFixed(5));
+      formState.lng = Number(lng.toFixed(5));
+
+      // Localidad más cercana aproximada
+      let closestLoc = LOCALIDADES_LA_MATANZA[0];
+      let minDistance = 9999;
+      LOCALIDADES_LA_MATANZA.forEach(loc => {
+        const dist = Math.hypot(loc.lat - lat, loc.lng - lng);
+        if (dist < minDistance) {
+          minDistance = dist;
+          closestLoc = loc;
+        }
+      });
+      formState.localidadId = closestLoc.id;
+
+      if (synthesizeAddress) {
+        // Encontrar si coincide con alguna dirección conocida
+        const matched = DIRECCIONES_LA_MATANZA.find(d => Math.hypot(d.lat - lat, d.lng - lng) < 0.002);
+        if (matched) {
+          formState.direccion = matched.direccion;
+        } else {
+          formState.direccion = `Punto seleccionado en ${closestLoc.nombre}`;
+        }
+        addressInput.value = formState.direccion;
+      }
+
+      summaryAddressText.textContent = formState.direccion;
+      summaryCoordsText.textContent = `${closestLoc.nombre} · ${formState.lat}, ${formState.lng}`;
+      locationError.classList.remove('is-visible');
+      document.getElementById('block-location').classList.remove('has-error');
+      triggerAutoSave();
+    }
+
+    function setLocation(address, lat, lng, localidadId) {
+      formState.direccion = address;
+      formState.lat = Number(lat.toFixed(5));
+      formState.lng = Number(lng.toFixed(5));
+      formState.localidadId = localidadId;
+
+      addressInput.value = address;
+      addressClearBtn.style.display = 'flex';
+      summaryAddressText.textContent = address;
+
+      const locObj = LOCALIDADES_LA_MATANZA.find(l => l.id === localidadId) || { nombre: 'La Matanza' };
+      summaryCoordsText.textContent = `${locObj.nombre} · ${formState.lat}, ${formState.lng}`;
+
+      if (marker && leafletMap) {
+        marker.setLatLng([lat, lng]);
+        leafletMap.setView([lat, lng], 16, { animate: true });
+      }
+
+      locationError.classList.remove('is-visible');
+      document.getElementById('block-location').classList.remove('has-error');
+      triggerAutoSave();
+    }
+
+    // =========================================================================
+    // 4. Búsqueda y Autocompletado de Direcciones en La Matanza
+    // =========================================================================
+    addressInput.addEventListener('input', () => {
+      const q = addressInput.value.trim().toLowerCase();
+      addressClearBtn.style.display = q ? 'flex' : 'none';
+
+      if (q.length < 2) {
+        addressSuggestions.classList.remove('is-visible');
+        addressSuggestions.innerHTML = '';
+        return;
+      }
+
+      const matches = DIRECCIONES_LA_MATANZA.filter(item =>
+        item.direccion.toLowerCase().includes(q)
+      );
+
+      if (matches.length === 0) {
+        addressSuggestions.innerHTML = `
+          <li class="address-suggestion-item" style="cursor: default; color: var(--color-text-muted);">
+            No se encontraron direcciones sugeridas. Podés marcar el punto directamente en el mapa.
+          </li>
+        `;
+      } else {
+        addressSuggestions.innerHTML = matches.map((m, idx) => `
+          <li class="address-suggestion-item" role="option" tabindex="0" data-idx="${idx}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            <span><strong>${m.direccion}</strong></span>
+          </li>
+        `).join('');
+
+        addressSuggestions.querySelectorAll('.address-suggestion-item[data-idx]').forEach(el => {
+          el.addEventListener('click', () => {
+            const item = matches[Number(el.dataset.idx)];
+            setLocation(item.direccion, item.lat, item.lng, item.localidadId);
+            addressSuggestions.classList.remove('is-visible');
+          });
+        });
+      }
+
+      addressSuggestions.classList.add('is-visible');
+    });
+
+    addressClearBtn.addEventListener('click', () => {
+      addressInput.value = '';
+      addressClearBtn.style.display = 'none';
+      addressSuggestions.classList.remove('is-visible');
+      addressInput.focus();
+    });
+
+    // Cerrar sugerencias al hacer clic fuera
+    document.addEventListener('click', (e) => {
+      if (!addressInput.contains(e.target) && !addressSuggestions.contains(e.target)) {
+        addressSuggestions.classList.remove('is-visible');
+      }
+    });
+
+    btnRefocusMap.addEventListener('click', () => {
+      if (leafletMap && formState.lat && formState.lng) {
+        leafletMap.setView([formState.lat, formState.lng], 16, { animate: true });
+        if (marker) marker.openPopup();
+      }
+    });
+
+    // Geolocalización
+    btnUseGps.addEventListener('click', () => {
+      if (!navigator.geolocation) {
+        geoAlert.classList.add('is-visible');
+        return;
+      }
+
+      btnUseGps.disabled = true;
+      btnUseGps.textContent = 'Localizando...';
+
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          btnUseGps.disabled = false;
+          btnUseGps.innerHTML = `
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <polygon points="3 11 22 2 13 21 11 13 3 11"/>
+            </svg>
+            <span>Usar mi ubicación</span>
+          `;
+          geoAlert.classList.remove('is-visible');
+
+          const userLat = pos.coords.latitude;
+          const userLng = pos.coords.longitude;
+          updateLocationFromCoords(userLat, userLng, true);
+
+          if (leafletMap && marker) {
+            marker.setLatLng([userLat, userLng]);
+            leafletMap.setView([userLat, userLng], 16, { animate: true });
+          }
+
+          showToast({
+            message: 'Ubicación actual detectada en el mapa.',
+            type: 'info',
+            duration: 2500
+          });
+        },
+        (err) => {
+          btnUseGps.disabled = false;
+          btnUseGps.innerHTML = `
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <polygon points="3 11 22 2 13 21 11 13 3 11"/>
+            </svg>
+            <span>Usar mi ubicación</span>
+          `;
+          geoAlert.classList.add('is-visible');
+        },
+        { enableHighAccuracy: true, timeout: 8000 }
+      );
+    });
+
+    // =========================================================================
+    // 5. Selector Visual de Categorías
+    // =========================================================================
+    function selectCategory(catKey) {
+      formState.categoria = catKey;
+
+      categoryButtons.forEach(btn => {
+        const isCurrent = btn.dataset.category === catKey;
+        btn.classList.toggle('is-selected', isCurrent);
+        btn.setAttribute('aria-checked', isCurrent ? 'true' : 'false');
+      });
+
+      categoryError.classList.remove('is-visible');
+      document.getElementById('block-category').classList.remove('has-error');
+
+      // Actualizar automáticamente fotografías de muestra de la categoría
+      updatePhotosForCategory(catKey);
+
+      triggerAutoSave();
+    }
+
+    categoryButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        selectCategory(btn.dataset.category);
+      });
+    });
+
+    // =========================================================================
+    // 6. Descripción y Contador de Caracteres
+    // =========================================================================
+    descTextarea.addEventListener('input', () => {
+      formState.descripcion = descTextarea.value;
+      const count = descTextarea.value.length;
+      charCounterText.textContent = `${count} / 500 caracteres`;
+      triggerAutoSave();
+    });
+
+    // =========================================================================
+    // 7. Fotografías Registradas por Categoría
+    // =========================================================================
+    const photoLightbox = document.getElementById('photo-lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const lightboxCaption = document.getElementById('lightbox-caption');
+    const btnCloseLightbox = document.getElementById('btn-close-lightbox');
+
+    function openLightbox(src, caption, alt) {
+      lightboxImg.src = src;
+      lightboxImg.alt = alt || caption;
+      lightboxCaption.textContent = caption;
+      photoLightbox.classList.add('is-open');
+      photoLightbox.setAttribute('aria-hidden', 'false');
+      btnCloseLightbox.focus();
+    }
+
+    function closeLightbox() {
+      photoLightbox.classList.remove('is-open');
+      photoLightbox.setAttribute('aria-hidden', 'true');
+      lightboxImg.src = '';
+    }
+
+    btnCloseLightbox.addEventListener('click', closeLightbox);
+    photoLightbox.addEventListener('click', (e) => {
+      if (e.target === photoLightbox) closeLightbox();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && photoLightbox.classList.contains('is-open')) {
+        closeLightbox();
+      }
+    });
+
+    function updatePhotosForCategory(catKey) {
+      if (!catKey) {
+        photosPreviewContainer.innerHTML = `
+          <div class="photos-empty-state" style="grid-column: 1 / -1; padding: var(--space-4); text-align: center; color: var(--color-text-muted); background: var(--color-surface-subtle); border-radius: var(--radius-md); border: 1px dashed var(--color-border-subtle); font-size: var(--font-size-sm);">
+            Seleccioná una categoría en el paso 2 para cargar las fotografías correspondientes del lugar.
+          </div>
+        `;
+        photosCounterBadge.textContent = '0 fotografías adjuntas';
+        formState.fotos = [];
+        return;
+      }
+
+      const categoryPhotos = getSamplePhotosForCategory(catKey);
+      formState.fotos = categoryPhotos.map(p => p.url);
+      photosCounterBadge.textContent = `${categoryPhotos.length} fotografías adjuntas`;
+
+      photosPreviewContainer.innerHTML = categoryPhotos.map((p, idx) => `
+        <article class="photo-card-sample" role="button" tabindex="0" aria-label="Ver fotografía ampliada ${idx + 1}: ${p.titulo}" data-photo-idx="${idx}">
+          <div class="photo-card-sample__img-wrapper">
+            <img src="../${p.url}" alt="${p.alt}" loading="lazy" width="280" height="158">
+            <span class="photo-card-sample__badge">Foto ${idx + 1}</span>
+            <span class="photo-card-sample__check" title="Adjuntada y verificada">✓</span>
+            <span class="photo-card-sample__zoom-hint">🔍 Ampliar</span>
+          </div>
+          <p class="photo-card-sample__caption">${p.titulo}</p>
+        </article>
+      `).join('');
+
+      photosPreviewContainer.querySelectorAll('.photo-card-sample').forEach(card => {
+        const idx = Number(card.dataset.photoIdx);
+        const photo = categoryPhotos[idx];
+        const openCard = () => openLightbox(`../${photo.url}`, photo.titulo, photo.alt);
+        card.addEventListener('click', openCard);
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openCard();
+          }
+        });
+      });
+    }
+
+    // =========================================================================
+    // 8. Autoguardado del Borrador (localStorage)
+    // =========================================================================
+    function triggerAutoSave() {
+      draftStatusIndicator.classList.add('is-saving');
+      draftStatusText.textContent = 'Guardando...';
+
+      clearTimeout(autoSaveTimer);
+      autoSaveTimer = setTimeout(() => {
+        const draftData = {
+          direccion: formState.direccion,
+          localidadId: formState.localidadId,
+          lat: formState.lat,
+          lng: formState.lng,
+          categoria: formState.categoria,
+          descripcion: formState.descripcion,
+          fotos: formState.fotos,
+          updatedAt: new Date().toISOString()
+        };
+        storage.set(storage.KEYS.BORRADOR, draftData);
+
+        draftStatusIndicator.classList.remove('is-saving');
+        draftStatusText.textContent = 'Borrador guardado';
+      }, 400);
+    }
+
+    function loadDraftOrParams() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const catParam = urlParams.get('cat');
+      const draft = storage.get(storage.KEYS.BORRADOR, null);
+
+      if (draft) {
+        if (draft.direccion && draft.lat && draft.lng) {
+          formState.direccion = draft.direccion;
+          formState.localidadId = draft.localidadId || 'san-justo';
+          formState.lat = draft.lat;
+          formState.lng = draft.lng;
+        }
+        if (draft.categoria) {
+          formState.categoria = draft.categoria;
+        }
+        if (draft.descripcion) {
+          formState.descripcion = draft.descripcion;
+          descTextarea.value = draft.descripcion;
+          charCounterText.textContent = `${draft.descripcion.length} / 500 caracteres`;
+        }
+      }
+
+      // Parámetro query tiene prioridad para categoría si viene desde la Home
+      if (catParam && ['pavimento', 'residuos', 'alumbrado'].includes(catParam)) {
+        formState.categoria = catParam;
+      }
+
+      // Inicializar mapa con las coordenadas resueltas
+      initClaimMap(formState.lat, formState.lng);
+      setLocation(formState.direccion, formState.lat, formState.lng, formState.localidadId);
+
+      if (formState.categoria) {
+        selectCategory(formState.categoria);
+      } else {
+        updatePhotosForCategory(null);
+      }
+    }
+
+    // =========================================================================
+    // 9. Detección de Reclamos Similares (Duplicate Prevention)
+    // =========================================================================
+    function checkSimilarClaims() {
+      if (!formState.categoria || !formState.lat || !formState.lng) return null;
+      return claimsService.findSimilar(formState.categoria, formState.lat, formState.lng, 0.015);
+    }
+
+    function openSimilarClaimModal(similar) {
+      detectedSimilarClaim = similar;
+
+      const catBadge = document.getElementById('similar-cat-badge');
+      const stateBadge = document.getElementById('similar-state-badge');
+      const titleEl = document.getElementById('similar-claim-title');
+      const addressEl = document.getElementById('similar-address-text');
+      const supportEl = document.getElementById('similar-claim-support');
+
+      catBadge.className = `badge badge--cat-${similar.categoria}`;
+      catBadge.textContent = formatters.categoryLabel(similar.categoria);
+
+      stateBadge.className = `badge badge--${similar.estado === 'en_proceso' ? 'proceso' : similar.estado === 'en_revision' ? 'revision' : 'recibido'}`;
+      stateBadge.textContent = formatters.stateLabel(similar.estado);
+
+      titleEl.textContent = similar.titulo;
+      addressEl.textContent = similar.direccion;
+      const count = similar.participantes ? similar.participantes.length : 1;
+      supportEl.innerHTML = `👥 <strong>${count} ${count === 1 ? 'vecino' : 'vecinos'}</strong> ya se sumaron a este caso`;
+
+      modal.open('modal-similar-claim');
+    }
+
+    document.getElementById('btn-close-modal-similar').addEventListener('click', () => {
+      modal.close('modal-similar-claim');
+    });
+
+    // Acción 1: Sumarme al reclamo existente
+    document.getElementById('btn-join-existing-claim').addEventListener('click', () => {
+      if (!detectedSimilarClaim) return;
+      claimsService.joinClaim(detectedSimilarClaim.id);
+      storage.remove(storage.KEYS.BORRADOR);
+      modal.close('modal-similar-claim');
+
+      showToast({
+        message: '¡Te sumaste con éxito al reclamo existente!',
+        type: 'success',
+        duration: 3000
+      });
+
+      setTimeout(() => {
+        window.location.href = `confirmacion.html?id=${detectedSimilarClaim.id}&joined=true`;
+      }, 450);
+    });
+
+    // Acción 2: Es otro problema, crear uno nuevo
+    document.getElementById('btn-continue-create-new').addEventListener('click', () => {
+      modal.close('modal-similar-claim');
+      executeCreateClaim();
+    });
+
+    // =========================================================================
+    // 10. Envío y Validación del Formulario
+    // =========================================================================
+    function executeCreateClaim() {
+      submitBtn.classList.add('is-loading');
+      submitBtnText.textContent = 'Registrando reclamo...';
+      submitBtn.disabled = true;
+
+      setTimeout(() => {
+        const newClaim = claimsService.createClaim({
+          categoria: formState.categoria,
+          descripcion: formState.descripcion,
+          direccion: formState.direccion,
+          localidadId: formState.localidadId,
+          lat: formState.lat,
+          lng: formState.lng,
+          fotos: formState.fotos
+        });
+
+        // Limpiar borrador tras envío exitoso
+        storage.remove(storage.KEYS.BORRADOR);
+
+        showToast({
+          message: '¡Reclamo registrado con éxito!',
+          type: 'success',
+          duration: 3000
+        });
+
+        setTimeout(() => {
+          window.location.href = `confirmacion.html?id=${newClaim.id}`;
+        }, 450);
+      }, 600);
+    }
+
+    document.getElementById('nuevo-reclamo-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      let hasErrors = false;
+      const blockLocation = document.getElementById('block-location');
+      const blockCategory = document.getElementById('block-category');
+
+      // Validar Ubicación
+      if (!formState.direccion || !formState.lat || !formState.lng) {
+        locationError.classList.add('is-visible');
+        blockLocation.classList.add('has-error');
+        hasErrors = true;
+      } else {
+        locationError.classList.remove('is-visible');
+        blockLocation.classList.remove('has-error');
+      }
+
+      // Validar Categoría
+      if (!formState.categoria) {
+        categoryError.classList.add('is-visible');
+        blockCategory.classList.add('has-error');
+        hasErrors = true;
+      } else {
+        categoryError.classList.remove('is-visible');
+        blockCategory.classList.remove('has-error');
+      }
+
+      // Foco y scroll suave hacia el primer error
+      if (hasErrors) {
+        if (!formState.direccion || !formState.lat) {
+          blockLocation.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          addressInput.focus();
+        } else if (!formState.categoria) {
+          blockCategory.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          categoryButtons[0].focus();
+        }
+        return;
+      }
+
+      // Comprobar reclamos similares cercanos antes de crear
+      const similar = checkSimilarClaims();
+      if (similar) {
+        openSimilarClaimModal(similar);
+      } else {
+        executeCreateClaim();
+      }
+    });
+
+    // Cargar borrador o parámetros al inicio
+    loadDraftOrParams();
+  </script>
+</body>
+</html>

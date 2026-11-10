@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Iniciar sesión en SoluciónSegura — Accedé para realizar reclamos urbanos y seguir las mejoras en tu barrio de La Matanza.">
+  <title>Iniciar Sesión — SoluciónSegura</title>
+  <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body class="app-shell">
+
+  <!-- Header Institucional Inyectado dinámicamente -->
+  <header class="site-header" role="banner"></header>
+
+  <main class="main-content" id="main-content" role="main">
+    <div class="auth-wrapper">
+      <div class="auth-card-container">
+
+        <!-- Barra superior de navegación y cancelación -->
+        <div class="auth-back-nav">
+          <a href="../index.html" class="auth-back-link" id="btn-back-nav" aria-label="Volver a la página anterior">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m15 18-6-6 6-6"/>
+            </svg>
+            <span id="btn-back-text">Volver al inicio</span>
+          </a>
+        </div>
+
+        <div class="auth-card">
+
+          <!-- Banner dinámico de continuidad cuando proviene de 'Realizar reclamo' o categoría -->
+          <div id="auth-context-banner" class="auth-context-banner" style="display: none;" role="region" aria-label="Continuidad de reclamo">
+            <div class="auth-context-banner__icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="8" x2="12" y2="12"/>
+                <line x1="12" y1="16" x2="12.01" y2="16"/>
+              </svg>
+            </div>
+            <div class="auth-context-banner__text">
+              <span id="auth-context-message">Iniciá sesión para continuar con tu reclamo urbano.</span>
+            </div>
+          </div>
+
+          <!-- Encabezado de la tarjeta -->
+          <div class="auth-header">
+            <div class="auth-badge-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+                <polyline points="10 17 15 12 10 7"/>
+                <line x1="15" y1="12" x2="3" y2="12"/>
+              </svg>
+            </div>
+            <h1 class="auth-title">Ingresar a SoluciónSegura</h1>
+            <p class="auth-subtitle">
+              Accedé a tu cuenta ciudadana para reportar, apoyar y hacer seguimiento de los reclamos de tu barrio.
+            </p>
+          </div>
+
+          <!-- Alternativa Google -->
+          <button type="button" class="btn-google" id="btn-login-google" aria-label="Iniciar sesión con Google">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
+            </svg>
+            <span>Continuar con Google</span>
+          </button>
+
+          <!-- Divisor -->
+          <div class="auth-divider" role="separator" aria-label="o ingresar con correo electrónico">
+            <span>o ingresá con tu correo</span>
+          </div>
+
+          <!-- Formulario de Acceso -->
+          <form id="login-form" novalidate>
+            
+            <!-- Campo: Correo Electrónico -->
+            <div class="auth-form-group">
+              <label class="form-label" for="login-email">Correo electrónico</label>
+              <input
+                type="email"
+                id="login-email"
+                name="email"
+                class="form-input"
+                placeholder="tu.correo@ejemplo.com"
+                autocomplete="email"
+                inputmode="email"
+                aria-required="true"
+                aria-describedby="login-email-error"
+                required
+              >
+              <div id="login-email-error" class="auth-field-error" role="alert">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                <span class="error-text"></span>
+              </div>
+            </div>
+
+            <!-- Campo: Contraseña con Toggle Ojo -->
+            <div class="auth-form-group">
+              <div class="auth-label-row">
+                <label class="form-label" for="login-password">Contraseña</label>
+                <a href="recuperar-contrasena.html" class="auth-forgot-link">¿Olvidaste tu contraseña?</a>
+              </div>
+              <div class="password-input-group">
+                <input
+                  type="password"
+                  id="login-password"
+                  name="password"
+                  class="form-input"
+                  placeholder="••••••••"
+                  autocomplete="current-password"
+                  aria-required="true"
+                  aria-describedby="login-password-error"
+                  required
+                >
+                <button
+                  type="button"
+                  class="password-toggle-btn"
+                  id="btn-toggle-password"
+                  aria-label="Mostrar contraseña"
+                  aria-controls="login-password"
+                  aria-pressed="false"
+                  title="Mostrar contraseña"
+                >
+                  <!-- Icono Ojo (Mostrar) -->
+                  <svg class="icon-eye-show" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+                    <circle cx="12" cy="12" r="3"/>
+                  </svg>
+                  <!-- Icono Ojo Tachado (Ocultar) -->
+                  <svg class="icon-eye-hide" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display: none;">
+                    <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/>
+                    <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/>
+                    <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/>
+                    <line x1="2" y1="2" x2="22" y2="22"/>
+                  </svg>
+                </button>
+              </div>
+              <div id="login-password-error" class="auth-field-error" role="alert">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                <span class="error-text"></span>
+              </div>
+            </div>
+
+            <!-- Botón Submit -->
+            <button type="submit" class="btn btn--primary btn--lg btn--full btn-submit-auth" id="btn-submit-login">
+              <span class="btn-spinner" aria-hidden="true"></span>
+              <span class="btn-text">Iniciar sesión</span>
+            </button>
+
+          </form>
+
+          <!-- Alternar a Registro -->
+          <p class="auth-switch-prompt">
+            ¿No tenés cuenta todavía? <a href="registro.html" id="link-to-register">Registrate acá</a>
+          </p>
+
+          <!-- Nota institucional de confianza -->
+          <p class="auth-privacy-notice">
+            SoluciónSegura nunca comparte tus datos privados ni solicita número de padrón ni DNI para el acceso vecinal.
+          </p>
+
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Navegación móvil y Footer inyectados dinámicamente -->
+
+  <script type="module">
+    import { setupNavigation, auth, showToast } from '../assets/js/main.js';
+    setupNavigation({ activePage: 'perfil', basePath: '../' });
+
+    // 1. Si ya está autenticado, redirigir directamente al destino o al inicio
+    if (auth.isLoggedIn()) {
+      auth.handleRedirect('../index.html');
+    }
+
+    // 2. Detección de contexto previo (Continuidad del recorrido)
+    const pendingCat = auth.getPendingCategory();
+    const targetUrl = auth.getRedirectUrl();
+    const contextBanner = document.getElementById('auth-context-banner');
+    const contextMessage = document.getElementById('auth-context-message');
+    const linkToRegister = document.getElementById('link-to-register');
+    const backBtn = document.getElementById('btn-back-nav');
+
+    // Nombres legibles para categorías
+    const catLabels = {
+      'pavimento': 'Calles y pavimento',
+      'residuos': 'Basura y residuos',
+      'alumbrado': 'Alumbrado público'
+    };
+
+    if (pendingCat && catLabels[pendingCat]) {
+      contextMessage.innerHTML = `Iniciá sesión para continuar tu reporte de <strong>${catLabels[pendingCat]}</strong>.`;
+      contextBanner.style.display = 'flex';
+    } else if (targetUrl && targetUrl.includes('nuevo-reclamo.html')) {
+      contextMessage.innerHTML = `Iniciá sesión para continuar con tu <strong>nuevo reclamo urbano</strong>.`;
+      contextBanner.style.display = 'flex';
+    }
+
+    // Preservar target al navegar entre Iniciar Sesión y Registro
+    if (targetUrl) {
+      linkToRegister.href = `registro.html?redirect=${encodeURIComponent(targetUrl)}`;
+    }
+
+    // Botón de Volver accesible e inteligente
+    backBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (document.referrer && document.referrer.includes(window.location.host) && !document.referrer.includes('iniciar-sesion') && !document.referrer.includes('registro')) {
+        window.history.back();
+      } else {
+        window.location.href = '../index.html';
+      }
+    });
+
+    // 3. Toggle mostrar/ocultar contraseña (accesible con aria-pressed y aria-label)
+    const togglePassBtn = document.getElementById('btn-toggle-password');
+    const passwordInput = document.getElementById('login-password');
+    const iconEyeShow = togglePassBtn.querySelector('.icon-eye-show');
+    const iconEyeHide = togglePassBtn.querySelector('.icon-eye-hide');
+
+    togglePassBtn.addEventListener('click', () => {
+      const isPassword = passwordInput.type === 'password';
+      passwordInput.type = isPassword ? 'text' : 'password';
+      togglePassBtn.setAttribute('aria-pressed', isPassword ? 'true' : 'false');
+      togglePassBtn.setAttribute('aria-label', isPassword ? 'Ocultar contraseña' : 'Mostrar contraseña');
+      togglePassBtn.setAttribute('title', isPassword ? 'Ocultar contraseña' : 'Mostrar contraseña');
+      iconEyeShow.style.display = isPassword ? 'none' : 'block';
+      iconEyeHide.style.display = isPassword ? 'block' : 'none';
+      passwordInput.focus();
+    });
+
+    // 4. Utilidades de Validación con Feedback Inmediato
+    const emailInput = document.getElementById('login-email');
+    const emailError = document.getElementById('login-email-error');
+    const passwordError = document.getElementById('login-password-error');
+    const form = document.getElementById('login-form');
+    const submitBtn = document.getElementById('btn-submit-login');
+    const btnText = submitBtn.querySelector('.btn-text');
+
+    function showError(input, errorContainer, message) {
+      input.classList.add('is-invalid');
+      input.classList.remove('is-valid');
+      input.setAttribute('aria-invalid', 'true');
+      errorContainer.querySelector('.error-text').textContent = message;
+      errorContainer.classList.add('is-visible');
+    }
+
+    function clearError(input, errorContainer) {
+      input.classList.remove('is-invalid');
+      input.removeAttribute('aria-invalid');
+      errorContainer.classList.remove('is-visible');
+      errorContainer.querySelector('.error-text').textContent = '';
+    }
+
+    function validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(String(email).toLowerCase());
+    }
+
+    // Limpiar errores mientras el usuario escribe
+    emailInput.addEventListener('input', () => {
+      if (emailInput.classList.contains('is-invalid')) {
+        clearError(emailInput, emailError);
+      }
+    });
+
+    passwordInput.addEventListener('input', () => {
+      if (passwordInput.classList.contains('is-invalid')) {
+        clearError(passwordInput, passwordError);
+      }
+    });
+
+    // 5. Simulación de Inicio de Sesión con Google
+    const btnGoogle = document.getElementById('btn-login-google');
+    btnGoogle.addEventListener('click', () => {
+      btnGoogle.style.opacity = '0.7';
+      btnGoogle.style.pointerEvents = 'none';
+
+      showToast({
+        message: 'Conectando sesión con Google...',
+        type: 'info',
+        duration: 2000
+      });
+
+      setTimeout(() => {
+        auth.loginWithGoogle(null, false);
+        showToast({
+          message: '¡Sesión iniciada con éxito! Redirigiendo...',
+          type: 'success',
+          duration: 2500
+        });
+
+        setTimeout(() => {
+          auth.handleRedirect('../index.html');
+        }, 500);
+      }, 600);
+    });
+
+    // 6. Envío del Formulario con Validación y Feedback
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      let hasErrors = false;
+      const emailVal = emailInput.value.trim();
+      const passVal = passwordInput.value;
+
+      // Validación de Correo
+      if (!emailVal) {
+        showError(emailInput, emailError, 'Por favor, ingresá tu correo electrónico.');
+        hasErrors = true;
+      } else if (!validateEmail(emailVal)) {
+        showError(emailInput, emailError, 'Ingresá un correo electrónico válido (ejemplo: vecino@correo.com).');
+        hasErrors = true;
+      } else {
+        clearError(emailInput, emailError);
+      }
+
+      // Validación de Contraseña
+      if (!passVal) {
+        showError(passwordInput, passwordError, 'Por favor, ingresá tu contraseña.');
+        hasErrors = true;
+      } else if (passVal.length < 6) {
+        showError(passwordInput, passwordError, 'La contraseña debe contener al menos 6 caracteres.');
+        hasErrors = true;
+      } else {
+        clearError(passwordInput, passwordError);
+      }
+
+      if (hasErrors) {
+        // Mover foco al primer campo erróneo
+        const firstInvalid = form.querySelector('.is-invalid');
+        if (firstInvalid) firstInvalid.focus();
+        return;
+      }
+
+      // Estado de carga y feedback visual inmediato (Donald Norman & Emil Kowalski)
+      submitBtn.classList.add('is-loading');
+      btnText.textContent = 'Iniciando sesión...';
+      submitBtn.disabled = true;
+
+      setTimeout(() => {
+        auth.loginWithEmail(emailVal, passVal, null, false);
+
+        showToast({
+          message: '¡Bienvenido/a de nuevo! Redirigiendo...',
+          type: 'success',
+          duration: 2500
+        });
+
+        setTimeout(() => {
+          auth.handleRedirect('../index.html');
+        }, 450);
+      }, 500);
+    });
+  </script>
+</body>
+</html>

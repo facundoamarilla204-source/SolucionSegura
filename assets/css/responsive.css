@@ -1,0 +1,75 @@
+/* ==========================================================================
+   SoluciónSegura — Responsive Helpers & Utility Breakpoints
+   Desktop: centrado, contenido controlado, sin elementos estirados.
+   Mobile: fullscreen inmersivo, controles al alcance del pulgar.
+   ========================================================================== */
+
+/* Visibilidad condicional */
+.hide-on-mobile {
+  display: none !important;
+}
+
+@media (min-width: 768px) {
+  .hide-on-mobile {
+    display: initial !important;
+  }
+}
+
+.hide-on-desktop {
+  display: initial !important;
+}
+
+@media (min-width: 768px) {
+  .hide-on-desktop {
+    display: none !important;
+  }
+}
+
+/* Espaciadores de sección responsivos */
+.section-spacer {
+  padding-top: var(--space-8);
+  padding-bottom: var(--space-8);
+}
+
+@media (min-width: 768px) {
+  .section-spacer {
+    padding-top: var(--space-12);
+    padding-bottom: var(--space-12);
+  }
+}
+
+/* Encabezados de sección limpios */
+.section-header {
+  margin-bottom: var(--space-6);
+}
+
+.section-header__title {
+  margin-bottom: var(--space-2);
+}
+
+.section-header__subtitle {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-base);
+}
+
+@media (min-width: 768px) {
+  .section-header__subtitle {
+    font-size: var(--font-size-lg);
+  }
+}
+
+/* ==========================================================================
+   Ajustes Específicos para Navbar y Hero (Mobile First)
+   ========================================================================== */
+@media (max-width: 639px) {
+  .hero-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .brand-logo-img {
+    height: 34px;
+  }
+}
+
+

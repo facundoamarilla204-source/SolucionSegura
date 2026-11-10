@@ -1,0 +1,604 @@
+/* ==========================================================================
+   SoluciónSegura — Componente de Vista Previa del Mapa («Explorá tu zona»)
+   Composición editorial a dos columnas (Desktop) y columna única (Mobile).
+   Integración sobria con Leaflet, marcadores cívicos accesibles y popup limpio.
+   Tokens: #062F66 (títulos), #0284C7 (acento), #FFFFFF (superficie), #E2E8F0 (bordes)
+   ========================================================================== */
+
+/* Contenedor de la sección */
+.section-map-preview {
+  width: 100%;
+  background-color: var(--color-surface-card);
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--space-12);
+  padding-bottom: var(--space-16);
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .section-map-preview {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-16);
+  }
+}
+
+/* Grilla de la sección: 40% izquierda / 60% derecha en Desktop */
+.section-map-preview__inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-8);
+  align-items: start;
+}
+
+@media (min-width: 1024px) {
+  .section-map-preview__inner {
+    grid-template-columns: 1fr 1.35fr;
+    gap: var(--space-10);
+    align-items: center;
+  }
+}
+
+/* ==========================================================================
+   Columna Izquierda: Contenido Editorial y Acciones
+   ========================================================================== */
+.map-preview__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.map-preview__title {
+  font-family: var(--font-family-display);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  color: var(--color-primary-dark);
+  margin-top: var(--space-2);
+  margin-bottom: var(--space-3);
+  text-wrap: balance;
+}
+
+@media (min-width: 768px) {
+  .map-preview__title {
+    font-size: 2.35rem;
+  }
+}
+
+.map-preview__description {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-6);
+  max-width: 46ch;
+  text-wrap: pretty;
+}
+
+@media (min-width: 768px) {
+  .map-preview__description {
+    font-size: 1.0625rem;
+  }
+}
+
+/* Fila de Estadísticas Rápidas (Transparencia e impacto barrial) */
+.map-preview__stats {
+  display: flex;
+  gap: var(--space-6);
+  padding: var(--space-4) var(--space-5);
+  background-color: var(--color-surface-light);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-6);
+  width: 100%;
+  max-width: 440px;
+}
+
+.map-stat-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.map-stat-item__number {
+  font-family: var(--font-family-display);
+  font-size: 1.375rem;
+  font-weight: 800;
+  color: var(--color-primary-dark);
+  line-height: 1.1;
+}
+
+.map-stat-item__label {
+  font-family: var(--font-family-base);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+/* Leyenda Accesible del Mapa (Gestalt: Proximidad e Identidad de Categorías) */
+.map-legend {
+  margin-bottom: var(--space-8);
+  width: 100%;
+}
+
+.map-legend__title {
+  display: block;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-2);
+}
+
+.map-legend__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+@media (min-width: 640px) {
+  .map-legend__list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+}
+
+.map-legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.map-legend__marker {
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-width: 1.5px;
+  border-style: solid;
+}
+
+.map-legend__marker--pavimento {
+  background-color: var(--cat-pavimento-bg);
+  color: var(--cat-pavimento);
+  border: 1px solid #FDE68A;
+}
+
+.map-legend__marker--residuos {
+  background-color: var(--cat-residuos-bg);
+  color: var(--cat-residuos);
+  border: 1px solid #A7F3D0;
+}
+
+.map-legend__marker--alumbrado {
+  background-color: var(--cat-alumbrado-bg);
+  color: var(--cat-alumbrado);
+  border: 1px solid #DDD6FE;
+}
+
+/* Botón de Acción Principal */
+.map-preview__actions {
+  width: 100%;
+}
+
+@media (max-width: 639px) {
+  .map-preview__actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ==========================================================================
+   Columna Derecha: Tarjeta Contenedora del Mapa
+   ========================================================================== */
+.map-preview__visual {
+  width: 100%;
+}
+
+.map-container-card {
+  background-color: var(--color-surface-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 20px -2px rgba(6, 47, 102, 0.08), 0 1px 3px rgba(6, 47, 102, 0.04);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* Barra superior de la tarjeta del mapa */
+.map-card-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background-color: #F8FAFC;
+  border-bottom: 1px solid var(--color-border);
+  font-size: var(--font-size-xs);
+}
+
+.map-card-toolbar__location {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-primary-dark);
+  font-weight: var(--font-weight-semibold);
+}
+
+.map-card-toolbar__location svg {
+  color: var(--color-accent);
+}
+
+.map-card-toolbar__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  background-color: #E0F2FE;
+  color: #0369A1;
+  font-weight: var(--font-weight-bold);
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: 1px solid #BAE6FD;
+}
+
+/* Contenedor del Mapa Leaflet */
+.home-map {
+  width: 100%;
+  height: 380px;
+  background-color: #E2E8F0;
+  position: relative;
+  z-index: 1;
+}
+
+@media (min-width: 768px) {
+  .home-map {
+    height: 440px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .home-map {
+    height: 480px;
+  }
+}
+
+/* Barra inferior de la tarjeta del mapa */
+.map-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background-color: #F8FAFC;
+  border-top: 1px solid var(--color-border);
+  font-size: var(--font-size-xs);
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.map-card-footer__hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.map-card-footer__hint svg {
+  color: var(--color-accent);
+  flex-shrink: 0;
+}
+
+.map-card-footer__link {
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.map-card-footer__link:hover {
+  color: var(--color-accent-hover);
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   Marcadores Personalizados de Leaflet (.custom-map-pin)
+   Forma precisa, icono nítido y distinción sin depender solo del color
+   ========================================================================== */
+.custom-map-pin {
+  background: transparent;
+  border: none;
+}
+
+.pin-marker {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 180ms var(--ease-out);
+}
+
+.pin-marker:hover {
+  transform: scale(1.12) translateY(-2px);
+  z-index: 9999 !important;
+}
+
+.pin-marker__body {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(6, 47, 102, 0.22);
+  border: 2px solid #FFFFFF;
+}
+
+.pin-marker__tip {
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  margin-top: -2px;
+}
+
+/* Colores de Categorías para los Pins */
+.custom-map-pin--pavimento .pin-marker__body {
+  background-color: #B45309;
+  color: #FFFFFF;
+}
+.custom-map-pin--pavimento .pin-marker__tip {
+  border-top: 7px solid #B45309;
+}
+
+.custom-map-pin--residuos .pin-marker__body {
+  background-color: #047857;
+  color: #FFFFFF;
+}
+.custom-map-pin--residuos .pin-marker__tip {
+  border-top: 7px solid #047857;
+}
+
+.custom-map-pin--alumbrado .pin-marker__body {
+  background-color: #6D28D9;
+  color: #FFFFFF;
+}
+.custom-map-pin--alumbrado .pin-marker__tip {
+  border-top: 7px solid #6D28D9;
+}
+
+/* ==========================================================================
+   Popup Personalizado de Leaflet (Ficha Compacta de Reclamo)
+   ========================================================================== */
+.custom-leaflet-popup .leaflet-popup-content-wrapper {
+  background: var(--color-surface-card);
+  border-radius: var(--radius-md);
+  padding: 0;
+  box-shadow: 0 12px 28px -4px rgba(6, 47, 102, 0.25), 0 2px 8px rgba(6, 47, 102, 0.08);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+}
+
+.custom-leaflet-popup .leaflet-popup-content {
+  margin: 0;
+  line-height: var(--line-height-base);
+}
+
+.custom-leaflet-popup .leaflet-popup-tip {
+  background: var(--color-surface-card);
+  box-shadow: 0 4px 12px rgba(6, 47, 102, 0.15);
+}
+
+.custom-leaflet-popup a.leaflet-popup-close-button {
+  top: 10px;
+  right: 10px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-muted);
+  border-radius: var(--radius-full);
+  font-size: 16px;
+  transition: background-color var(--duration-fast), color var(--duration-fast);
+}
+
+.custom-leaflet-popup a.leaflet-popup-close-button:hover {
+  background-color: var(--color-surface-light);
+  color: var(--color-text-main);
+}
+
+/* Contenido de la Ficha Compacta */
+.claim-popup {
+  padding: var(--space-4) var(--space-5);
+  font-family: var(--font-family-base);
+}
+
+.claim-popup__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.claim-popup__title {
+  font-family: var(--font-family-display);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--color-primary-dark);
+  margin-bottom: var(--space-2);
+  text-wrap: balance;
+}
+
+.claim-popup__title-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.claim-popup__title-link:hover {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+
+.claim-popup__address {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-3);
+}
+
+.claim-popup__address svg {
+  color: var(--color-accent);
+  flex-shrink: 0;
+}
+
+.claim-popup__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  padding-top: var(--space-2);
+  border-top: 1px dashed var(--color-border);
+  margin-bottom: var(--space-3);
+}
+
+.claim-popup__participants {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #0369A1;
+  font-weight: 500;
+}
+
+.claim-popup__participants svg {
+  color: #0284C7;
+}
+
+.claim-popup__footer {
+  display: flex;
+}
+
+.claim-popup__btn {
+  width: 100%;
+  justify-content: center;
+}
+
+/* ==========================================================================
+   Estado Alternativo Accesible (Fallback sin Leaflet / Red)
+   ========================================================================== */
+.map-fallback-box {
+  padding: var(--space-6);
+  background-color: #F8FAFC;
+  height: 100%;
+  min-height: 380px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.map-fallback-box__header {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  margin-bottom: var(--space-4);
+  color: var(--color-primary-dark);
+}
+
+.map-fallback-box__header svg {
+  color: var(--color-accent);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.map-fallback-box__title {
+  font-family: var(--font-family-display);
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin-bottom: var(--space-1);
+}
+
+.map-fallback-box__desc {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.map-fallback-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--space-4) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.map-fallback-item {
+  background-color: var(--color-surface-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.map-fallback-item__link {
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+  color: var(--color-primary-dark);
+  text-decoration: none;
+}
+
+.map-fallback-item__link:hover {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+
+.map-fallback-item__address {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+/* ==========================================================================
+   Animación de Entrada Progresiva (Emil Kowalski & Motion Craft)
+   ========================================================================== */
+.has-motion .section-map-preview__inner {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+.has-motion .section-map-preview__inner.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 450ms var(--ease-out),
+              transform 450ms var(--ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-map-preview__inner,
+  .has-motion .section-map-preview__inner {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+

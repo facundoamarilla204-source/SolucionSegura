@@ -1,0 +1,87 @@
+/* ==========================================================================
+   SoluciónSegura — Componente de Badges y Etiquetas Semánticas
+   Regla antislop-ui & ui-a11y: Color + Icono + Texto. Jamás color solo.
+   ========================================================================== */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  border-radius: var(--radius-sm);
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.badge__icon {
+  width: 14px;
+  height: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Badges de Estados */
+.badge--recibido {
+  background-color: var(--state-recibido-bg);
+  color: var(--state-recibido);
+  border: 1px solid #BAE6FD;
+}
+
+.badge--revision {
+  background-color: var(--state-revision-bg);
+  color: var(--state-revision);
+  border: 1px solid #FDE68A;
+}
+
+.badge--proceso {
+  background-color: var(--state-proceso-bg);
+  color: var(--state-proceso);
+  border: 1px solid #C7D2FE;
+}
+
+.badge--resuelto {
+  background-color: var(--state-resuelto-bg);
+  color: var(--state-resuelto);
+  border: 1px solid #BBF7D0;
+}
+
+.badge--rechazado {
+  background-color: var(--state-rechazado-bg);
+  color: var(--state-rechazado);
+  border: 1px solid #FECACA;
+}
+
+.badge--reabierto {
+  background-color: var(--state-reabierto-bg);
+  color: var(--state-reabierto);
+  border: 1px solid #FED7AA;
+}
+
+.badge--cancelado {
+  background-color: var(--state-cancelado-bg);
+  color: var(--state-cancelado);
+  border: 1px solid #E2E8F0;
+}
+
+/* Badges de Categorías */
+.badge--cat-pavimento {
+  background-color: var(--cat-pavimento-bg);
+  color: var(--cat-pavimento);
+  border: 1px solid #FDE68A;
+}
+
+.badge--cat-residuos {
+  background-color: var(--cat-residuos-bg);
+  color: var(--cat-residuos);
+  border: 1px solid #A7F3D0;
+}
+
+.badge--cat-alumbrado {
+  background-color: var(--cat-alumbrado-bg);
+  color: var(--cat-alumbrado);
+  border: 1px solid #DDD6FE;
+}
+

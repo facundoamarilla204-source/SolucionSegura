@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Reclamo Registrado con éxito en SoluciónSegura — Plataforma ciudadana de La Matanza.">
+  <title>Reclamo Registrado — SoluciónSegura</title>
+  <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body class="app-shell">
+
+  <!-- Header Institucional Inyectado dinámicamente -->
+  <header class="site-header" role="banner"></header>
+
+  <main class="main-content" id="main-content" role="main">
+    <div class="container-desktop section-spacer" style="max-width: 580px; margin: 0 auto;">
+      
+      <div class="card" style="padding: var(--space-8); text-align: center; border: 1px solid var(--color-border); box-shadow: 0 4px 16px rgba(6, 47, 102, 0.06); border-radius: var(--radius-lg);">
+        
+        <!-- Icono de éxito accesible -->
+        <div style="width: 64px; height: 64px; border-radius: var(--radius-full); background-color: var(--state-resuelto-bg); color: var(--state-resuelto); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-4) auto;" aria-hidden="true">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+
+        <h1 style="font-family: var(--font-family-display); font-size: var(--font-size-2xl); font-weight: 700; color: var(--color-primary-dark); margin-bottom: var(--space-2);" id="confirm-title">
+          Tu reclamo fue registrado
+        </h1>
+        <p style="color: var(--color-text-secondary); font-size: var(--font-size-sm); margin-bottom: var(--space-6); line-height: var(--line-height-relaxed);" id="confirm-subtitle">
+          El reporte ya fue incorporado a la plataforma comunitaria con estado inicial <strong>«Recibido»</strong>.
+        </p>
+
+        <!-- Tarjeta Resumen del Reclamo Creado / Adherido -->
+        <div style="width: 100%; background-color: var(--color-surface-light); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-5); margin-bottom: var(--space-6); text-align: left;">
+          
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-3); flex-wrap: wrap; gap: var(--space-2);">
+            <div>
+              <span style="font-size: var(--font-size-xs); color: var(--color-text-muted); font-weight: var(--font-weight-medium); letter-spacing: 0.05em; text-transform: uppercase; display: block;">
+                Número de seguimiento
+              </span>
+              <span style="font-family: var(--font-family-display); font-size: var(--font-size-xl); font-weight: 800; color: var(--color-primary-dark);" id="tracking-number">
+                #LM-00001
+              </span>
+            </div>
+            <span class="badge badge--recibido" id="tracking-badge-state">Recibido</span>
+          </div>
+
+          <hr style="border: 0; border-top: 1px solid var(--color-border); margin: var(--space-3) 0;">
+
+          <div style="display: flex; flex-direction: column; gap: var(--space-2); font-size: var(--font-size-sm);">
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--color-text-muted);">Categoría:</span>
+              <strong id="tracking-cat" style="color: var(--color-primary-dark);">Servicio urbano</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--color-text-muted);">Ubicación:</span>
+              <strong id="tracking-address" style="color: var(--color-primary-dark); text-align: right; max-width: 60%;">La Matanza</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--color-text-muted);">Fecha de ingreso:</span>
+              <strong id="tracking-date" style="color: var(--color-primary-dark);">Hoy</strong>
+            </div>
+
+            <!-- Miniatura de Evidencia Fotográfica Adjunta -->
+            <div id="tracking-photos-row" style="display: none; align-items: center; gap: var(--space-3); padding-top: var(--space-3); border-top: 1px solid var(--color-border); margin-top: var(--space-2);">
+              <img id="tracking-photo-thumb" src="" alt="Fotografía adjunta del reclamo" style="width: 56px; height: 56px; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--color-border);">
+              <div>
+                <strong style="display: block; font-size: var(--font-size-xs); color: var(--color-primary-dark);" id="tracking-photos-count">3 fotografías adjuntas</strong>
+                <span style="font-size: var(--font-size-xs); color: var(--color-text-muted);">Evidencia registrada para verificación técnica</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Acciones Principales -->
+        <div style="display: flex; gap: var(--space-3); flex-direction: column; width: 100%;">
+          <a href="detalle-reclamo.html" class="btn btn--primary btn--lg" id="btn-view-detail">
+            Ver detalle del reclamo
+          </a>
+          <a href="mis-reclamos.html" class="btn btn--outline">
+            Ir a mis reclamos
+          </a>
+          <a href="../index.html" class="btn btn--ghost btn--sm">
+            Volver al inicio
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <script type="module">
+    import { setupNavigation, claimsService } from '../assets/js/main.js';
+    import { formatters } from '../assets/js/utils/formatters.js';
+
+    setupNavigation({ activePage: 'reportar', basePath: '../' });
+
+    // Leer parámetros de URL
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    const isJoined = params.get('joined') === 'true';
+
+    const titleEl = document.getElementById('confirm-title');
+    const subtitleEl = document.getElementById('confirm-subtitle');
+    const trackingNumEl = document.getElementById('tracking-number');
+    const stateBadgeEl = document.getElementById('tracking-badge-state');
+    const catEl = document.getElementById('tracking-cat');
+    const addressEl = document.getElementById('tracking-address');
+    const dateEl = document.getElementById('tracking-date');
+
+    const btnViewDetail = document.getElementById('btn-view-detail');
+
+    if (isJoined) {
+      titleEl.textContent = '¡Te sumaste al reclamo!';
+      subtitleEl.innerHTML = 'Sumaste tu apoyo vecinal a este caso existente para visibilizar su pronta atención.';
+    }
+
+    if (id) {
+      trackingNumEl.textContent = id.startsWith('#') ? id : `#${id}`;
+      if (btnViewDetail) {
+        btnViewDetail.href = `detalle-reclamo.html?id=${encodeURIComponent(id.replace('#', ''))}`;
+      }
+
+      // Buscar el reclamo en claimsService para mostrar datos reales
+      const cleanId = id.replace('#', '');
+      const claim = claimsService.getById(cleanId);
+      if (claim) {
+        catEl.textContent = formatters.categoryLabel(claim.categoria);
+        addressEl.textContent = claim.direccion;
+        dateEl.textContent = formatters.relativeDate(claim.fecha);
+        stateBadgeEl.textContent = formatters.stateLabel(claim.estado);
+        stateBadgeEl.className = `badge badge--${claim.estado === 'en_proceso' ? 'proceso' : claim.estado === 'en_revision' ? 'revision' : 'recibido'}`;
+
+        // Mostrar miniatura de la evidencia fotográfica adjunta
+        if (Array.isArray(claim.fotos) && claim.fotos.length > 0) {
+          const photosRow = document.getElementById('tracking-photos-row');
+          const thumbEl = document.getElementById('tracking-photo-thumb');
+          const countEl = document.getElementById('tracking-photos-count');
+          if (photosRow && thumbEl) {
+            const firstPhoto = claim.fotos[0];
+            thumbEl.src = firstPhoto.startsWith('../') ? firstPhoto : `../${firstPhoto}`;
+            countEl.textContent = `${claim.fotos.length} fotografías adjuntas`;
+            photosRow.style.display = 'flex';
+          }
+        }
+      }
+    }
+  </script>
+</body>
+</html>

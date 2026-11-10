@@ -1,0 +1,31 @@
+/* ==========================================================================
+   SoluciónSegura — Hoja de Estilos Principal (Consolidador MPA)
+   Agrupa tokens, base, layout, componentes reutilizables y responsive
+   ========================================================================== */
+
+/* Tipografía: Outfit (Títulos) + Inter (Interfaz y Texto) */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap");
+
+@import url("./variables.css");
+@import url("./base.css");
+@import url("./layout.css");
+@import url("./responsive.css");
+
+/* Componentes */
+@import url("./components/buttons.css");
+@import url("./components/cards.css");
+@import url("./components/steps.css");
+@import url("./components/map.css");
+@import url("./components/stats.css");
+@import url("./components/forms.css");
+@import url("./components/badges.css");
+@import url("./components/navigation.css");
+@import url("./components/modals.css");
+@import url("./components/toast.css");
+
+/* Páginas específicas */
+@import url("./pages/auth.css");
+@import url("./pages/claim-form.css");
+
+
+

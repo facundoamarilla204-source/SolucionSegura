@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mis Reclamos — SoluciónSegura</title>
+  <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body class="app-shell">
+
+  <header class="site-header" role="banner">
+    <div class="container-desktop site-header__inner">
+      <a href="../index.html" class="brand-link" aria-label="SoluciónSegura - Inicio">
+        <svg class="brand-logo" width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+          <rect width="32" height="32" rx="8" fill="#078DFA"/>
+          <path d="M16 6L24 10V16C24 21 20.5 25.5 16 27C11.5 25.5 8 21 8 16V10L16 6Z" fill="#FFFFFF"/>
+          <path d="M14 16.5L12 14.5L10.5 16L14 19.5L21.5 12L20 10.5L14 16.5Z" fill="#062F66"/>
+        </svg>
+        <span>SoluciónSegura</span>
+      </a>
+
+      <nav class="desktop-nav" role="navigation" aria-label="Navegación principal">
+        <a href="../index.html" class="nav-link" data-page="inicio">Inicio</a>
+        <a href="explorar.html" class="nav-link" data-page="explorar">Explorar</a>
+        <a href="estadisticas.html" class="nav-link" data-page="estadisticas">Estadísticas</a>
+        <a href="ayuda.html" class="nav-link" data-page="ayuda">Ayuda</a>
+        <a href="nuevo-reclamo.html" class="btn btn--primary btn--sm">Realizar reclamo</a>
+      </nav>
+
+      <div class="header-actions"></div>
+    </div>
+  </header>
+
+  <main class="main-content" id="main-content" role="main">
+    <div class="container-desktop section-spacer">
+      
+      <div class="section-header">
+        <h1 class="section-header__title">Mis reclamos</h1>
+        <p class="section-header__subtitle">Seguí la evolución de tus reportes y de los problemas barriales a los que te sumaste.</p>
+      </div>
+
+      <!-- Pestañas de Filtro (Todos / Creados por mí / Me sumé) -->
+      <div style="display: flex; gap: var(--space-2); margin-bottom: var(--space-6); border-bottom: 1px solid var(--color-border); padding-bottom: var(--space-2); flex-wrap: wrap;">
+        <button type="button" class="btn btn--secondary btn--sm" id="tab-todos">Todos</button>
+        <button type="button" class="btn btn--outline btn--sm" id="tab-creados">Creados por mí</button>
+        <button type="button" class="btn btn--outline btn--sm" id="tab-adheridos">Me sumé</button>
+      </div>
+
+      <!-- Contenedor de Tarjetas de Reclamos -->
+      <div class="grid-cards" id="mis-reclamos-list">
+        <!-- Tarjeta de ejemplo -->
+        <article class="card card--interactive" onclick="location.href='detalle-reclamo.html?id=LM-48291'">
+          <div class="card__header">
+            <span class="badge badge--cat-pavimento">Calles y pavimento</span>
+            <span class="badge badge--proceso">En proceso</span>
+          </div>
+          <h2 class="card__title">Bache de gran tamaño en cruce transitado</h2>
+          <p class="card__body">📍 Almafuerte 3150, San Justo</p>
+          <div class="card__footer">
+            <span><strong>4 vecinos</strong> apoyan</span>
+            <span>Creado por mí</span>
+          </div>
+        </article>
+      </div>
+
+    </div>
+  </main>
+
+  <nav class="mobile-bottom-nav" role="navigation" aria-label="Navegación inferior móvil">
+    <a href="../index.html" class="mobile-nav-item" data-page="inicio">
+      <span class="mobile-nav-item__icon" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+      </span>
+      <span>Inicio</span>
+    </a>
+    <a href="explorar.html" class="mobile-nav-item" data-page="explorar">
+      <span class="mobile-nav-item__icon" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      </span>
+      <span>Explorar</span>
+    </a>
+    <a href="nuevo-reclamo.html" class="mobile-nav-item" data-page="reportar">
+      <span class="mobile-nav-item__icon" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
+      </span>
+      <span>Reportar</span>
+    </a>
+  </nav>
+
+  <script type="module">
+    import { setupNavigation, claimsService, auth } from '../assets/js/main.js';
+    import { formatters } from '../assets/js/utils/formatters.js';
+
+    setupNavigation({ activePage: 'perfil', basePath: '../' });
+
+    const listEl = document.getElementById('mis-reclamos-list');
+    const tabTodos = document.getElementById('tab-todos');
+    const tabCreados = document.getElementById('tab-creados');
+    const tabAdheridos = document.getElementById('tab-adheridos');
+
+    let currentTab = 'todos';
+
+    function renderClaims() {
+      const user = auth.getCurrentUser();
+      let claims = [];
+
+      if (currentTab === 'creados') {
+        claims = claimsService.getByCurrentUser();
+      } else if (currentTab === 'adheridos') {
+        claims = claimsService.getJoinedByCurrentUser();
+      } else {
+        const creados = claimsService.getByCurrentUser();
+        const adheridos = claimsService.getJoinedByCurrentUser();
+        const combined = [...creados, ...adheridos];
+        // Remover duplicados si los hubiera
+        const seen = new Set();
+        claims = combined.filter(c => {
+          if (seen.has(c.id)) return false;
+          seen.add(c.id);
+          return true;
+        });
+      }
+
+      if (claims.length === 0) {
+        listEl.innerHTML = `
+          <div style="grid-column: 1 / -1; padding: var(--space-8); text-align: center; background-color: var(--color-surface-card); border: 1px dashed var(--color-border); border-radius: var(--radius-md);">
+            <p style="color: var(--color-text-secondary); margin-bottom: var(--space-4);">No hay reclamos registrados en esta sección.</p>
+            <a href="nuevo-reclamo.html" class="btn btn--primary btn--sm">Realizar un nuevo reclamo</a>
+          </div>
+        `;
+        return;
+      }
+
+      listEl.innerHTML = claims.map(c => {
+        const isMine = user && c.creadorId === user.id;
+        const count = c.participantes ? c.participantes.length : 1;
+        const stateClass = c.estado === 'en_proceso' ? 'proceso' : c.estado === 'en_revision' ? 'revision' : c.estado === 'resuelto' ? 'resuelto' : 'recibido';
+
+        const hasPhoto = Array.isArray(c.fotos) && c.fotos.length > 0;
+        const photoSrc = hasPhoto ? (c.fotos[0].startsWith('../') ? c.fotos[0] : `../${c.fotos[0]}`) : null;
+
+        return `
+          <article class="card card--interactive" onclick="location.href='detalle-reclamo.html?id=${encodeURIComponent(c.id)}'" style="cursor: pointer;">
+            <div class="card__header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-2);">
+              <span class="badge badge--cat-${c.categoria}">${formatters.categoryLabel(c.categoria)}</span>
+              <span class="badge badge--${stateClass}">${formatters.stateLabel(c.estado)}</span>
+            </div>
+            
+            <div style="display: flex; gap: var(--space-3); margin-bottom: var(--space-3);">
+              ${hasPhoto ? `
+                <img src="${photoSrc}" alt="${c.titulo}" style="width: 72px; height: 72px; object-fit: cover; border-radius: var(--radius-sm); flex-shrink: 0; border: 1px solid var(--color-border-subtle); background-color: #0F172A;" loading="lazy">
+              ` : ''}
+              <div style="flex: 1; min-width: 0;">
+                <h2 class="card__title" style="font-size: var(--font-size-base); font-weight: 700; color: var(--color-primary-dark); margin-bottom: var(--space-1); line-height: var(--line-height-snug);">
+                  ${c.titulo}
+                </h2>
+                <p class="card__body" style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin: 0;">
+                  📍 ${c.direccion}
+                </p>
+              </div>
+            </div>
+
+            <div class="card__footer" style="display: flex; justify-content: space-between; align-items: center; font-size: var(--font-size-xs); color: var(--color-text-muted); border-top: 1px solid var(--color-border); padding-top: var(--space-2);">
+              <span><strong>${count} ${count === 1 ? 'vecino' : 'vecinos'}</strong> apoyan</span>
+              <span style="font-weight: var(--font-weight-medium); color: var(--color-primary-dark);">${isMine ? 'Creado por mí' : 'Me sumé'}</span>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    tabTodos.addEventListener('click', () => {
+      currentTab = 'todos';
+      tabTodos.className = 'btn btn--secondary btn--sm';
+      tabCreados.className = 'btn btn--outline btn--sm';
+      tabAdheridos.className = 'btn btn--outline btn--sm';
+      renderClaims();
+    });
+
+    tabCreados.addEventListener('click', () => {
+      currentTab = 'creados';
+      tabTodos.className = 'btn btn--outline btn--sm';
+      tabCreados.className = 'btn btn--secondary btn--sm';
+      tabAdheridos.className = 'btn btn--outline btn--sm';
+      renderClaims();
+    });
+
+    tabAdheridos.addEventListener('click', () => {
+      currentTab = 'adheridos';
+      tabTodos.className = 'btn btn--outline btn--sm';
+      tabCreados.className = 'btn btn--outline btn--sm';
+      tabAdheridos.className = 'btn btn--secondary btn--sm';
+      renderClaims();
+    });
+
+    renderClaims();
+  </script>
+
+</body>
+</html>
+

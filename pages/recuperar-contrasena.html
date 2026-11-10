@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Recuperar acceso a SoluciónSegura — Restablecé tu contraseña de forma sencilla y segura.">
+  <title>Recuperar Contraseña — SoluciónSegura</title>
+  <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body class="app-shell">
+
+  <header class="site-header" role="banner"></header>
+
+  <main class="main-content" id="main-content" role="main">
+    <div class="auth-wrapper">
+      <div class="auth-card-container">
+
+        <!-- Barra superior de retorno -->
+        <div class="auth-back-nav">
+          <a href="iniciar-sesion.html" class="auth-back-link" aria-label="Volver a iniciar sesión">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m15 18-6-6 6-6"/>
+            </svg>
+            <span>Volver a iniciar sesión</span>
+          </a>
+        </div>
+
+        <div class="auth-card">
+          <div class="auth-header">
+            <div class="auth-badge-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+            </div>
+            <h1 class="auth-title">Recuperar acceso</h1>
+            <p class="auth-subtitle">
+              Ingresá tu correo electrónico para recibir un enlace de recuperación simulado.
+            </p>
+          </div>
+
+          <form id="recover-form" novalidate>
+            <div class="auth-form-group">
+              <label class="form-label" for="recover-email">Correo registrado</label>
+              <input
+                type="email"
+                id="recover-email"
+                class="form-input"
+                placeholder="tu.correo@ejemplo.com"
+                required
+                autocomplete="email"
+                inputmode="email"
+                aria-required="true"
+                aria-describedby="recover-email-error"
+              >
+              <div id="recover-email-error" class="auth-field-error" role="alert">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                <span class="error-text"></span>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn--primary btn--lg btn--full btn-submit-auth" id="btn-submit-recover">
+              <span class="btn-spinner" aria-hidden="true"></span>
+              <span class="btn-text">Enviar enlace de recuperación</span>
+            </button>
+          </form>
+
+          <p class="auth-switch-prompt">
+            ¿Recordaste tu contraseña? <a href="iniciar-sesion.html">Ingresá acá</a>
+          </p>
+
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { setupNavigation, showToast } from '../assets/js/main.js';
+    setupNavigation({ activePage: 'perfil', basePath: '../' });
+
+    const form = document.getElementById('recover-form');
+    const emailInput = document.getElementById('recover-email');
+    const emailError = document.getElementById('recover-email-error');
+    const submitBtn = document.getElementById('btn-submit-recover');
+    const btnText = submitBtn.querySelector('.btn-text');
+
+    function validateEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).toLowerCase());
+    }
+
+    emailInput.addEventListener('input', () => {
+      emailInput.classList.remove('is-invalid');
+      emailError.classList.remove('is-visible');
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const val = emailInput.value.trim();
+
+      if (!val) {
+        emailInput.classList.add('is-invalid');
+        emailError.querySelector('.error-text').textContent = 'Por favor, ingresá tu correo.';
+        emailError.classList.add('is-visible');
+        emailInput.focus();
+        return;
+      }
+
+      if (!validateEmail(val)) {
+        emailInput.classList.add('is-invalid');
+        emailError.querySelector('.error-text').textContent = 'Ingresá un correo electrónico válido.';
+        emailError.classList.add('is-visible');
+        emailInput.focus();
+        return;
+      }
+
+      submitBtn.classList.add('is-loading');
+      btnText.textContent = 'Enviando enlace...';
+      submitBtn.disabled = true;
+
+      setTimeout(() => {
+        showToast({
+          message: 'Enlace simulado enviado a tu casilla de correo.',
+          type: 'success',
+          duration: 3000
+        });
+
+        setTimeout(() => {
+          window.location.href = 'iniciar-sesion.html';
+        }, 1500);
+      }, 600);
+    });
+  </script>
+</body>
+</html>

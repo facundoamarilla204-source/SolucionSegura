@@ -1,0 +1,365 @@
+/* ==========================================================================
+   SoluciónSegura — Componente de Tarjetas (Cards)
+   Superficie limpia, precisión geométrica (sin bordes inflados ni look genérico)
+   ========================================================================== */
+
+.card {
+  background-color: var(--color-surface-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: transform var(--duration-fast) var(--ease-out),
+              box-shadow var(--duration-fast) var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out);
+}
+
+.card--interactive {
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+.card--interactive:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+  border-color: var(--color-accent);
+  text-decoration: none;
+}
+
+.card--interactive:active {
+  transform: scale(0.985);
+}
+
+.card--interactive:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* ==========================================================================
+   Sección de Categorías — «¿Qué problema querés informar?»
+   Transición sobria desde el hero azul oscuro hacia superficie clara #F8FAFC
+   ========================================================================== */
+.section-categories {
+  width: 100%;
+  background-color: #F8FAFC;
+  border-top: 1px solid rgba(6, 47, 102, 0.08);
+  padding-top: var(--space-12);
+  padding-bottom: var(--space-16);
+}
+
+@media (min-width: 768px) {
+  .section-categories {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-16);
+  }
+}
+
+.section-categories__header {
+  max-width: 680px;
+  margin-bottom: var(--space-8);
+}
+
+.section-kicker {
+  display: inline-block;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #0369A1;
+  margin-bottom: var(--space-2);
+}
+
+.section-categories__title {
+  font-family: var(--font-family-display);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  color: var(--color-primary-dark);
+  margin-bottom: var(--space-3);
+  text-wrap: balance;
+}
+
+@media (min-width: 768px) {
+  .section-categories__title {
+    font-size: 2.35rem;
+  }
+}
+
+.section-categories__subtitle {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-secondary);
+  max-width: 54ch;
+  text-wrap: pretty;
+}
+
+@media (min-width: 768px) {
+  .section-categories__subtitle {
+    font-size: 1.0625rem;
+  }
+}
+
+/* Grilla de las 3 categorías */
+.categories-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  .categories-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-6);
+  }
+  
+  .categories-grid > article:last-child {
+    grid-column: span 2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .categories-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-8);
+  }
+}
+
+/* ==========================================================================
+   Tarjetas de Categoría (Cards de Incidencia Interactiva)
+   - Fail-open: visibles por defecto para accesibilidad y SEO
+   - Animación de entrada progresiva con clase .has-motion
+   ========================================================================== */
+.category-card {
+  background-color: var(--color-surface-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 1px 3px rgba(6, 47, 102, 0.04), 0 1px 2px rgba(6, 47, 102, 0.02);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--duration-fast) var(--ease-out),
+              box-shadow var(--duration-fast) var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out);
+}
+
+/* Acento superior de categoría sutil (hairline institucional) */
+.category-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background-color: var(--color-accent);
+  transition: height var(--duration-fast) var(--ease-out);
+}
+
+.category-card[data-category="pavimento"]::before {
+  background-color: #0284C7;
+}
+
+.category-card[data-category="residuos"]::before {
+  background-color: #059669;
+}
+
+.category-card[data-category="alumbrado"]::before {
+  background-color: #D97706;
+}
+
+.category-card:hover::before {
+  height: 4px;
+}
+
+/* Mejora progresiva de entrada cuando el observador está activo */
+.has-motion .category-card {
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+.has-motion .category-card.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 450ms var(--ease-out),
+              transform 450ms var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out),
+              box-shadow var(--duration-fast) var(--ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .category-card,
+  .has-motion .category-card {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+.category-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--color-accent);
+  box-shadow: 0 20px 40px -8px rgba(6, 47, 102, 0.12), 0 4px 12px rgba(6, 47, 102, 0.04);
+}
+
+.category-card:active {
+  transform: scale(0.985);
+}
+
+/* Enlace contenedor táctil (WCAG: toda la tarjeta es clickeable con padding generoso) */
+.category-card__link {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: var(--space-8);
+  text-decoration: none;
+  color: inherit;
+  border-radius: var(--radius-md);
+  outline: none;
+}
+
+.category-card__link:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+}
+
+/* Cabecera interna de tarjeta: Icono protagonista y Badge de área */
+.category-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+}
+
+.category-card__pill {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+}
+
+.category-card__pill--pavimento {
+  background-color: #E0F2FE;
+  color: #0369A1;
+}
+
+.category-card__pill--residuos {
+  background-color: #DCFCE7;
+  color: #15803D;
+}
+
+.category-card__pill--alumbrado {
+  background-color: #FEF3C7;
+  color: #B45309;
+}
+
+/* Contenedor de icono totalmente redondo: Consistencia geométrica con «¿Cómo funciona?» y marcadores */
+.category-card__icon-wrapper {
+  width: 58px;
+  height: 58px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-width: 2px;
+  border-style: solid;
+  box-shadow: 0 2px 8px rgba(6, 47, 102, 0.05);
+  transition: transform var(--duration-fast) var(--ease-out),
+              box-shadow var(--duration-fast) var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out);
+}
+
+.category-card:hover .category-card__icon-wrapper {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 6px 16px rgba(6, 47, 102, 0.1);
+}
+
+.category-card__icon-wrapper--pavimento {
+  background-color: #FEF3C7;
+  color: #B45309;
+  border-color: #FDE68A;
+}
+
+.category-card__icon-wrapper--residuos {
+  background-color: #D1FAE5;
+  color: #047857;
+  border-color: #A7F3D0;
+}
+
+.category-card__icon-wrapper--alumbrado {
+  background-color: #EDE9FE;
+  color: #6D28D9;
+  border-color: #DDD6FE;
+}
+
+/* Tipografía de la tarjeta: Jerarquía Outfit + Inter */
+.category-card__title {
+  font-family: var(--font-family-display);
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  letter-spacing: -0.025em;
+  line-height: 1.25;
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-3);
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.category-card:hover .category-card__title {
+  color: var(--color-accent);
+}
+
+.category-card__description {
+  font-family: var(--font-family-base);
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: var(--space-8);
+  flex-grow: 1;
+}
+
+/* Pie de la tarjeta con acción interactiva explícita */
+.category-card__action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-accent);
+  margin-top: auto;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.category-card__action-text {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-accent);
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.category-card__action-icon {
+  color: var(--color-accent);
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.category-card:hover .category-card__action-text {
+  color: var(--color-accent-hover);
+}
+
+.category-card:hover .category-card__action-icon {
+  transform: translateX(6px);
+  color: var(--color-accent-hover);
+}
+
+
+
