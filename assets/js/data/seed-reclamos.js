@@ -57,9 +57,7 @@ export const INITIAL_RECLAMOS = [
     estado: 'en_revision',
     prioridad: 'media',
     fotos: [
-      'assets/img/reclamos/residuos/basura-1.png',
-      'assets/img/reclamos/residuos/basura-2.webp',
-      'assets/img/reclamos/residuos/basura-3.webp'
+      'assets/img/reclamos/residuos/basura-1.png'
     ],
     participantes: ['usr_vecino_05', 'usr_vecino_06', 'usr_vecino_07'],
     historial: [
@@ -90,9 +88,7 @@ export const INITIAL_RECLAMOS = [
     estado: 'recibido',
     prioridad: 'alta',
     fotos: [
-      'assets/img/reclamos/alumbrado/alumbrado-1.png',
-      'assets/img/reclamos/alumbrado/alumbrado-2.png',
-      'assets/img/reclamos/alumbrado/alumbrado-3.webp'
+      'assets/img/reclamos/alumbrado/alumbrado-1.png'
     ],
     participantes: ['usr_vecino_08', 'usr_vecino_09'],
     historial: [
@@ -157,9 +153,7 @@ export const INITIAL_RECLAMOS = [
     estado: 'recibido',
     prioridad: 'alta',
     fotos: [
-      'assets/img/reclamos/residuos/basura-1.png',
-      'assets/img/reclamos/residuos/basura-2.webp',
-      'assets/img/reclamos/residuos/basura-3.webp'
+      'assets/img/reclamos/residuos/basura-1.png'
     ],
     participantes: ['usr_vecino_15'],
     historial: [

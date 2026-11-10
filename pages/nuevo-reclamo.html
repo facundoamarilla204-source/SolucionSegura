@@ -818,7 +818,7 @@
 
       const categoryPhotos = getSamplePhotosForCategory(catKey);
       formState.fotos = categoryPhotos.map(p => p.url);
-      photosCounterBadge.textContent = `${categoryPhotos.length} fotografías adjuntas`;
+      photosCounterBadge.textContent = `${categoryPhotos.length} ${categoryPhotos.length === 1 ? 'fotografía adjunta' : 'fotografías adjuntas'}`;
 
       photosPreviewContainer.innerHTML = categoryPhotos.map((p, idx) => `
         <article class="photo-card-sample" role="button" tabindex="0" aria-label="Ver fotografía ampliada ${idx + 1}: ${p.titulo}" data-photo-idx="${idx}">

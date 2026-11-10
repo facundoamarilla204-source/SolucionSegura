@@ -400,7 +400,7 @@
         photoList = catDefaults;
       }
 
-      photosBadge.textContent = `${photoList.length} fotografías adjuntas`;
+      photosBadge.textContent = `${photoList.length} ${photoList.length === 1 ? 'fotografía adjunta' : 'fotografías adjuntas'}`;
 
       photosContainer.innerHTML = photoList.map((p, idx) => {
         const src = p.url.startsWith('../') ? p.url : `../${p.url}`;

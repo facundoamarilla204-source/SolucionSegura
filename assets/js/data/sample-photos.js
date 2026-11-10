@@ -26,16 +26,6 @@ export const SAMPLE_PHOTOS = {
       url: 'assets/img/reclamos/residuos/basura-1.png',
       titulo: 'Acumulación de residuos en la vía pública',
       alt: 'Fotografía de acumulación de residuos y bolsas sobre la vía pública'
-    },
-    {
-      url: 'assets/img/reclamos/residuos/basura-2.webp',
-      titulo: 'Contenedor desbordado',
-      alt: 'Fotografía del contenedor saturado con restos fuera de depósito'
-    },
-    {
-      url: 'assets/img/reclamos/residuos/basura-3.webp',
-      titulo: 'Estado de la acera afectada',
-      alt: 'Fotografía del perímetro de la vereda con restos de poda y residuos'
     }
   ],
   alumbrado: [
@@ -43,16 +33,6 @@ export const SAMPLE_PHOTOS = {
       url: 'assets/img/reclamos/alumbrado/alumbrado-1.png',
       titulo: 'Luminaria apagada en columna de alumbrado',
       alt: 'Fotografía de la columna de alumbrado público con foco fuera de servicio'
-    },
-    {
-      url: 'assets/img/reclamos/alumbrado/alumbrado-2.png',
-      titulo: 'Detalle del artefacto lumínico',
-      alt: 'Fotografía de la luminaria superior en poste municipal'
-    },
-    {
-      url: 'assets/img/reclamos/alumbrado/alumbrado-3.webp',
-      titulo: 'Cuadra barrial sin iluminación nocturna',
-      alt: 'Fotografía de la cuadra barrial mostrando la falta de iluminación'
     }
   ]
 };

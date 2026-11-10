@@ -18,14 +18,18 @@ export const claimsService = {
       storage.set(storage.KEYS.RECLAMOS, INITIAL_RECLAMOS);
       return INITIAL_RECLAMOS;
     }
-    // Migración limpia: actualizar fotos si referencian svg obsoletos
+    // Migración limpia: actualizar fotos si referencian rutas obsoletas
     let needsUpdate = false;
     const migrated = existing.map(r => {
-      if (Array.isArray(r.fotos) && r.fotos.some(f => typeof f === 'string' && f.endsWith('.svg'))) {
+      const validCategoryPhotos = getSamplePhotosForCategory(r.categoria).map(p => p.url);
+      const hasObsoletePhotos = Array.isArray(r.fotos) && r.fotos.some(f =>
+        typeof f === 'string' && (f.endsWith('.svg') || f.includes('basura-2') || f.includes('basura-3') || f.includes('alumbrado-2') || f.includes('alumbrado-3'))
+      );
+      if (hasObsoletePhotos || !Array.isArray(r.fotos) || r.fotos.length === 0) {
         needsUpdate = true;
         return {
           ...r,
-          fotos: getSamplePhotosForCategory(r.categoria).map(p => p.url)
+          fotos: validCategoryPhotos
         };
       }
       return r;
