@@ -6,6 +6,7 @@
 
 import { storage } from '../utils/storage.js';
 import { DEMO_USER } from '../data/seed-reclamos.js';
+import { notificationsService } from './notifications.js';
 
 const ALLOWED_PAGES = [
   'index.html',
@@ -258,7 +259,8 @@ export const auth = {
       email: user.email,
       localidadPreferida: user.localidadPreferida,
       loginMethod: 'google',
-      notificaciones: user.notificaciones
+      notificaciones: user.notificaciones,
+      createdAt: user.createdAt
     };
     storage.set(storage.KEYS.CURRENT_USER, sessionUser);
 
@@ -298,7 +300,8 @@ export const auth = {
       email: user.email,
       localidadPreferida: user.localidadPreferida || 'san-justo',
       loginMethod: 'email',
-      notificaciones: user.notificaciones || { app: true, email: true }
+      notificaciones: user.notificaciones || { app: true, email: true },
+      createdAt: user.createdAt
     };
 
     storage.set(storage.KEYS.CURRENT_USER, sessionUser);
@@ -354,7 +357,14 @@ export const auth = {
       salt,
       passwordHash,
       loginMethod: 'email',
-      notificaciones: { app: true, email: true },
+      notificaciones: {
+        app: true,
+        email: true,
+        ownClaims: true,
+        joinedClaims: true,
+        resolution: true,
+        newAdhesions: true
+      },
       createdAt: new Date().toISOString()
     };
 
@@ -369,14 +379,114 @@ export const auth = {
       email: cleanEmail,
       localidadPreferida: 'san-justo',
       loginMethod: 'email',
-      notificaciones: { app: true, email: true }
+      notificaciones: { ...newUserRecord.notificaciones },
+      createdAt: newUserRecord.createdAt
     };
     storage.set(storage.KEYS.CURRENT_USER, sessionUser);
+
+    // Enviar notificación ciudadana de bienvenida
+    notificationsService.sendWelcomeNotification(sessionUser);
 
     if (autoRedirect) {
       this.handleRedirect(callbackUrl);
     }
     return { success: true, user: sessionUser };
+  },
+
+  /**
+   * Actualiza el perfil del usuario activo (nombre, localidad preferida, preferencias)
+   * Sincroniza tanto CURRENT_USER como la colección USERS en localStorage
+   */
+  updateProfile({ nombre, localidadPreferida, notificaciones }) {
+    const currentUser = this.getCurrentUser();
+    if (!currentUser) {
+      return { success: false, error: 'No hay una sesión activa.' };
+    }
+
+    const cleanName = nombre !== undefined ? (nombre || '').trim() : currentUser.nombre;
+    if (nombre !== undefined && (!cleanName || cleanName.length < 2)) {
+      return { success: false, field: 'nombre', error: 'Ingresá un nombre y apellido válido (al menos 2 caracteres).' };
+    }
+
+    const users = this.getUsers();
+    const userIndex = users.findIndex(u => u.id === currentUser.id || u.email.toLowerCase() === currentUser.email.toLowerCase());
+
+    if (userIndex !== -1) {
+      if (nombre !== undefined) users[userIndex].nombre = cleanName;
+      if (localidadPreferida !== undefined) users[userIndex].localidadPreferida = localidadPreferida || null;
+      if (notificaciones !== undefined) users[userIndex].notificaciones = { ...users[userIndex].notificaciones, ...notificaciones };
+      storage.set(storage.KEYS.USERS, users);
+    }
+
+    // Actualizar sesión activa
+    if (nombre !== undefined) currentUser.nombre = cleanName;
+    if (localidadPreferida !== undefined) currentUser.localidadPreferida = localidadPreferida || null;
+    if (notificaciones !== undefined) currentUser.notificaciones = { ...currentUser.notificaciones, ...notificaciones };
+    storage.set(storage.KEYS.CURRENT_USER, currentUser);
+
+    return { success: true, user: currentUser };
+  },
+
+  /**
+   * Cambia la contraseña de una cuenta local creada por email
+   * - Valida que la cuenta no sea Google OAuth
+   * - Comprueba la contraseña actual con hash + sal
+   * - Valida requisitos de la nueva contraseña
+   * - Genera nueva sal y nuevo hash Web Crypto
+   * - Nunca guarda la contraseña en texto plano
+   */
+  async changePassword(currentPassword, newPassword, confirmPassword) {
+    const currentUser = this.getCurrentUser();
+    if (!currentUser) {
+      return { success: false, error: 'No hay una sesión activa.' };
+    }
+
+    if (currentUser.loginMethod === 'google') {
+      return {
+        success: false,
+        error: 'Esta cuenta utiliza autenticación con Google. No posee una contraseña local modificable.'
+      };
+    }
+
+    const currentPass = (currentPassword || '').toString();
+    const newPass = (newPassword || '').toString();
+    const confirmPass = (confirmPassword || '').toString();
+
+    if (!currentPass || !newPass || !confirmPass) {
+      return { success: false, error: 'Por favor completá todos los campos de contraseña.' };
+    }
+
+    const users = this.getUsers();
+    const user = users.find(u => u.id === currentUser.id || u.email.toLowerCase() === currentUser.email.toLowerCase());
+
+    if (!user || !user.passwordHash || !user.salt) {
+      return { success: false, error: 'No se encontraron las credenciales asociadas a esta cuenta.' };
+    }
+
+    // Verificar contraseña actual
+    const calculatedHash = await hashPassword(currentPass, user.salt);
+    if (calculatedHash !== user.passwordHash) {
+      return { success: false, field: 'currentPassword', error: 'La contraseña actual no es correcta.' };
+    }
+
+    // Validar nueva contraseña
+    if (newPass.length < 6) {
+      return { success: false, field: 'newPassword', error: 'La nueva contraseña debe tener al menos 6 caracteres.' };
+    }
+
+    if (newPass !== confirmPass) {
+      return { success: false, field: 'confirmPassword', error: 'La confirmación no coincide con la nueva contraseña.' };
+    }
+
+    // Generar nueva sal y nuevo hash
+    const newSalt = generateSalt(16);
+    const newPasswordHash = await hashPassword(newPass, newSalt);
+
+    user.salt = newSalt;
+    user.passwordHash = newPasswordHash;
+    storage.set(storage.KEYS.USERS, users);
+
+    return { success: true };
   },
 
   /**

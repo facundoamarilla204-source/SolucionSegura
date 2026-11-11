@@ -118,7 +118,7 @@
   align-items: flex-start;
   gap: var(--space-3);
   padding: var(--space-3) var(--space-4);
-  background-color: #F0F9FF;
+  background-color: var(--color-brand-surface-blue);
   border: 1px solid #BAE6FD;
   border-radius: var(--radius-md);
   margin-bottom: var(--space-5);
@@ -327,8 +327,8 @@
   display: none;
   width: 18px;
   height: 18px;
-  border: 2px solid rgba(255, 255, 255, 0.4);
-  border-top-color: #FFFFFF;
+  border: 2px solid rgba(6, 47, 102, 0.25);
+  border-top-color: var(--color-action-primary-text);
   border-radius: 50%;
   animation: authSpin 0.7s linear infinite;
   margin-right: var(--space-2);

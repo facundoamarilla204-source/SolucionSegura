@@ -3,71 +3,73 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Centro de notificaciones y seguimiento cívico de SoluciónSegura en La Matanza.">
   <title>Notificaciones — SoluciónSegura</title>
   <link rel="stylesheet" href="../assets/css/main.css">
 </head>
 <body class="app-shell">
 
-  <header class="site-header" role="banner">
-    <div class="container-desktop site-header__inner">
-      <a href="../index.html" class="brand-link" aria-label="SoluciónSegura - Inicio">
-        <svg class="brand-logo" width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-          <rect width="32" height="32" rx="8" fill="#078DFA"/>
-          <path d="M16 6L24 10V16C24 21 20.5 25.5 16 27C11.5 25.5 8 21 8 16V10L16 6Z" fill="#FFFFFF"/>
-          <path d="M14 16.5L12 14.5L10.5 16L14 19.5L21.5 12L20 10.5L14 16.5Z" fill="#062F66"/>
-        </svg>
-        <span>SoluciónSegura</span>
-      </a>
-
-      <nav class="desktop-nav" role="navigation" aria-label="Navegación principal">
-        <a href="../index.html" class="nav-link" data-page="inicio">Inicio</a>
-        <a href="explorar.html" class="nav-link" data-page="explorar">Explorar</a>
-        <a href="estadisticas.html" class="nav-link" data-page="estadisticas">Estadísticas</a>
-        <a href="ayuda.html" class="nav-link" data-page="ayuda">Ayuda</a>
-        <a href="nuevo-reclamo.html" class="btn btn--primary btn--sm">Realizar reclamo</a>
-      </nav>
-
-      <div class="header-actions"></div>
-    </div>
-  </header>
+  <!-- Encabezado inyectado automáticamente por setupNavigation() -->
+  <header class="site-header" role="banner"></header>
 
   <main class="main-content" id="main-content" role="main">
-    <div class="container-desktop section-spacer" style="max-width: 680px;">
+    <div class="container-desktop section-spacer notif-container">
       
+      <!-- Encabezado de Página -->
       <div class="section-header">
         <h1 class="section-header__title">Notificaciones</h1>
-        <p class="section-header__subtitle">Avisos y actualizaciones sobre los reclamos que seguís o creaste.</p>
+        <p class="section-header__subtitle">Novedades sobre tus reclamos y participación.</p>
       </div>
 
-      <div class="card" style="padding: 0; overflow: hidden;">
+      <!-- Vista para Usuarios no autenticados -->
+      <div id="notif-auth-gate" class="card" style="display: none; padding: var(--space-8); text-align: center;">
+        <div style="width: 56px; height: 56px; border-radius: var(--radius-full); background: var(--color-surface-light); color: var(--color-brand-sky); display: inline-flex; align-items: center; justify-content: center; margin-bottom: var(--space-4);" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </div>
+        <h2 style="font-family: var(--font-family-display); font-size: var(--font-size-lg); font-weight: 700; color: var(--color-primary-dark); margin-bottom: var(--space-2);">
+          Iniciá sesión para ver tus notificaciones
+        </h2>
+        <p style="color: var(--color-text-secondary); font-size: var(--font-size-sm); max-width: 420px; margin: 0 auto var(--space-5) auto; line-height: var(--line-height-relaxed);">
+          Tu centro de avisos recopila los avances de tus reclamos y las novedades de los pedidos barriales a los que te sumaste.
+        </p>
+        <a href="iniciar-sesion.html?redirect=notificaciones.html" class="btn btn--primary" id="btn-login-gate">
+          Iniciar sesión
+        </a>
+      </div>
+
+      <!-- Centro de Notificaciones Activo -->
+      <div id="notif-content-area" style="display: none;">
         
-        <!-- Notificación 1 -->
-        <div style="padding: var(--space-4) var(--space-5); border-bottom: 1px solid var(--color-border); display: flex; gap: var(--space-3); align-items: flex-start;">
-          <div style="width: 10px; height: 10px; border-radius: var(--radius-full); background-color: var(--color-accent); margin-top: 6px; flex-shrink: 0;" aria-label="No leída"></div>
-          <div style="flex: 1;">
-            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px;">
-              <strong style="font-size: var(--font-size-sm); color: var(--color-primary-dark);">Avance en tu reclamo #LM-48291</strong>
-              <span style="font-size: var(--font-size-xs); color: var(--color-text-muted);">Hace 12 horas</span>
-            </div>
-            <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); margin-bottom: var(--space-2);">
-              El reclamo por «Bache en Almafuerte 3150» cambió a estado <strong>«En proceso»</strong>. Se asignó la cuadrilla municipal.
-            </p>
-            <a href="detalle-reclamo.html?id=LM-48291" style="font-size: var(--font-size-xs); font-weight: bold;">Ver detalle →</a>
+        <!-- Barra de Herramientas: Filtros y Acciones -->
+        <div class="notif-toolbar" role="region" aria-label="Herramientas de notificaciones">
+          
+          <!-- Filtros de Estado: Todas / No leídas -->
+          <div class="notif-filters" role="tablist" aria-label="Filtrar por estado de lectura">
+            <button type="button" role="tab" id="filter-tab-all" class="notif-filter-btn is-active" aria-selected="true" aria-controls="notif-list-container">
+              <span>Todas</span>
+              <span class="notif-filter-count" id="count-all">0</span>
+            </button>
+            <button type="button" role="tab" id="filter-tab-unread" class="notif-filter-btn" aria-selected="false" aria-controls="notif-list-container">
+              <span>No leídas</span>
+              <span class="notif-filter-count notif-filter-count--accent" id="count-unread">0</span>
+            </button>
           </div>
+
+          <!-- Acción Principal: Marcar todas como leídas -->
+          <button type="button" class="notif-mark-all-btn" id="btn-mark-all-read" aria-label="Marcar todas las notificaciones como leídas">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <span>Marcar todas como leídas</span>
+          </button>
         </div>
 
-        <!-- Notificación 2 -->
-        <div style="padding: var(--space-4) var(--space-5); display: flex; gap: var(--space-3); align-items: flex-start; background-color: var(--color-bg-body);">
-          <div style="width: 10px; height: 10px; border-radius: var(--radius-full); background-color: transparent; margin-top: 6px; flex-shrink: 0;"></div>
-          <div style="flex: 1;">
-            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px;">
-              <strong style="font-size: var(--font-size-sm); color: var(--color-primary-dark);">Nuevo vecino apoyó tu reclamo</strong>
-              <span style="font-size: var(--font-size-xs); color: var(--color-text-muted);">Ayer</span>
-            </div>
-            <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary);">
-              Un vecino de San Justo se sumó al reclamo #LM-48291. Ya son 4 participantes respaldando la solución.
-            </p>
-          </div>
+        <!-- Contenedor del Listado de Notificaciones -->
+        <div class="notif-list-card" id="notif-list-container" role="region" aria-live="polite">
+          <!-- Inyectado dinámicamente -->
         </div>
 
       </div>
@@ -75,31 +77,278 @@
     </div>
   </main>
 
-  <nav class="mobile-bottom-nav" role="navigation" aria-label="Navegación inferior móvil">
-    <a href="../index.html" class="mobile-nav-item" data-page="inicio">
-      <span class="mobile-nav-item__icon" aria-hidden="true">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-      </span>
-      <span>Inicio</span>
-    </a>
-    <a href="explorar.html" class="mobile-nav-item" data-page="explorar">
-      <span class="mobile-nav-item__icon" aria-hidden="true">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-      </span>
-      <span>Explorar</span>
-    </a>
-    <a href="nuevo-reclamo.html" class="mobile-nav-item" data-page="reportar">
-      <span class="mobile-nav-item__icon" aria-hidden="true">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
-      </span>
-      <span>Reportar</span>
-    </a>
-  </nav>
+  <!-- Navegación móvil inferior (inyectada por setupNavigation) -->
+  <nav class="mobile-bottom-nav" role="navigation" aria-label="Navegación inferior móvil"></nav>
 
   <script type="module">
-    import { setupNavigation } from '../assets/js/main.js';
+    import { setupNavigation, notificationsService, auth, showToast } from '../assets/js/main.js';
+    import { formatters } from '../assets/js/utils/formatters.js';
+
+    // 1. Configurar layout común
     setupNavigation({ activePage: 'perfil', basePath: '../' });
+
+    const authGate = document.getElementById('notif-auth-gate');
+    const contentArea = document.getElementById('notif-content-area');
+    const filterTabAll = document.getElementById('filter-tab-all');
+    const filterTabUnread = document.getElementById('filter-tab-unread');
+    const countAllEl = document.getElementById('count-all');
+    const countUnreadEl = document.getElementById('count-unread');
+    const btnMarkAll = document.getElementById('btn-mark-all-read');
+    const listContainer = document.getElementById('notif-list-container');
+
+    let currentFilter = 'todas'; // 'todas' | 'no_leidas'
+    let currentUser = null;
+
+    // 2. Control de Acceso
+    function initView() {
+      currentUser = auth.getCurrentUser();
+      if (!currentUser) {
+        authGate.style.display = 'block';
+        contentArea.style.display = 'none';
+        return;
+      }
+
+      authGate.style.display = 'none';
+      contentArea.style.display = 'block';
+
+      // Renderizar listado de notificaciones
+      renderNotifications();
+    }
+
+    // 3. Renderizado del listado de notificaciones
+    function renderNotifications() {
+      if (!currentUser) return;
+
+      const allNotifs = notificationsService.getByUser(currentUser.id);
+      const unreadCount = allNotifs.filter(n => !n.leida).length;
+
+      // Actualizar contadores en filtros
+      countAllEl.textContent = allNotifs.length;
+      countUnreadEl.textContent = unreadCount;
+
+      // Estado del botón "Marcar todas como leídas"
+      btnMarkAll.disabled = unreadCount === 0;
+
+      // Aplicar filtro activo
+      const displayed = currentFilter === 'no_leidas'
+        ? allNotifs.filter(n => !n.leida)
+        : allNotifs;
+
+      // Renderizar estado vacío si no hay elementos
+      if (displayed.length === 0) {
+        if (currentFilter === 'no_leidas') {
+          listContainer.innerHTML = `
+            <div class="notif-empty-state">
+              <div class="notif-empty-icon" aria-hidden="true">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+              </div>
+              <h2 class="notif-empty-title">¡Estás al día!</h2>
+              <p class="notif-empty-desc">
+                No tenés notificaciones sin leer en este momento. Podés revisar tus avisos anteriores desde la pestaña «Todas».
+              </p>
+              <button type="button" class="btn btn--outline btn--sm" id="btn-show-all-empty">
+                Ver todas las notificaciones
+              </button>
+            </div>
+          `;
+
+          const btnEmptyAll = document.getElementById('btn-show-all-empty');
+          if (btnEmptyAll) {
+            btnEmptyAll.addEventListener('click', () => setFilter('todas'));
+          }
+        } else {
+          listContainer.innerHTML = `
+            <div class="notif-empty-state">
+              <div class="notif-empty-icon" aria-hidden="true">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                  <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+              </div>
+              <h2 class="notif-empty-title">Aún no tenés notificaciones</h2>
+              <p class="notif-empty-desc">
+                Cuando registres un reclamo o te sumes al respaldo de pedidos en tu barrio, recibirás novedades y avances técnicos en este espacio.
+              </p>
+              <a href="explorar.html" class="btn btn--primary btn--sm">
+                Explorar reclamos en La Matanza
+              </a>
+            </div>
+          `;
+        }
+        return;
+      }
+
+      // Renderizar listado ordenado
+      listContainer.innerHTML = displayed.map(n => {
+        const timeAgo = formatters.relativeDate(n.fecha);
+        const unreadClass = n.leida ? 'is-read' : 'is-unread';
+        const unreadLabel = n.leida ? 'Leída' : 'No leída';
+
+        // Categoría / Etiqueta de Tipo
+        let tagHtml = '';
+        if (n.tipo === 'cambio_estado' || n.tipo === 'cambio_estado_adherido') {
+          tagHtml = `<span class="notif-type-tag notif-type-tag--estado">Avance de estado</span>`;
+        } else if (n.tipo === 'nueva_adhesion') {
+          tagHtml = `<span class="notif-type-tag notif-type-tag--adhesion">Nuevo apoyo</span>`;
+        } else if (n.tipo === 'reclamo_resuelto') {
+          tagHtml = `<span class="notif-type-tag notif-type-tag--resuelto">Caso resuelto</span>`;
+        } else if (n.tipo === 'reclamo_cancelado') {
+          tagHtml = `<span class="notif-type-tag notif-type-tag--cancelado">Cancelado</span>`;
+        } else if (n.tipo === 'solicitud_reapertura') {
+          tagHtml = `<span class="notif-type-tag notif-type-tag--estado">Reapertura</span>`;
+        } else if (n.tipo === 'bienvenida') {
+          tagHtml = `<span class="notif-type-tag notif-type-tag--adhesion">Bienvenida</span>`;
+        } else {
+          tagHtml = `<span class="notif-type-tag">Aviso cívico</span>`;
+        }
+
+        const claimRef = n.claimId
+          ? `<span class="notif-claim-ref">#${n.claimId}</span>`
+          : '';
+
+        const viewLinkHtml = n.claimId
+          ? `
+            <a href="detalle-reclamo.html?id=${encodeURIComponent(n.claimId)}&from=notificaciones" class="notif-view-claim-link js-claim-link" data-notif-id="${n.id}">
+              <span>Ver detalle del reclamo</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <path d="M5 12h14m-7-7 7 7-7 7"/>
+              </svg>
+            </a>
+          `
+          : '';
+
+        const markBtnHtml = !n.leida
+          ? `
+            <button type="button" class="notif-mark-single-btn js-mark-single" data-notif-id="${n.id}" aria-label="Marcar como leída">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span>Marcar leída</span>
+            </button>
+          `
+          : '';
+
+        return `
+          <article class="notif-row ${unreadClass} js-notif-row" tabindex="0" role="button" data-notif-id="${n.id}" data-claim-id="${n.claimId || ''}" aria-label="${n.titulo} — ${unreadLabel}">
+            <div class="notif-dot-wrap">
+              <span class="notif-dot" title="${unreadLabel}" aria-hidden="true"></span>
+            </div>
+            <div class="notif-body">
+              <div class="notif-meta-line">
+                <div class="notif-tags-wrap">
+                  ${tagHtml}
+                  ${claimRef}
+                </div>
+                <time class="notif-timestamp" datetime="${n.fecha}">${timeAgo}</time>
+              </div>
+              <h2 class="notif-title">${n.titulo}</h2>
+              <p class="notif-message">${n.mensaje}</p>
+              
+              <div class="notif-actions-row">
+                ${viewLinkHtml}
+                ${markBtnHtml}
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
+
+      // Enlazar clics en la tarjeta completa y accesibilidad por teclado
+      listContainer.querySelectorAll('.js-notif-row').forEach(row => {
+        const notifId = row.dataset.notifId;
+        const claimId = row.dataset.claimId;
+
+        const handleRowAction = (e) => {
+          // Si el clic provino del botón de marcar individual, no navegar
+          if (e.target.closest('.js-mark-single')) {
+            return;
+          }
+
+          // Si el clic vino del enlace directo a detalle, dejar que navegue pero marcando leída
+          if (e.target.closest('.js-claim-link')) {
+            notificationsService.markAsRead(notifId);
+            return;
+          }
+
+          notificationsService.markAsRead(notifId);
+
+          if (claimId) {
+            window.location.href = `detalle-reclamo.html?id=${encodeURIComponent(claimId)}&from=notificaciones`;
+          } else {
+            renderNotifications();
+            showToast({ message: 'Aviso marcado como leído.', type: 'info' });
+          }
+        };
+
+        row.addEventListener('click', handleRowAction);
+        row.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleRowAction(e);
+          }
+        });
+      });
+
+      // Enlazar clics en "Marcar leída" individual
+      listContainer.querySelectorAll('.js-mark-single').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const notifId = btn.dataset.notifId;
+          const ok = notificationsService.markAsRead(notifId);
+          if (ok) {
+            renderNotifications();
+            showToast({ message: 'Notificación marcada como leída.', type: 'info' });
+          }
+        });
+      });
+    }
+
+    // 4. Cambiar Filtro
+    function setFilter(newFilter) {
+      currentFilter = newFilter;
+      if (currentFilter === 'todas') {
+        filterTabAll.classList.add('is-active');
+        filterTabAll.setAttribute('aria-selected', 'true');
+        filterTabUnread.classList.remove('is-active');
+        filterTabUnread.setAttribute('aria-selected', 'false');
+      } else {
+        filterTabUnread.classList.add('is-active');
+        filterTabUnread.setAttribute('aria-selected', 'true');
+        filterTabAll.classList.remove('is-active');
+        filterTabAll.setAttribute('aria-selected', 'false');
+      }
+      renderNotifications();
+    }
+
+    filterTabAll.addEventListener('click', () => setFilter('todas'));
+    filterTabUnread.addEventListener('click', () => setFilter('no_leidas'));
+
+    // 5. Acción "Marcar todas como leídas"
+    btnMarkAll.addEventListener('click', () => {
+      if (!currentUser) return;
+      const count = notificationsService.markAllAsRead(currentUser.id);
+      if (count > 0) {
+        showToast({
+          message: `${count} ${count === 1 ? 'notificación marcada' : 'notificaciones marcadas'} como leídas.`,
+          type: 'success'
+        });
+      }
+      renderNotifications();
+    });
+
+    // 6. Sincronización reactiva con almacenamiento
+    window.addEventListener('notifications:updated', renderNotifications);
+    window.addEventListener('storage:updated', (e) => {
+      if (e.detail && (e.detail.key === 'solucionsegura_notificaciones' || e.detail.key === 'solucionsegura_current_user')) {
+        initView();
+      }
+    });
+
+    // Inicializar
+    initView();
   </script>
 </body>
 </html>
-

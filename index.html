@@ -59,7 +59,7 @@
             aria-hidden="true">
             <path d="M12 5v14M5 12h14" />
           </svg>
-          <span>Realizar reclamo</span>
+          <span>Nuevo reclamo</span>
         </a>
       </div>
     </div>
@@ -89,7 +89,7 @@
               <circle cx="12" cy="12" r="10" />
               <path d="M12 8v8M8 12h8" />
             </svg>
-            <span>Realizar reclamo</span>
+            <span>Iniciar reclamo</span>
           </a>
           <a href="pages/explorar.html" class="btn btn--outline-inverse btn--lg">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -101,20 +101,19 @@
           </a>
         </div>
 
-        <!-- Social Proof Cívico Sutil -->
-        <div class="hero-trust-proof" aria-label="Cobertura activa de la plataforma">
-          <span class="hero-trust-proof__item">
-            <span class="hero-trust-proof__dot" aria-hidden="true"></span>
-            16 localidades activas
+        <!-- Micro-compromiso de confianza y reducción de fricción -->
+        <div class="hero-reassurance" aria-label="Condiciones del servicio">
+          <span class="hero-reassurance__item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+            Gratuito y abierto
           </span>
-          <span aria-hidden="true">·</span>
-          <span class="hero-trust-proof__item">
-            3.420 adhesiones vecinales
-          </span>
-          <span aria-hidden="true">·</span>
-          <span class="hero-trust-proof__item">
-            Seguimiento público
-          </span>
+          <span class="hero-reassurance__sep" aria-hidden="true">·</span>
+          <span class="hero-reassurance__item">Sin trámites presenciales</span>
+          <span class="hero-reassurance__sep" aria-hidden="true">·</span>
+          <span class="hero-reassurance__item">Menos de 2 minutos</span>
         </div>
       </div>
 
@@ -147,7 +146,7 @@
           <span class="section-kicker">Categorías de reclamos</span>
           <h2 id="section-categories-title" class="section-categories__title">¿Qué problema querés informar?</h2>
           <p class="section-categories__subtitle">
-            Seleccioná una categoría para comenzar tu reporte en el barrio y ubicar la incidencia en el mapa.
+            Elegí el tipo de problema para ubicarlo en el mapa y avisar a tu comunidad.
           </p>
         </header>
 
@@ -176,7 +175,7 @@
               </p>
 
               <div class="category-card__action">
-                <span class="category-card__action-text">Reportar este problema</span>
+                <span class="category-card__action-text">Reportar bache o calzada</span>
                 <svg class="category-card__action-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"
                   stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
                   aria-hidden="true">
@@ -210,7 +209,7 @@
               </p>
 
               <div class="category-card__action">
-                <span class="category-card__action-text">Reportar este problema</span>
+                <span class="category-card__action-text">Reportar acumulación de residuos</span>
                 <svg class="category-card__action-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"
                   stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
                   aria-hidden="true">
@@ -245,7 +244,7 @@
               </p>
 
               <div class="category-card__action">
-                <span class="category-card__action-text">Reportar este problema</span>
+                <span class="category-card__action-text">Reportar falla de luminaria</span>
                 <svg class="category-card__action-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"
                   stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
                   aria-hidden="true">
@@ -291,7 +290,6 @@
             </div>
 
             <article class="step-card">
-              <span class="step-card__label">Paso 01</span>
               <h3 class="step-card__title">Ubicá el problema</h3>
               <p class="step-card__description">
                 Buscá la dirección, utilizá tu ubicación o marcá el lugar en el mapa.
@@ -319,7 +317,6 @@
             </div>
 
             <article class="step-card">
-              <span class="step-card__label">Paso 02</span>
               <h3 class="step-card__title">Realizá tu reclamo</h3>
               <p class="step-card__description">
                 Elegí una categoría, describí el problema y agregá fotos si querés.
@@ -344,39 +341,57 @@
             </div>
 
             <article class="step-card">
-              <span class="step-card__label">Paso 03</span>
               <h3 class="step-card__title">Seguí su evolución</h3>
               <p class="step-card__description">
                 Consultá el estado del reclamo, sus actualizaciones y los vecinos que se sumaron.
               </p>
 
               <!-- Mini línea de progreso: Recibido → En revisión → En proceso → Resuelto -->
-              <div class="mini-status-tracker" role="group" aria-label="Evolución del reclamo: Recibido, En revisión, En proceso y Resuelto">
+              <div class="mini-status-tracker" role="group"
+                aria-label="Evolución del reclamo: Recibido, En revisión, En proceso y Resuelto">
                 <div class="mini-status-step is-done">
                   <span class="mini-status-dot" aria-hidden="true">
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"
+                      stroke-linecap="round" stroke-linejoin="round">
                       <polyline points="20 6 9 17 4 12" />
                     </svg>
                   </span>
                   <span class="mini-status-label">Recibido</span>
                 </div>
+
                 <span class="mini-status-connector is-done" aria-hidden="true"></span>
+
                 <div class="mini-status-step is-done">
                   <span class="mini-status-dot" aria-hidden="true">
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"
+                      stroke-linecap="round" stroke-linejoin="round">
                       <polyline points="20 6 9 17 4 12" />
                     </svg>
                   </span>
                   <span class="mini-status-label">En revisión</span>
                 </div>
+
                 <span class="mini-status-connector is-current" aria-hidden="true"></span>
+
                 <div class="mini-status-step is-current">
-                  <span class="mini-status-dot" aria-hidden="true"></span>
+                  <span class="mini-status-dot" aria-hidden="true">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="10" />
+                      <polyline points="12 6 12 12 15 14" />
+                    </svg>
+                  </span>
                   <span class="mini-status-label">En proceso</span>
                 </div>
+
                 <span class="mini-status-connector" aria-hidden="true"></span>
+
                 <div class="mini-status-step">
-                  <span class="mini-status-dot" aria-hidden="true"></span>
+                  <span class="mini-status-dot" aria-hidden="true">
+                    <svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor">
+                      <circle cx="12" cy="12" r="6" />
+                    </svg>
+                  </span>
                   <span class="mini-status-label">Resuelto</span>
                 </div>
               </div>
@@ -388,8 +403,9 @@
         <!-- Enlace visible a Centro de Ayuda -->
         <div class="section-how-it-works__footer">
           <a href="pages/ayuda.html" class="how-it-works-help-link">
-            <span>Cómo usar SoluciónSegura</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <span>Conocé cómo se gestiona cada reclamo</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
           </a>
@@ -409,7 +425,8 @@
             Conocé qué está pasando cerca tuyo.
           </h2>
           <p class="map-preview__description">
-            Encontrá reclamos de otros vecinos, conocé su estado y sumate a los problemas que también te afectan.
+            Fijate si tu problema ya fue reportado. Sumate con un clic para darle más prioridad vecinal y evitar
+            duplicados.
           </p>
 
           <!-- Resumen rápido de actividad en el mapa (Social proof cívico & Nielsen visibilidad de estado) -->
@@ -462,9 +479,9 @@
             </ul>
           </div>
 
-          <!-- Acción Principal: Lleva a pages/explorar.html -->
+          <!-- Acción Secundaria: Lleva a pages/explorar.html -->
           <div class="map-preview__actions">
-            <a href="pages/explorar.html" class="btn btn--primary btn--lg">
+            <a href="pages/explorar.html" class="btn btn--secondary btn--lg">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                 aria-hidden="true">
                 <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6" />
@@ -532,7 +549,7 @@
 
         <header class="section-stats__header">
           <span class="section-kicker">Actividad comunitaria</span>
-          <h2 id="stats-title" class="section-stats__title">Cada reclamo cuenta.</h2>
+          <h2 id="stats-title" class="section-stats__title">El impacto del compromiso vecinal en La Matanza</h2>
           <p class="section-stats__subtitle">
             Conocé la actividad registrada en nuestra comunidad y cómo evolucionan los reportes urbanos.
           </p>
@@ -619,7 +636,8 @@
               <div>
                 <p class="stat-metric-card__number">3.420</p>
                 <h3 class="stat-metric-card__label">Adhesiones vecinales</h3>
-                <p class="stat-metric-card__desc">Vecinos que sumaron su apoyo a reclamos existentes.</p>
+                <p class="stat-metric-card__desc">Vecinos que sumaron su apoyo a reclamos existentes sin duplicar
+                  reportes.</p>
               </div>
             </div>
 
@@ -768,10 +786,11 @@
           <div class="cta-banner__content">
             <span class="cta-banner__kicker">Participación vecinal</span>
             <h2 id="cta-final-title" class="cta-banner__title">
-              Tu participación puede hacer la diferencia.
+              Mejorar tu cuadra empieza con una foto y un clic.
             </h2>
             <p class="cta-banner__desc">
-              Informá los problemas que encontrás en tu barrio, consultá el seguimiento de estado y sumate a los reclamos de otros vecinos.
+              No dejes que los baches o las luminarias rotas sigan igual. Reportá lo que pasa en tu cuadra y seguí el
+              avance junto a tu comunidad.
             </p>
           </div>
 
@@ -782,7 +801,7 @@
                 <circle cx="12" cy="12" r="10" />
                 <path d="M12 8v8M8 12h8" />
               </svg>
-              <span>Realizar reclamo</span>
+              <span>Iniciar reclamo</span>
             </a>
             <a href="pages/explorar.html" class="cta-secondary-link">
               <span>Explorar reclamos</span>

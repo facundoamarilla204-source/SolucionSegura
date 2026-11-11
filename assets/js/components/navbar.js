@@ -6,6 +6,8 @@
  */
 
 import { auth } from '../modules/auth.js';
+import { notificationsService } from '../modules/notifications.js';
+import { formatters } from '../utils/formatters.js';
 
 export function setupNavigation({ activePage = 'inicio', basePath = '' } = {}) {
   const root = basePath ? basePath : '';
@@ -21,17 +23,50 @@ export function setupNavigation({ activePage = 'inicio', basePath = '' } = {}) {
   }
 
   const user = auth.getCurrentUser();
+  const unreadCount = user ? notificationsService.getUnreadCount(user.id) : 0;
+  const badgeText = unreadCount > 9 ? '9+' : String(unreadCount);
+  const bellAriaLabel = unreadCount > 0
+    ? `Notificaciones: ${unreadCount} ${unreadCount === 1 ? 'aviso no leído' : 'avisos no leídos'}`
+    : 'Notificaciones: sin avisos pendientes';
+
   const userActionsHtml = user
     ? `
-      <div class="user-menu-wrapper">
-        <a href="${pages}notificaciones.html" class="icon-btn header-notification-btn" aria-label="Notificaciones" title="Notificaciones">
+      <div class="notifications-menu-wrapper">
+        <button type="button" class="icon-btn header-notification-btn" id="notif-bell-btn" aria-haspopup="dialog" aria-expanded="false" aria-label="${bellAriaLabel}" title="Notificaciones">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
             <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
           </svg>
-          <span class="icon-btn__badge" aria-hidden="true"></span>
-        </a>
+          <span class="notif-badge" id="notif-bell-badge" aria-hidden="true" style="${unreadCount > 0 ? '' : 'display: none;'}">${badgeText}</span>
+        </button>
 
+        <div class="notifications-dropdown" id="notif-dropdown" role="region" aria-label="Avisos recientes" hidden>
+          <div class="notif-dropdown__header">
+            <div class="notif-dropdown__title-wrap">
+              <span class="notif-dropdown__title">Notificaciones</span>
+              <span class="notif-dropdown__pill" id="notif-dropdown-unread-pill" style="${unreadCount > 0 ? '' : 'display: none;'}">${unreadCount} ${unreadCount === 1 ? 'nueva' : 'nuevas'}</span>
+            </div>
+            <button type="button" class="notif-dropdown__mark-all js-notif-mark-all" id="notif-dropdown-mark-all" ${unreadCount === 0 ? 'disabled' : ''}>
+              Marcar leídas
+            </button>
+          </div>
+
+          <div class="notif-dropdown__body" id="notif-dropdown-list" role="list">
+            <!-- Items generados dinámicamente -->
+          </div>
+
+          <div class="notif-dropdown__footer">
+            <a href="${pages}notificaciones.html" class="notif-dropdown__view-all" id="notif-view-all-link">
+              <span>Ver todas las notificaciones</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <path d="M5 12h14m-7-7 7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="user-menu-wrapper">
         <button type="button" class="icon-btn user-menu-trigger" id="user-menu-btn" aria-haspopup="menu" aria-expanded="false" aria-label="Menú de cuenta: ${user.nombre}" title="${user.nombre}">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -258,7 +293,10 @@ export function setupNavigation({ activePage = 'inicio', basePath = '' } = {}) {
     });
   });
 
-  // 5. INTERACTIVIDAD DEL MENÚ CONTEXTUAL DE PERFIL (Clic, Teclado, Touch, Escape y Logout)
+  // 5. INTERACTIVIDAD DEL MENÚ CONTEXTUAL DE PERFIL Y DEL PANEL DE NOTIFICACIONES
+  let closeMenuFn = null;
+  let closeNotifDropdownFn = null;
+
   const menuBtn = header.querySelector('#user-menu-btn');
   const menuDropdown = header.querySelector('#user-menu-dropdown');
 
@@ -266,6 +304,9 @@ export function setupNavigation({ activePage = 'inicio', basePath = '' } = {}) {
     const menuItems = Array.from(menuDropdown.querySelectorAll('[role="menuitem"]'));
 
     const openMenu = () => {
+      if (typeof closeNotifDropdownFn === 'function') {
+        closeNotifDropdownFn();
+      }
       menuDropdown.removeAttribute('hidden');
       menuBtn.setAttribute('aria-expanded', 'true');
       menuBtn.classList.add('is-active');
@@ -279,6 +320,7 @@ export function setupNavigation({ activePage = 'inicio', basePath = '' } = {}) {
         menuBtn.focus();
       }
     };
+    closeMenuFn = closeMenu;
 
     const toggleMenu = () => {
       const isExpanded = menuBtn.getAttribute('aria-expanded') === 'true';
@@ -350,13 +392,207 @@ export function setupNavigation({ activePage = 'inicio', basePath = '' } = {}) {
         auth.logout();
         closeMenu();
         const currentPath = window.location.pathname.toLowerCase();
-        if (currentPath.includes('mis-reclamos') || currentPath.includes('perfil') || currentPath.includes('detalle-reclamo') || currentPath.includes('nuevo-reclamo')) {
+        if (currentPath.includes('mis-reclamos') || currentPath.includes('perfil') || currentPath.includes('detalle-reclamo') || currentPath.includes('nuevo-reclamo') || currentPath.includes('notificaciones')) {
           window.location.href = `${root}index.html`;
         } else {
           setupNavigation({ activePage, basePath });
         }
       });
     }
+  }
+
+  // 6. INTERACTIVIDAD DEL PANEL DESPLEGABLE DE NOTIFICACIONES (Campana en Navbar)
+  const notifBtn = header.querySelector('#notif-bell-btn');
+  const notifDropdown = header.querySelector('#notif-dropdown');
+  const notifBadge = header.querySelector('#notif-bell-badge');
+  const notifList = header.querySelector('#notif-dropdown-list');
+  const notifPill = header.querySelector('#notif-dropdown-unread-pill');
+  const notifMarkAllBtn = header.querySelector('#notif-dropdown-mark-all');
+
+  if (notifBtn && notifDropdown && user) {
+    const renderDropdownContent = () => {
+      const unread = notificationsService.getUnreadCount(user.id);
+      const recent = notificationsService.getRecent(user.id, 5);
+
+      // 1. Actualizar Badge en la Campana
+      if (notifBadge) {
+        if (unread > 0) {
+          notifBadge.style.display = '';
+          notifBadge.textContent = unread > 9 ? '9+' : String(unread);
+        } else {
+          notifBadge.style.display = 'none';
+          notifBadge.textContent = '0';
+        }
+      }
+
+      // 2. Actualizar atributo accesible en el botón
+      const ariaLabel = unread > 0
+        ? `Notificaciones: ${unread} ${unread === 1 ? 'aviso no leído' : 'avisos no leídos'}`
+        : 'Notificaciones: sin avisos pendientes';
+      notifBtn.setAttribute('aria-label', ariaLabel);
+
+      // 3. Actualizar Pill de No Leídas en cabecera del panel
+      if (notifPill) {
+        if (unread > 0) {
+          notifPill.style.display = '';
+          notifPill.textContent = `${unread} ${unread === 1 ? 'nueva' : 'nuevas'}`;
+        } else {
+          notifPill.style.display = 'none';
+        }
+      }
+
+      // 4. Actualizar botón "Marcar leídas"
+      if (notifMarkAllBtn) {
+        notifMarkAllBtn.disabled = unread === 0;
+      }
+
+      // 5. Renderizar lista de notificaciones recientes
+      if (!notifList) return;
+
+      if (!recent || recent.length === 0) {
+        notifList.innerHTML = `
+          <div class="notif-dropdown__empty">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <p>No tenés notificaciones</p>
+            <span>Los avisos sobre tus reclamos y participación aparecerán acá.</span>
+          </div>
+        `;
+        return;
+      }
+
+      notifList.innerHTML = recent.map(n => {
+        const timeAgo = formatters.relativeDate(n.fecha);
+        const unreadClass = n.leida ? 'is-read' : 'is-unread';
+        const unreadAria = n.leida ? 'Leída' : 'No leída';
+        const claimBadge = n.claimId ? `<span style="font-size: 10px; font-weight: 700; color: var(--color-brand-sky); margin-left: 4px;">#${n.claimId}</span>` : '';
+
+        return `
+          <div class="notif-dropdown__item ${unreadClass}" role="listitem" tabindex="0" data-notif-id="${n.id}" data-claim-id="${n.claimId || ''}" aria-label="${n.titulo} — ${unreadAria}">
+            <div class="notif-dropdown__item-indicator" aria-hidden="true"></div>
+            <div class="notif-dropdown__item-content">
+              <div class="notif-dropdown__item-header">
+                <h4 class="notif-dropdown__item-title">
+                  ${n.titulo}
+                </h4>
+                <time class="notif-dropdown__item-time">${timeAgo}</time>
+              </div>
+              <p class="notif-dropdown__item-text">${n.mensaje}</p>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Enlazar clics en items
+      notifList.querySelectorAll('.notif-dropdown__item').forEach(itemEl => {
+        const notifId = itemEl.dataset.notifId;
+        const claimId = itemEl.dataset.claimId;
+
+        const handleSelect = (e) => {
+          e.preventDefault();
+          notificationsService.markAsRead(notifId);
+          closeNotifDropdown();
+
+          if (claimId) {
+            window.location.href = `${pages}detalle-reclamo.html?id=${encodeURIComponent(claimId)}&from=notificaciones`;
+          } else {
+            renderDropdownContent();
+          }
+        };
+
+        itemEl.addEventListener('click', handleSelect);
+        itemEl.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            handleSelect(e);
+          }
+        });
+      });
+    };
+
+    const openNotifDropdown = () => {
+      if (typeof closeMenuFn === 'function') {
+        closeMenuFn();
+      }
+      renderDropdownContent();
+      notifDropdown.removeAttribute('hidden');
+      notifBtn.setAttribute('aria-expanded', 'true');
+      notifBtn.classList.add('is-active');
+
+      // Foco accesible al primer item interactivo
+      const firstItem = notifDropdown.querySelector('.notif-dropdown__item, .notif-dropdown__mark-all, .notif-dropdown__view-all');
+      if (firstItem) {
+        firstItem.focus();
+      }
+    };
+
+    const closeNotifDropdown = (returnFocus = false) => {
+      notifDropdown.setAttribute('hidden', '');
+      notifBtn.setAttribute('aria-expanded', 'false');
+      notifBtn.classList.remove('is-active');
+      if (returnFocus) {
+        notifBtn.focus();
+      }
+    };
+    closeNotifDropdownFn = closeNotifDropdown;
+
+    const toggleNotifDropdown = () => {
+      const isExpanded = notifBtn.getAttribute('aria-expanded') === 'true';
+      if (isExpanded) {
+        closeNotifDropdown();
+      } else {
+        openNotifDropdown();
+      }
+    };
+
+    notifBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleNotifDropdown();
+    });
+
+    notifBtn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        openNotifDropdown();
+      } else if (e.key === 'Escape') {
+        closeNotifDropdown(true);
+      }
+    });
+
+    notifDropdown.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closeNotifDropdown(true);
+      }
+    });
+
+    // Clic en "Marcar todas como leídas" dentro del dropdown
+    if (notifMarkAllBtn) {
+      notifMarkAllBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        notificationsService.markAllAsRead(user.id);
+        renderDropdownContent();
+      });
+    }
+
+    // Cerrar al hacer clic fuera
+    document.addEventListener('click', (e) => {
+      if (!notifBtn.contains(e.target) && !notifDropdown.contains(e.target)) {
+        closeNotifDropdown();
+      }
+    });
+
+    // Render inicial del contenido y badge
+    renderDropdownContent();
+
+    // Sincronización reactiva ante cambios en almacenamiento o eventos
+    window.addEventListener('notifications:updated', renderDropdownContent);
+    window.addEventListener('storage:updated', (e) => {
+      if (e.detail && (e.detail.key === 'solucionsegura_notificaciones' || e.detail.key === 'solucionsegura_current_user')) {
+        renderDropdownContent();
+      }
+    });
   }
 }
 

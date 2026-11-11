@@ -7,6 +7,7 @@ import { storage } from '../utils/storage.js';
 import { INITIAL_RECLAMOS } from '../data/seed-reclamos.js';
 import { getSamplePhotosForCategory } from '../data/sample-photos.js';
 import { auth } from './auth.js';
+import { notificationsService } from './notifications.js';
 
 export function generateNaturalTitle(categoria, direccion, localidadId) {
   let locationText = (direccion || '').trim();
@@ -193,6 +194,10 @@ export const claimsService = {
 
     claim.participantes.push(user.id);
     storage.set(storage.KEYS.RECLAMOS, list);
+
+    // Generar avisos de adhesión (al creador y confirmación al participante)
+    notificationsService.notifyNewAdhesion(claim, user);
+
     return { success: true, count: claim.participantes.length };
   },
 
@@ -294,6 +299,10 @@ export const claimsService = {
     });
 
     storage.set(storage.KEYS.RECLAMOS, list);
+
+    // Notificar a los vecinos que respaldan sobre actualización relevante
+    notificationsService.notifyRelevantUpdate(claim, user);
+
     return { success: true, claim };
   },
 
@@ -325,6 +334,10 @@ export const claimsService = {
     });
 
     storage.set(storage.KEYS.RECLAMOS, list);
+
+    // Notificar a creador y vecinos adheridos sobre la cancelación
+    notificationsService.notifyClaimCancelled(claim, user, motivo);
+
     return { success: true, claim };
   },
 
@@ -439,6 +452,10 @@ export const claimsService = {
     });
 
     storage.set(storage.KEYS.RECLAMOS, list);
+
+    // Confirmación al solicitante de la reapertura
+    notificationsService.notifyReopenRequest(claim, user, motivo);
+
     return { success: true, claim };
   },
 
@@ -483,6 +500,12 @@ export const claimsService = {
     const list = this.getAll();
     list.unshift(newClaim);
     storage.set(storage.KEYS.RECLAMOS, list);
+
+    // Notificar al creador la confirmación del nuevo reclamo
+    if (user && user.id !== 'usr_anonimo') {
+      notificationsService.notifyClaimCreated(newClaim, user);
+    }
+
     return newClaim;
   },
 
@@ -517,6 +540,35 @@ export const claimsService = {
       const distKm = Math.hypot(dLat, dLng);
       return { ...r, distanceMeters: Math.round(distKm * 1000) };
     }).sort((a, b) => a.distanceMeters - b.distanceMeters);
+  },
+
+  /**
+   * Actualiza el estado de un reclamo (transición técnica o simulada)
+   * Registra el cambio en el historial y dispara las notificaciones correspondientes
+   * al creador y vecinos adheridos según sus preferencias.
+   */
+  updateStatus(claimId, newStatus, nota = '') {
+    const list = this.getAll();
+    const claim = list.find(r => r.id === claimId);
+    if (!claim) return { success: false, reason: 'not_found' };
+
+    const oldStatus = claim.estado;
+    if (oldStatus === newStatus) return { success: true, claim };
+
+    claim.estado = newStatus;
+    if (!claim.historial) claim.historial = [];
+    claim.historial.push({
+      fecha: new Date().toISOString(),
+      estado: newStatus,
+      nota: nota || `Estado actualizado a «${newStatus}».`
+    });
+
+    storage.set(storage.KEYS.RECLAMOS, list);
+
+    // Notificar a creador y vecinos adheridos según preferencias
+    notificationsService.notifyStatusChange(claim, oldStatus, newStatus, nota);
+
+    return { success: true, claim };
   },
 
   /**

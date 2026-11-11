@@ -225,6 +225,34 @@
   }
 }
 
+/* Micro-compromiso de confianza y reducción de fricción psicológica */
+.hero-reassurance {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  flex-wrap: wrap;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #BAE6FD;
+  margin-bottom: var(--space-4);
+}
+
+.hero-reassurance__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.hero-reassurance__item svg {
+  color: var(--color-brand-orange);
+  flex-shrink: 0;
+}
+
+.hero-reassurance__sep {
+  color: rgba(255, 255, 255, 0.25);
+}
+
 /* Barra de confianza cívica (Social Proof sutil bajo botones) */
 .hero-trust-proof {
   display: flex;
@@ -448,7 +476,7 @@
   left: 0;
   right: 0;
   height: 3px;
-  background-color: var(--color-accent);
+  background-color: var(--color-action-primary);
 }
 
 @media (min-width: 768px) {

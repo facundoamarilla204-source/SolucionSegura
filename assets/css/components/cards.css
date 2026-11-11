@@ -202,20 +202,9 @@
 }
 
 .category-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 32px -6px rgba(6, 47, 102, 0.1), 0 4px 10px rgba(6, 47, 102, 0.04);
-}
-
-.category-card[data-category="pavimento"]:hover {
-  border-color: var(--cat-pavimento);
-}
-
-.category-card[data-category="residuos"]:hover {
-  border-color: var(--cat-residuos);
-}
-
-.category-card[data-category="alumbrado"]:hover {
-  border-color: var(--cat-alumbrado);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px -4px rgba(6, 47, 102, 0.08), 0 4px 10px rgba(6, 47, 102, 0.03);
+  border-color: #CBD5E1;
 }
 
 .category-card:active {
@@ -223,19 +212,27 @@
 }
 
 /* Enlace contenedor táctil (WCAG: toda la tarjeta es clickeable con composición equilibrada) */
-.category-card__link {
+.category-card__link,
+.category-card__link:hover,
+.category-card__link:focus,
+.category-card:hover .category-card__link {
   display: flex;
   flex-direction: column;
   height: 100%;
   padding: var(--space-6);
-  text-decoration: none;
+  text-decoration: none !important;
   color: inherit;
   border-radius: var(--radius-md);
   outline: none;
 }
 
+.category-card__link *,
+.category-card:hover * {
+  text-decoration: none !important;
+}
+
 .category-card__link:focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--color-brand-sky);
   outline-offset: 4px;
 }
 
@@ -291,7 +288,7 @@
   border-color: var(--cat-alumbrado-border);
 }
 
-/* Tipografía de la tarjeta: Jerarquía Outfit + Inter */
+/* Tipografía de la tarjeta: Título institucional que permanece estable */
 .category-card__title {
   font-family: var(--font-family-display);
   font-size: 1.35rem;
@@ -301,19 +298,12 @@
   line-height: 1.25;
   margin-top: var(--space-3);
   margin-bottom: var(--space-2);
-  transition: color var(--duration-fast) var(--ease-out);
+  text-decoration: none !important;
 }
 
-.category-card[data-category="pavimento"]:hover .category-card__title {
-  color: var(--cat-pavimento);
-}
-
-.category-card[data-category="residuos"]:hover .category-card__title {
-  color: var(--cat-residuos);
-}
-
-.category-card[data-category="alumbrado"]:hover .category-card__title {
-  color: var(--cat-alumbrado);
+.category-card:hover .category-card__title {
+  color: var(--color-primary-dark);
+  text-decoration: none !important;
 }
 
 .category-card__description {
@@ -323,52 +313,49 @@
   line-height: 1.55;
   margin-bottom: var(--space-5);
   flex-grow: 1;
+  text-decoration: none !important;
 }
 
-/* Pie de la tarjeta con acción interactiva explícita */
+.category-card:hover .category-card__description {
+  color: var(--color-text-secondary);
+  text-decoration: none !important;
+}
+
+/* Pie de la tarjeta con acción interactiva sobria y limpia (sin fondo naranja invasivo) */
 .category-card__action {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: var(--space-3);
+  padding-top: var(--space-4);
   border-top: 1px solid var(--color-border);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-accent);
   margin-top: auto;
-  transition: color var(--duration-fast) var(--ease-out);
+  background: transparent;
+  border-radius: 0;
+  text-decoration: none !important;
 }
 
 .category-card__action-text {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  color: var(--color-accent);
+  color: var(--color-brand-blue);
+  text-decoration: none !important;
   transition: color var(--duration-fast) var(--ease-out);
 }
 
 .category-card__action-icon {
-  color: var(--color-accent);
+  color: var(--color-brand-sky);
   transition: transform var(--duration-fast) var(--ease-out),
               color var(--duration-fast) var(--ease-out);
 }
 
-.category-card[data-category="pavimento"]:hover .category-card__action-text,
-.category-card[data-category="pavimento"]:hover .category-card__action-icon {
-  color: var(--cat-pavimento);
-}
-
-.category-card[data-category="residuos"]:hover .category-card__action-text,
-.category-card[data-category="residuos"]:hover .category-card__action-icon {
-  color: var(--cat-residuos);
-}
-
-.category-card[data-category="alumbrado"]:hover .category-card__action-text,
-.category-card[data-category="alumbrado"]:hover .category-card__action-icon {
-  color: var(--cat-alumbrado);
+.category-card:hover .category-card__action-text {
+  color: var(--color-brand-sky-hover);
+  text-decoration: none !important;
 }
 
 .category-card:hover .category-card__action-icon {
-  transform: translateX(5px);
+  color: var(--color-brand-sky-hover);
+  transform: translateX(6px);
 }
 
 

@@ -326,6 +326,23 @@
               💡 <strong>Transparencia vecinal:</strong> Cada vecino que se suma aumenta la visibilidad del reporte en el mapa y en los reportes de prioridad pública.
             </div>
           </div>
+
+          <!-- Caja de simulación de avances técnicos para pruebas docentes y académicas -->
+          <div class="card" id="academic-sim-panel" style="margin-top: var(--space-4); background-color: var(--color-bg-body); border-style: dashed; padding: var(--space-4);">
+            <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--color-brand-sky);" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              <h3 style="font-size: var(--font-size-xs); font-weight: 700; color: var(--color-primary-dark); margin: 0; text-transform: uppercase; letter-spacing: 0.05em;">Simulación técnica (Docencia)</h3>
+            </div>
+            <p style="font-size: var(--font-size-xs); color: var(--color-text-muted); margin-bottom: var(--space-3); line-height: var(--line-height-normal);">
+              Permite simular el avance de estado del caso y disparar los avisos automáticos a los involucrados.
+            </p>
+            <div style="display: flex; gap: var(--space-2); flex-direction: column;">
+              <button type="button" class="btn btn--outline btn--sm btn--full" id="btn-sim-advance-status" style="font-size: var(--font-size-xs); min-height: 34px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
+                <span>Avanzar al siguiente estado</span>
+              </button>
+            </div>
+          </div>
         </aside>
 
       </div>
@@ -429,7 +446,11 @@
     const btnBackLink = document.getElementById('btn-back-link');
 
     // Contexto de retorno dinámico y estado de navegación
-    if (fromSource === 'explorar' || referrer.includes('explorar.html')) {
+    if (fromSource === 'notificaciones' || referrer.includes('notificaciones.html')) {
+      btnBackLink.href = 'notificaciones.html';
+      btnBackLink.textContent = '← Volver a Notificaciones';
+      setupNavigation({ activePage: 'notificaciones', basePath: '../' });
+    } else if (fromSource === 'explorar' || referrer.includes('explorar.html')) {
       btnBackLink.href = 'explorar.html';
       btnBackLink.textContent = '← Volver a Explorar';
       setupNavigation({ activePage: 'explorar', basePath: '../' });
@@ -1057,6 +1078,34 @@
           }
         });
       }
+    }
+
+    // 12. Simulación técnica para pruebas académicas de transiciones y notificaciones
+    const btnSimAdvance = document.getElementById('btn-sim-advance-status');
+    if (btnSimAdvance) {
+      btnSimAdvance.addEventListener('click', () => {
+        if (!claim) return;
+        const stateCycle = {
+          'recibido': { next: 'en_revision', nota: 'Revisión técnica inicial completada por personal de inspección.' },
+          'en_revision': { next: 'en_proceso', nota: 'Cuadrilla de servicios urbanos asignada para tareas operativas.' },
+          'en_proceso': { next: 'resuelto', nota: 'Intervención finalizada y validada por el personal de cuadrilla.' },
+          'resuelto': { next: 'reabierto', nota: 'Caso reabierto preventivamente para verificación complementaria.' },
+          'reabierto': { next: 'en_proceso', nota: 'Cuadrilla reasignada para resolver detalles pendientes.' },
+          'rechazado': { next: 'recibido', nota: 'Reclamo reconsiderado para nueva evaluación.' },
+          'cancelado': { next: 'recibido', nota: 'Reclamo reactivado en la plataforma.' }
+        };
+
+        const currentTransition = stateCycle[claim.estado] || stateCycle['recibido'];
+        const res = claimsService.updateStatus(claim.id, currentTransition.next, currentTransition.nota);
+        if (res.success) {
+          claim = res.claim;
+          populateClaimDetail(claim);
+          showToast({
+            message: `Estado actualizado a «${formatters.stateLabel(claim.estado)}». Notificación generada a participantes.`,
+            type: 'info'
+          });
+        }
+      });
     }
   </script>
 </body>

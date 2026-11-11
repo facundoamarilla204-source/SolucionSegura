@@ -3,231 +3,725 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mi Perfil — SoluciónSegura</title>
+  <title>Mi Perfil y Preferencias — SoluciónSegura</title>
   <link rel="stylesheet" href="../assets/css/main.css">
 </head>
 <body class="app-shell">
 
-  <header class="site-header" role="banner">
-    <div class="container-desktop site-header__inner">
-      <a href="../index.html" class="brand-link" aria-label="SoluciónSegura - Inicio">
-        <svg class="brand-logo" width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-          <rect width="32" height="32" rx="8" fill="#078DFA"/>
-          <path d="M16 6L24 10V16C24 21 20.5 25.5 16 27C11.5 25.5 8 21 8 16V10L16 6Z" fill="#FFFFFF"/>
-          <path d="M14 16.5L12 14.5L10.5 16L14 19.5L21.5 12L20 10.5L14 16.5Z" fill="#062F66"/>
-        </svg>
-        <span>SoluciónSegura</span>
-      </a>
-
-      <nav class="desktop-nav" role="navigation" aria-label="Navegación principal">
-        <a href="../index.html" class="nav-link" data-page="inicio">Inicio</a>
-        <a href="explorar.html" class="nav-link" data-page="explorar">Explorar</a>
-        <a href="estadisticas.html" class="nav-link" data-page="estadisticas">Estadísticas</a>
-        <a href="ayuda.html" class="nav-link" data-page="ayuda">Ayuda</a>
-        <a href="nuevo-reclamo.html" class="btn btn--primary btn--sm">Realizar reclamo</a>
-      </nav>
-
-      <div class="header-actions"></div>
-    </div>
-  </header>
+  <!-- Encabezado inyectado automáticamente por setupNavigation() -->
+  <header class="site-header" role="banner"></header>
 
   <main class="main-content" id="main-content" role="main">
-    <div class="container-desktop section-spacer" style="max-width: 680px;">
+    <div class="container-desktop section-spacer">
       
+      <!-- Encabezado de Página -->
       <div class="section-header">
         <h1 class="section-header__title">Mi perfil</h1>
-        <p class="section-header__subtitle">Gestioná tus datos personales, preferencias de notificación y localidad habitual.</p>
+        <p class="section-header__subtitle">Consultá y administrá tus datos de cuenta, configurá tu localidad habitual y gestioná tus preferencias de avisos.</p>
       </div>
 
-      <div class="card" style="margin-bottom: var(--space-6);">
-        <div style="display: flex; align-items: center; gap: var(--space-4); margin-bottom: var(--space-6);">
-          <div style="width: 56px; height: 56px; border-radius: var(--radius-full); background-color: var(--color-surface-light); color: var(--color-primary-dark); display: flex; align-items: center; justify-content: center; font-size: var(--font-size-xl); font-weight: bold;" id="profile-avatar-initials">
-            MG
+      <!-- Layout en dos columnas en Desktop / Una columna en Móvil -->
+      <div class="profile-layout">
+        
+        <!-- ====================================================================
+             COLUMNA IZQUIERDA: RESUMEN DE CUENTA Y ACCIONES GENERALES
+             ==================================================================== -->
+        <aside class="profile-sidebar" aria-label="Resumen de cuenta">
+          
+          <div class="profile-summary-card">
+            <div class="profile-avatar-wrap">
+              <div class="profile-avatar" id="summary-avatar-initials" aria-hidden="true">MG</div>
+            </div>
+
+            <h2 class="profile-summary-name" id="summary-user-name">Cargando...</h2>
+            <p class="profile-summary-email" id="summary-user-email">cargando@ejemplo.com</p>
+
+            <span class="profile-badge-auth" id="summary-auth-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+              <span id="summary-auth-label">Cuenta local</span>
+            </span>
+
+            <ul class="profile-meta-list" role="list">
+              <li class="profile-meta-item">
+                <span class="profile-meta-label">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  <span>Fecha de registro</span>
+                </span>
+                <span class="profile-meta-value" id="summary-created-at">—</span>
+              </li>
+              <li class="profile-meta-item">
+                <span class="profile-meta-label">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <span>Zona preferida</span>
+                </span>
+                <span class="profile-meta-value" id="summary-pref-locality">Sin configurar</span>
+              </li>
+            </ul>
+
+            <div style="margin-top: var(--space-6); padding-top: var(--space-4); border-top: 1px solid var(--color-border);">
+              <button type="button" class="btn btn-logout-clean btn--full" id="btn-logout-sidebar" aria-label="Cerrar la sesión activa">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                  <polyline points="16 17 21 12 16 7"></polyline>
+                  <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+                <span>Cerrar sesión</span>
+              </button>
+            </div>
           </div>
-          <div>
-            <h2 style="font-size: var(--font-size-lg); margin-bottom: 2px;" id="profile-name">Mariana Gómez</h2>
-            <p style="color: var(--color-text-secondary); font-size: var(--font-size-sm);" id="profile-email">mariana.gomez@ejemplo.com</p>
-          </div>
-        </div>
 
-        <div class="form-group">
-          <label class="form-label" for="profile-localidad">Localidad preferida (para centrar el mapa)</label>
-          <select id="profile-localidad" class="form-select">
-            <option value="san-justo" selected>San Justo</option>
-            <option value="ramos-mejia">Ramos Mejía</option>
-            <option value="gonzalez-catan">González Catán</option>
-            <option value="isidro-casanova">Isidro Casanova</option>
-            <option value="laferrere">Gregorio de Laferrere</option>
-            <option value="virrey-del-pino">Virrey del Pino</option>
-          </select>
-          <span class="form-help">Al ingresar a «Explorar», el mapa iniciará enfocado en esta zona.</span>
-        </div>
-
-        <div style="border-top: 1px solid var(--color-border); padding-top: var(--space-4); margin-top: var(--space-4); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-3);">
-          <button type="button" class="btn btn--danger btn--sm" id="btn-logout">
-            Cerrar sesión
-          </button>
-          <button type="button" class="btn btn--primary btn--sm" id="btn-save-profile">
-            Guardar preferencias
-          </button>
-        </div>
-      </div>
-
-      <!-- Sección integrada: Mis reclamos y actividad comunitaria -->
-      <section class="card" style="margin-bottom: var(--space-6);" aria-labelledby="section-claims-title">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4); flex-wrap: wrap; gap: var(--space-2);">
-          <div>
-            <h2 id="section-claims-title" style="font-family: var(--font-family-display); font-size: var(--font-size-base); font-weight: 700; color: var(--color-primary-dark); margin-bottom: 2px;">
-              Mis reclamos
-            </h2>
-            <p style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin: 0;">
-              Consultá el estado y las novedades de tus reclamos y adhesiones.
+          <!-- Caja de reset de datos de prueba para evaluación docente -->
+          <div class="card" style="margin-top: var(--space-5); background-color: var(--color-bg-body); border-style: dashed; padding: var(--space-4);">
+            <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-1);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--color-brand-sky);" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              <h3 style="font-size: var(--font-size-xs); font-weight: 700; color: var(--color-primary-dark); margin: 0; text-transform: uppercase; letter-spacing: 0.05em;">Entorno académico</h3>
+            </div>
+            <p style="font-size: var(--font-size-xs); color: var(--color-text-muted); margin-bottom: var(--space-3); line-height: var(--line-height-normal);">
+              Permite reiniciar los casos de prueba de La Matanza manteniendo tu cuenta.
             </p>
+            <button type="button" class="btn btn--outline btn--sm btn--full" id="btn-reset-seed" style="font-size: var(--font-size-xs); min-height: 34px;">
+              Restablecer casos de prueba
+            </button>
           </div>
-          <span class="badge badge--recibido" id="profile-total-claims-badge">0 casos</span>
+
+        </aside>
+
+        <!-- ====================================================================
+             COLUMNA DERECHA: SECCIONES DE CONFIGURACIÓN Y ACTIVIDAD
+             ==================================================================== -->
+        <div class="profile-main-col">
+
+          <!-- 1. INFORMACIÓN PERSONAL Y LOCALIDAD PREFERIDA -->
+          <section class="profile-section-card" aria-labelledby="section-info-title">
+            <div class="profile-section-header">
+              <div class="profile-section-title-wrap">
+                <div class="profile-section-icon" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                  </svg>
+                </div>
+                <div>
+                  <h2 class="profile-section-title" id="section-info-title">Información personal</h2>
+                  <p class="profile-section-desc">Actualizá tu nombre y localidad habitual para la exploración territorial.</p>
+                </div>
+              </div>
+            </div>
+
+            <form id="form-personal-info" novalidate>
+              <div class="form-group">
+                <label class="form-label" for="input-profile-name">
+                  <span>Nombre completo <span aria-hidden="true" style="color: var(--state-rechazado);">*</span></span>
+                </label>
+                <input type="text" id="input-profile-name" class="form-input" required autocomplete="name" placeholder="Ej. Mariana Gómez">
+                <div class="profile-inline-error" id="error-profile-name" role="alert">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                  <span>Por favor, ingresá un nombre y apellido válido.</span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="input-profile-email">
+                  <span>Correo electrónico <span class="form-label__optional">(Identificador de acceso)</span></span>
+                </label>
+                <input type="email" id="input-profile-email" class="form-input" readonly disabled style="background-color: var(--color-surface-light); cursor: not-allowed; color: var(--color-text-secondary);">
+                <span class="form-help">El correo electrónico es el identificador principal de tu cuenta y no puede modificarse en esta etapa.</span>
+              </div>
+
+              <div class="form-group" style="margin-bottom: var(--space-4);">
+                <label class="form-label" for="select-profile-localidad">
+                  <span>Localidad preferida <span class="form-label__optional">(Opcional)</span></span>
+                </label>
+                <select id="select-profile-localidad" class="form-select" aria-describedby="help-profile-localidad">
+                  <option value="">Sin configurar (Centro general de La Matanza)</option>
+                  <!-- Inyectado dinámicamente desde LOCALIDADES_LA_MATANZA -->
+                </select>
+                <span class="form-help" id="help-profile-localidad">
+                  Al abrir «Explorar», el mapa se centrará inicialmente en esta localidad sin restringir los filtros de búsqueda.
+                </span>
+              </div>
+
+              <div class="profile-form-actions">
+                <button type="submit" class="btn btn--primary" id="btn-save-personal-info">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                    <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                    <polyline points="7 3 7 8 15 8"></polyline>
+                  </svg>
+                  <span>Guardar cambios</span>
+                </button>
+              </div>
+            </form>
+          </section>
+
+          <!-- 2. MI ACTIVIDAD EN LA PLATAFORMA -->
+          <section class="profile-section-card" aria-labelledby="section-activity-title">
+            <div class="profile-section-header">
+              <div class="profile-section-title-wrap">
+                <div class="profile-section-icon" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                  </svg>
+                </div>
+                <div>
+                  <h2 class="profile-section-title" id="section-activity-title">Mi actividad</h2>
+                  <p class="profile-section-desc">Resumen en tiempo real de tus reportes creados y adhesiones vecinales.</p>
+                </div>
+              </div>
+              <span class="badge badge--recibido" id="badge-total-activity">0 participaciones</span>
+            </div>
+
+            <!-- Grilla de indicadores calculados en vivo -->
+            <div class="profile-activity-grid">
+              <div class="profile-stat-box">
+                <span class="profile-stat-label">Reclamos creados por mí</span>
+                <strong class="profile-stat-value" id="stat-claims-created">0</strong>
+                <span style="font-size: var(--font-size-xs); color: var(--color-text-muted); margin-top: 4px;">Casos reportados</span>
+              </div>
+
+              <div class="profile-stat-box">
+                <span class="profile-stat-label">Reclamos que apoyo</span>
+                <strong class="profile-stat-value profile-stat-value--accent" id="stat-claims-joined">0</strong>
+                <span style="font-size: var(--font-size-xs); color: var(--color-text-muted); margin-top: 4px;">Adhesiones comunitarias</span>
+              </div>
+            </div>
+
+            <!-- Enlace directo y destacado a Mis Reclamos -->
+            <a href="mis-reclamos.html" class="btn btn--secondary btn--full" style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-3) var(--space-4);" id="link-to-mis-reclamos">
+              <span style="display: flex; align-items: center; gap: var(--space-2); font-weight: var(--font-weight-semibold); color: var(--color-primary-dark);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                </svg>
+                <span>Ver mis reclamos</span>
+              </span>
+              <span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--font-size-xs); color: var(--color-brand-sky); font-weight: var(--font-weight-bold);">
+                <span>Abrir listado</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                  <path d="m9 18 6-6-6-6"/>
+                </svg>
+              </span>
+            </a>
+          </section>
+
+          <!-- 3. PREFERENCIAS DE NOTIFICACIONES -->
+          <section class="profile-section-card" aria-labelledby="section-notifications-title">
+            <div class="profile-section-header">
+              <div class="profile-section-title-wrap">
+                <div class="profile-section-icon" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                  </svg>
+                </div>
+                <div>
+                  <h2 class="profile-section-title" id="section-notifications-title">Preferencias de notificaciones</h2>
+                  <p class="profile-section-desc">Elegí qué avisos cívicos deseás recibir dentro del centro de notificaciones.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="profile-switches-list" role="group" aria-label="Ajustes de alertas de la plataforma">
+              <!-- Switch 1: Cambios de estado de mis reclamos -->
+              <div class="profile-switch-row">
+                <div class="profile-switch-info">
+                  <label id="label-notif-own" class="profile-switch-title" for="switch-notif-own">Cambios de estado en mis reclamos</label>
+                  <span class="profile-switch-desc">Recibir aviso cuando un reclamo creado por vos sea revisado, pase a cuadrilla o cambie de estado.</span>
+                </div>
+                <button type="button" role="switch" aria-checked="true" aria-labelledby="label-notif-own" class="ui-switch" id="switch-notif-own">
+                  <span class="ui-switch__thumb" aria-hidden="true"></span>
+                </button>
+              </div>
+
+              <!-- Switch 2: Novedades de reclamos apoyados -->
+              <div class="profile-switch-row">
+                <div class="profile-switch-info">
+                  <label id="label-notif-joined" class="profile-switch-title" for="switch-notif-joined">Reclamos a los que me sumé</label>
+                  <span class="profile-switch-desc">Recibir avisos cuando haya novedades en reclamos de otros vecinos que hayas respaldado.</span>
+                </div>
+                <button type="button" role="switch" aria-checked="true" aria-labelledby="label-notif-joined" class="ui-switch" id="switch-notif-joined">
+                  <span class="ui-switch__thumb" aria-hidden="true"></span>
+                </button>
+              </div>
+
+              <!-- Switch 3: Resolución y reapertura -->
+              <div class="profile-switch-row">
+                <div class="profile-switch-info">
+                  <label id="label-notif-resolution" class="profile-switch-title" for="switch-notif-resolution">Resolución o reapertura de casos</label>
+                  <span class="profile-switch-desc">Avisar cuando un reclamo se marque como resuelto para valorar la solución o reportar persistencia.</span>
+                </div>
+                <button type="button" role="switch" aria-checked="true" aria-labelledby="label-notif-resolution" class="ui-switch" id="switch-notif-resolution">
+                  <span class="ui-switch__thumb" aria-hidden="true"></span>
+                </button>
+              </div>
+
+              <!-- Switch 4: Nuevas adhesiones de vecinos -->
+              <div class="profile-switch-row">
+                <div class="profile-switch-info">
+                  <label id="label-notif-adhesions" class="profile-switch-title" for="switch-notif-adhesions">Nuevas adhesiones a mis reclamos</label>
+                  <span class="profile-switch-desc">Recibir aviso cuando un vecino respalde un reclamo iniciado por vos.</span>
+                </div>
+                <button type="button" role="switch" aria-checked="true" aria-labelledby="label-notif-adhesions" class="ui-switch" id="switch-notif-adhesions">
+                  <span class="ui-switch__thumb" aria-hidden="true"></span>
+                </button>
+              </div>
+            </div>
+
+            <div class="profile-form-actions">
+              <button type="button" class="btn btn--primary btn--sm" id="btn-save-notifications">
+                <span>Guardar preferencias de avisos</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- 4. SEGURIDAD Y CAMBIO DE CONTRASEÑA -->
+          <section class="profile-section-card" aria-labelledby="section-security-title">
+            <div class="profile-section-header">
+              <div class="profile-section-title-wrap">
+                <div class="profile-section-icon" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                  </svg>
+                </div>
+                <div>
+                  <h2 class="profile-section-title" id="section-security-title">Seguridad de la cuenta</h2>
+                  <p class="profile-section-desc">Administrá tu clave de acceso local protegida mediante Web Crypto API (SHA-256 con sal).</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Banner para cuentas Google OAuth -->
+            <div id="security-google-block" class="profile-google-banner" style="display: none;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="16" x2="12" y2="12"/>
+                <line x1="12" y1="8" x2="12.01" y2="8"/>
+              </svg>
+              <div>
+                <strong style="display: block; font-size: var(--font-size-sm); margin-bottom: 2px;">Inicio de sesión con Google</strong>
+                <p style="font-size: var(--font-size-xs); margin: 0; line-height: var(--line-height-normal);">
+                  Esta cuenta utiliza una identidad vinculada a Google. La gestión y actualización de tus credenciales de acceso se realiza a través de tu cuenta institucional de Google.
+                </p>
+              </div>
+            </div>
+
+            <!-- Formulario de cambio de clave para cuentas locales con email -->
+            <form id="form-change-password" novalidate>
+              <div class="form-group">
+                <label class="form-label" for="input-current-pass">
+                  <span>Contraseña actual <span aria-hidden="true" style="color: var(--state-rechazado);">*</span></span>
+                </label>
+                <div class="password-input-group">
+                  <input type="password" id="input-current-pass" class="form-input" required autocomplete="current-password" placeholder="Ingresá tu contraseña actual">
+                  <button type="button" class="password-toggle-btn js-toggle-pwd" data-target="input-current-pass" aria-label="Mostrar contraseña actual">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                  </button>
+                </div>
+                <div class="profile-inline-error" id="error-current-pass" role="alert">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                  <span id="error-current-pass-text">La contraseña actual es incorrecta.</span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="input-new-pass">
+                  <span>Nueva contraseña <span aria-hidden="true" style="color: var(--state-rechazado);">*</span></span>
+                </label>
+                <div class="password-input-group">
+                  <input type="password" id="input-new-pass" class="form-input" required minlength="6" autocomplete="new-password" placeholder="Mínimo 6 caracteres">
+                  <button type="button" class="password-toggle-btn js-toggle-pwd" data-target="input-new-pass" aria-label="Mostrar nueva contraseña">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                  </button>
+                </div>
+                <span class="form-help">Debe tener al menos 6 caracteres para mayor seguridad ciudadana.</span>
+                <div class="profile-inline-error" id="error-new-pass" role="alert">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                  <span id="error-new-pass-text">La nueva contraseña debe contener al menos 6 caracteres.</span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="input-confirm-pass">
+                  <span>Confirmar nueva contraseña <span aria-hidden="true" style="color: var(--state-rechazado);">*</span></span>
+                </label>
+                <div class="password-input-group">
+                  <input type="password" id="input-confirm-pass" class="form-input" required minlength="6" autocomplete="new-password" placeholder="Repetí la nueva contraseña">
+                  <button type="button" class="password-toggle-btn js-toggle-pwd" data-target="input-confirm-pass" aria-label="Mostrar confirmación de contraseña">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                  </button>
+                </div>
+                <div class="profile-inline-error" id="error-confirm-pass" role="alert">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                  <span id="error-confirm-pass-text">Las contraseñas no coinciden.</span>
+                </div>
+              </div>
+
+              <div class="profile-form-actions">
+                <button type="submit" class="btn btn--primary" id="btn-submit-change-pass">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  </svg>
+                  <span>Actualizar contraseña</span>
+                </button>
+              </div>
+            </form>
+          </section>
+
         </div>
 
-        <!-- Resumen de actividad ciudadana -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: var(--space-3); margin-bottom: var(--space-4);">
-          <div style="background-color: var(--color-surface-subtle); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md); padding: var(--space-3) var(--space-4);">
-            <span style="display: block; font-size: var(--font-size-xs); color: var(--color-text-muted); margin-bottom: 2px;">Creados por mí</span>
-            <strong style="font-family: var(--font-family-display); font-size: var(--font-size-xl); color: var(--color-primary-dark);" id="profile-claims-created">0</strong>
-          </div>
-          <div style="background-color: var(--color-surface-subtle); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md); padding: var(--space-3) var(--space-4);">
-            <span style="display: block; font-size: var(--font-size-xs); color: var(--color-text-muted); margin-bottom: 2px;">Reclamos que apoyo</span>
-            <strong style="font-family: var(--font-family-display); font-size: var(--font-size-xl); color: var(--color-accent);" id="profile-claims-joined">0</strong>
-          </div>
-        </div>
-
-        <!-- Fila de acceso directo hacia Mis reclamos -->
-        <a href="mis-reclamos.html" id="profile-to-claims-btn" class="btn btn--secondary" style="width: 100%; display: flex; justify-content: space-between; align-items: center; text-decoration: none; padding: var(--space-3) var(--space-4);">
-          <span style="display: flex; align-items: center; gap: var(--space-2); font-weight: var(--font-weight-semibold); color: var(--color-primary-dark);">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-              <polyline points="14 2 14 8 20 8"></polyline>
-              <line x1="16" y1="13" x2="8" y2="13"></line>
-              <line x1="16" y1="17" x2="8" y2="17"></line>
-            </svg>
-            <span>Ver mis reclamos</span>
-          </span>
-          <span style="display: flex; align-items: center; gap: 4px; font-size: var(--font-size-xs); color: var(--color-accent); font-weight: var(--font-weight-bold);">
-            <span>Ir al listado</span>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-              <path d="m9 18 6-6-6-6"/>
-            </svg>
-          </span>
-        </a>
-      </section>
-
-      <!-- Control de reinicio académico de datos de prueba -->
-      <aside class="card" style="background-color: var(--color-bg-body); border-style: dashed;">
-        <h3 style="font-size: var(--font-size-sm); margin-bottom: var(--space-2); color: var(--color-text-secondary);">Herramientas de evaluación docente</h3>
-        <p style="font-size: var(--font-size-xs); color: var(--color-text-muted); margin-bottom: var(--space-3);">
-          Permite restablecer los reclamos simulados a su estado original de demostración.
-        </p>
-        <button type="button" class="btn btn--outline btn--sm" id="btn-reset-seed">
-          Restablecer datos de prueba
-        </button>
-      </aside>
+      </div>
 
     </div>
   </main>
 
-  <nav class="mobile-bottom-nav" role="navigation" aria-label="Navegación inferior móvil">
-    <a href="../index.html" class="mobile-nav-item" data-page="inicio">
-      <span class="mobile-nav-item__icon" aria-hidden="true">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-      </span>
-      <span>Inicio</span>
-    </a>
-    <a href="explorar.html" class="mobile-nav-item" data-page="explorar">
-      <span class="mobile-nav-item__icon" aria-hidden="true">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-      </span>
-      <span>Explorar</span>
-    </a>
-    <a href="nuevo-reclamo.html" class="mobile-nav-item" data-page="reportar">
-      <span class="mobile-nav-item__icon" aria-hidden="true">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
-      </span>
-      <span>Reportar</span>
-    </a>
-  </nav>
+  <!-- Navegación móvil táctil inferior inyectada por setupNavigation() -->
+  <nav class="mobile-bottom-nav" role="navigation" aria-label="Navegación inferior móvil"></nav>
 
+  <!-- Script principal del módulo de perfil -->
   <script type="module">
     import { setupNavigation, auth, claimsService, showToast } from '../assets/js/main.js';
-    import { storage } from '../assets/js/utils/storage.js';
+    import { LOCALIDADES_LA_MATANZA } from '../assets/js/data/localidades.js';
+    import { formatters } from '../assets/js/utils/formatters.js';
 
-    // Comprobación de autenticación simulada
+    // 1. Verificación de Autenticación
     if (!auth.isLoggedIn()) {
       auth.setRedirectUrl(window.location.href);
       window.location.href = `iniciar-sesion.html?redirect=${encodeURIComponent(window.location.href)}`;
     }
 
+    // Asegurar inicialización de usuarios si aún no se disparó
+    await auth.initUsers();
+
+    // Inyectar Layout DRY (navbar, bottom nav, footer)
     setupNavigation({ activePage: 'perfil', basePath: '../' });
 
-    const user = auth.getCurrentUser();
-    if (user) {
-      document.getElementById('profile-name').textContent = user.nombre;
-      document.getElementById('profile-email').textContent = user.email;
+    let currentUser = auth.getCurrentUser();
 
-      // Iniciales para el avatar
-      const initials = (user.nombre || 'U')
+    // 2. Elementos del DOM
+    const summaryAvatarInitials = document.getElementById('summary-avatar-initials');
+    const summaryUserName = document.getElementById('summary-user-name');
+    const summaryUserEmail = document.getElementById('summary-user-email');
+    const summaryAuthBadge = document.getElementById('summary-auth-badge');
+    const summaryAuthLabel = document.getElementById('summary-auth-label');
+    const summaryCreatedAt = document.getElementById('summary-created-at');
+    const summaryPrefLocality = document.getElementById('summary-pref-locality');
+
+    const formPersonalInfo = document.getElementById('form-personal-info');
+    const inputProfileName = document.getElementById('input-profile-name');
+    const inputProfileEmail = document.getElementById('input-profile-email');
+    const selectProfileLocalidad = document.getElementById('select-profile-localidad');
+    const errorProfileName = document.getElementById('error-profile-name');
+
+    const statClaimsCreated = document.getElementById('stat-claims-created');
+    const statClaimsJoined = document.getElementById('stat-claims-joined');
+    const badgeTotalActivity = document.getElementById('badge-total-activity');
+
+    const switchNotifOwn = document.getElementById('switch-notif-own');
+    const switchNotifJoined = document.getElementById('switch-notif-joined');
+    const switchNotifResolution = document.getElementById('switch-notif-resolution');
+    const switchNotifAdhesions = document.getElementById('switch-notif-adhesions');
+    const btnSaveNotifications = document.getElementById('btn-save-notifications');
+
+    const securityGoogleBlock = document.getElementById('security-google-block');
+    const formChangePassword = document.getElementById('form-change-password');
+    const inputCurrentPass = document.getElementById('input-current-pass');
+    const inputNewPass = document.getElementById('input-new-pass');
+    const inputConfirmPass = document.getElementById('input-confirm-pass');
+    const errorCurrentPass = document.getElementById('error-current-pass');
+    const errorCurrentPassText = document.getElementById('error-current-pass-text');
+    const errorNewPass = document.getElementById('error-new-pass');
+    const errorNewPassText = document.getElementById('error-new-pass-text');
+    const errorConfirmPass = document.getElementById('error-confirm-pass');
+    const errorConfirmPassText = document.getElementById('error-confirm-pass-text');
+    const btnSubmitChangePass = document.getElementById('btn-submit-change-pass');
+
+    const btnLogoutSidebar = document.getElementById('btn-logout-sidebar');
+    const btnResetSeed = document.getElementById('btn-reset-seed');
+
+    // 3. Cargar Localidades en el Selector
+    function populateLocalidades() {
+      selectProfileLocalidad.innerHTML = '<option value="">Sin configurar (Centro general de La Matanza)</option>';
+      LOCALIDADES_LA_MATANZA.forEach(loc => {
+        const opt = document.createElement('option');
+        opt.value = loc.id;
+        opt.textContent = `${loc.nombre}${loc.esCabecera ? ' (Cabecera)' : ''}`;
+        selectProfileLocalidad.appendChild(opt);
+      });
+    }
+    populateLocalidades();
+
+    // 4. Renderizar Datos del Perfil
+    function renderProfile() {
+      currentUser = auth.getCurrentUser();
+      if (!currentUser) return;
+
+      // Buscar datos ampliados en la colección de usuarios (como createdAt si no vino en sesión)
+      const allUsers = auth.getUsers();
+      const userRecord = allUsers.find(u => u.id === currentUser.id || u.email.toLowerCase() === currentUser.email.toLowerCase());
+
+      const initials = (currentUser.nombre || 'Vecino')
         .split(' ')
         .filter(Boolean)
         .map(n => n.charAt(0))
         .slice(0, 2)
         .join('')
         .toUpperCase();
-      const initialsEl = document.getElementById('profile-avatar-initials');
-      if (initialsEl) initialsEl.textContent = initials;
+
+      summaryAvatarInitials.textContent = initials || 'SS';
+      summaryUserName.textContent = currentUser.nombre;
+      summaryUserEmail.textContent = currentUser.email;
+
+      inputProfileName.value = currentUser.nombre || '';
+      inputProfileEmail.value = currentUser.email || '';
 
       // Localidad preferida
-      const locSelect = document.getElementById('profile-localidad');
-      if (locSelect && user.localidadPreferida) {
-        locSelect.value = user.localidadPreferida;
+      const currentLocId = currentUser.localidadPreferida || '';
+      selectProfileLocalidad.value = currentLocId;
+
+      const matchedLoc = LOCALIDADES_LA_MATANZA.find(l => l.id === currentLocId);
+      summaryPrefLocality.textContent = matchedLoc ? matchedLoc.nombre : 'Sin configurar';
+
+      // Tipo de autenticación
+      const isGoogle = currentUser.loginMethod === 'google';
+      if (isGoogle) {
+        summaryAuthLabel.textContent = 'Cuenta Google';
+        securityGoogleBlock.style.display = 'flex';
+        formChangePassword.style.display = 'none';
+      } else {
+        summaryAuthLabel.textContent = 'Cuenta local (Email)';
+        securityGoogleBlock.style.display = 'none';
+        formChangePassword.style.display = 'block';
       }
+
+      // Fecha de registro
+      const rawCreated = currentUser.createdAt || (userRecord ? userRecord.createdAt : null);
+      if (rawCreated) {
+        try {
+          const d = new Date(rawCreated);
+          summaryCreatedAt.textContent = d.toLocaleDateString('es-AR', { day: 'numeric', month: 'short', year: 'numeric' });
+        } catch {
+          summaryCreatedAt.textContent = 'Enero 2026';
+        }
+      } else {
+        summaryCreatedAt.textContent = 'Enero 2026';
+      }
+
+      // Notificaciones
+      const notifs = currentUser.notificaciones || {};
+      const ownActive = notifs.ownClaims !== undefined ? notifs.ownClaims : true;
+      const joinedActive = notifs.joinedClaims !== undefined ? notifs.joinedClaims : true;
+      const resolutionActive = notifs.resolution !== undefined ? notifs.resolution : true;
+      const adhesionsActive = notifs.newAdhesions !== undefined ? notifs.newAdhesions : true;
+
+      setSwitchState(switchNotifOwn, ownActive);
+      setSwitchState(switchNotifJoined, joinedActive);
+      setSwitchState(switchNotifResolution, resolutionActive);
+      setSwitchState(switchNotifAdhesions, adhesionsActive);
+
+      // Métricas de actividad
+      updateActivityStats();
     }
 
-    function updateClaimsMetrics() {
+    function setSwitchState(switchEl, isActive) {
+      if (!switchEl) return;
+      switchEl.setAttribute('aria-checked', isActive ? 'true' : 'false');
+    }
+
+    function toggleSwitch(switchEl) {
+      const currentState = switchEl.getAttribute('aria-checked') === 'true';
+      setSwitchState(switchEl, !currentState);
+    }
+
+    // Manejador de clics y accesibilidad por teclado en switches
+    [switchNotifOwn, switchNotifJoined, switchNotifResolution, switchNotifAdhesions].forEach(sw => {
+      if (!sw) return;
+      sw.addEventListener('click', () => toggleSwitch(sw));
+      sw.addEventListener('keydown', (e) => {
+        if (e.key === ' ' || e.key === 'Enter') {
+          e.preventDefault();
+          toggleSwitch(sw);
+        }
+      });
+    });
+
+    // 5. Métricas de Actividad (Reclamos creados y apoyados)
+    function updateActivityStats() {
       const creados = claimsService.getByCurrentUser();
-      const sumados = claimsService.getJoinedByCurrentUser();
+      const apoyados = claimsService.getJoinedByCurrentUser();
 
-      const createdEl = document.getElementById('profile-claims-created');
-      const joinedEl = document.getElementById('profile-claims-joined');
-      const totalBadge = document.getElementById('profile-total-claims-badge');
+      statClaimsCreated.textContent = creados.length;
+      statClaimsJoined.textContent = apoyados.length;
 
-      if (createdEl) createdEl.textContent = creados.length;
-      if (joinedEl) joinedEl.textContent = sumados.length;
-      const total = creados.length + sumados.length;
-      if (totalBadge) {
-        totalBadge.textContent = `${total} ${total === 1 ? 'caso' : 'casos'}`;
-      }
+      const total = creados.length + apoyados.length;
+      badgeTotalActivity.textContent = `${total} ${total === 1 ? 'caso' : 'casos'}`;
     }
 
-    updateClaimsMetrics();
+    // 6. Guardar Información Personal y Localidad Preferida
+    formPersonalInfo.addEventListener('submit', (e) => {
+      e.preventDefault();
+      errorProfileName.classList.remove('is-visible');
+      inputProfileName.classList.remove('is-invalid');
 
-    // Guardar localidad preferida
-    document.getElementById('btn-save-profile').addEventListener('click', () => {
-      const locSelect = document.getElementById('profile-localidad');
-      if (user && locSelect) {
-        user.localidadPreferida = locSelect.value;
-        storage.set(storage.KEYS.CURRENT_USER, user);
-        showToast({ message: 'Preferencias guardadas con éxito.', type: 'success' });
+      const nuevoNombre = inputProfileName.value.trim();
+      const nuevaLocalidad = selectProfileLocalidad.value.trim() || null;
+
+      if (!nuevoNombre || nuevoNombre.length < 2) {
+        errorProfileName.classList.add('is-visible');
+        inputProfileName.classList.add('is-invalid');
+        inputProfileName.focus();
+        return;
+      }
+
+      const res = auth.updateProfile({
+        nombre: nuevoNombre,
+        localidadPreferida: nuevaLocalidad
+      });
+
+      if (res.success) {
+        showToast({ message: 'Tus datos personales y localidad preferida se guardaron con éxito.', type: 'success' });
+        renderProfile();
+      } else {
+        showToast({ message: res.error || 'Ocurrió un error al guardar los cambios.', type: 'error' });
       }
     });
 
-    document.getElementById('btn-logout').addEventListener('click', () => {
+    // 7. Guardar Preferencias de Notificaciones
+    btnSaveNotifications.addEventListener('click', () => {
+      const ownClaims = switchNotifOwn.getAttribute('aria-checked') === 'true';
+      const joinedClaims = switchNotifJoined.getAttribute('aria-checked') === 'true';
+      const resolution = switchNotifResolution.getAttribute('aria-checked') === 'true';
+      const newAdhesions = switchNotifAdhesions.getAttribute('aria-checked') === 'true';
+
+      const res = auth.updateProfile({
+        notificaciones: {
+          app: true,
+          email: true,
+          ownClaims,
+          joinedClaims,
+          resolution,
+          newAdhesions
+        }
+      });
+
+      if (res.success) {
+        showToast({ message: 'Preferencias de notificaciones actualizadas correctamente.', type: 'success' });
+        renderProfile();
+      } else {
+        showToast({ message: 'No se pudieron actualizar las preferencias.', type: 'error' });
+      }
+    });
+
+    // 8. Toggles para Ver/Ocultar Contraseñas
+    document.querySelectorAll('.js-toggle-pwd').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.dataset.target;
+        const targetInput = document.getElementById(targetId);
+        if (!targetInput) return;
+
+        const isPassword = targetInput.type === 'password';
+        targetInput.type = isPassword ? 'text' : 'password';
+
+        btn.setAttribute('aria-label', isPassword ? 'Ocultar contraseña' : 'Mostrar contraseña');
+        btn.innerHTML = isPassword
+          ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" y1="2" x2="22" y2="22"/></svg>`
+          : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>`;
+      });
+    });
+
+    // 9. Cambio de Contraseña Local
+    formChangePassword.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Limpiar errores
+      [errorCurrentPass, errorNewPass, errorConfirmPass].forEach(el => el.classList.remove('is-visible'));
+      [inputCurrentPass, inputNewPass, inputConfirmPass].forEach(el => el.classList.remove('is-invalid'));
+
+      const currentPass = inputCurrentPass.value;
+      const newPass = inputNewPass.value;
+      const confirmPass = inputConfirmPass.value;
+
+      let hasError = false;
+
+      if (!currentPass) {
+        errorCurrentPassText.textContent = 'Por favor ingresá tu contraseña actual.';
+        errorCurrentPass.classList.add('is-visible');
+        inputCurrentPass.classList.add('is-invalid');
+        hasError = true;
+      }
+
+      if (!newPass || newPass.length < 6) {
+        errorNewPassText.textContent = 'La nueva contraseña debe tener al menos 6 caracteres.';
+        errorNewPass.classList.add('is-visible');
+        inputNewPass.classList.add('is-invalid');
+        hasError = true;
+      }
+
+      if (newPass !== confirmPass) {
+        errorConfirmPassText.textContent = 'La confirmación no coincide con la nueva contraseña.';
+        errorConfirmPass.classList.add('is-visible');
+        inputConfirmPass.classList.add('is-invalid');
+        hasError = true;
+      }
+
+      if (hasError) return;
+
+      btnSubmitChangePass.disabled = true;
+      btnSubmitChangePass.style.opacity = '0.7';
+
+      try {
+        const res = await auth.changePassword(currentPass, newPass, confirmPass);
+        if (res.success) {
+          showToast({ message: '¡Tu contraseña ha sido actualizada con éxito!', type: 'success' });
+          formChangePassword.reset();
+        } else {
+          if (res.field === 'currentPassword') {
+            errorCurrentPassText.textContent = res.error;
+            errorCurrentPass.classList.add('is-visible');
+            inputCurrentPass.classList.add('is-invalid');
+            inputCurrentPass.focus();
+          } else if (res.field === 'newPassword') {
+            errorNewPassText.textContent = res.error;
+            errorNewPass.classList.add('is-visible');
+            inputNewPass.classList.add('is-invalid');
+            inputNewPass.focus();
+          } else if (res.field === 'confirmPassword') {
+            errorConfirmPassText.textContent = res.error;
+            errorConfirmPass.classList.add('is-visible');
+            inputConfirmPass.classList.add('is-invalid');
+            inputConfirmPass.focus();
+          } else {
+            showToast({ message: res.error || 'No se pudo actualizar la contraseña.', type: 'error' });
+          }
+        }
+      } catch (err) {
+        console.error('Error al cambiar contraseña:', err);
+        showToast({ message: 'Ocurrió un error inesperado al procesar la solicitud.', type: 'error' });
+      } finally {
+        btnSubmitChangePass.disabled = false;
+        btnSubmitChangePass.style.opacity = '1';
+      }
+    });
+
+    // 10. Cerrar Sesión
+    btnLogoutSidebar.addEventListener('click', () => {
       auth.logout();
       window.location.href = '../index.html';
     });
 
-    document.getElementById('btn-reset-seed').addEventListener('click', () => {
+    // 11. Restablecer Datos de Prueba
+    btnResetSeed.addEventListener('click', () => {
       claimsService.resetToSeed();
-      updateClaimsMetrics();
-      showToast({ message: 'Datos de prueba restablecidos correctamente.', type: 'success' });
+      updateActivityStats();
+      showToast({ message: 'Los casos de prueba fueron restablecidos correctamente.', type: 'success' });
     });
+
+    // Inicializar vista
+    renderProfile();
   </script>
 </body>
 </html>
-

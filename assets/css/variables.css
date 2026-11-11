@@ -1,35 +1,106 @@
 /* ==========================================================================
    SoluciónSegura — Tokens y Variables de Diseño (Design Tokens)
-   Paleta institucional de La Matanza, accesibilidad WCAG 2.2 AA
-   y principios de Emil Kowalski & antislop-ui
+   Paleta institucional y ciudadana de La Matanza
+   - Azul institucional: #062F66
+   - Naranja de marca (Acción Principal): #F98001
+   - Celeste de marca: #0284C7
+   - Blanco: #FFFFFF
+   - Azul claro superficies: #EFF6FF
+   - Grafito textos secundarios: #334155
+   Accesibilidad WCAG 2.2 AA / Principios Emil Kowalski & antislop-ui
    ========================================================================== */
 
 :root {
-  /* Identidad SoluciónSegura — Paleta Institucional Cívica */
-  --color-primary-dark: #062F66;     /* Azul oscuro institucional */
-  --color-primary-darker: #041B3B;   /* Fondo de contraste extremo (Footer y fondos nocturnos) */
-  --color-primary-light: #0B428C;    /* Azul medio sobrio */
+  /* ==========================================================================
+     1. TOKENS DE MARCA (Brand Primitive Tokens)
+     ========================================================================== */
+  --color-brand-blue: #062F66;          /* Azul institucional (estructura, encabezados, fondos oscuros) */
+  --color-brand-blue-darker: #041B3B;   /* Azul profundo (contraste extremo, nocturno, footer) */
+  --color-brand-blue-light: #0B428C;    /* Azul medio sobrio */
 
-  --color-accent: #0284C7;           /* Azul de acción primario */
-  --color-accent-hover: #0369A1;     /* Hover accesible con alto contraste */
-  --color-accent-subtle: #E0F2FE;    /* Fondo tenue de interacción */
-  --color-accent-dark: #075985;      /* Acento profundo */
+  --color-brand-orange: #F98001;        /* Naranja del logotipo: acción principal */
+  --color-brand-orange-hover: #E67600;  /* Naranja hover cálido y accesible */
+  --color-brand-orange-active: #C96300; /* Naranja active pulsado */
+  --color-brand-orange-subtle: #FFF7ED; /* Superficie naranja muy tenue (Orange 50) */
+  --color-brand-orange-border: #FED7AA; /* Borde naranja tenue de apoyo */
 
-  --color-surface-light: #F1F5F9;    /* Superficie gris neutra clara */
-  --color-bg-body: #F8FAFC;          /* Fondo base neutro y descansado */
-  --color-surface-card: #FFFFFF;     /* Blanco puro para tarjetas */
-  --color-border: #E2E8F0;           /* Bordes nítidos de precisión */
-  --color-border-hover: #94A3B8;     /* Borde activo */
-  --color-border-subtle: #EDF2F7;    /* Borde tenue secundario */
+  --color-brand-sky: #0284C7;           /* Celeste de marca (enlaces, navegación, selección, foco) */
+  --color-brand-sky-hover: #0369A1;     /* Celeste hover de alto contraste */
+  --color-brand-sky-subtle: #E0F2FE;    /* Fondo celeste tenue de interacción (Sky 100) */
+  --color-brand-sky-dark: #075985;      /* Celeste profundo */
+
+  --color-brand-white: #FFFFFF;         /* Blanco puro */
+  --color-brand-surface-blue: #EFF6FF;  /* Azul claro para superficies (Blue 50) */
+  --color-brand-slate: #334155;         /* Grafito (Slate 700) para textos secundarios (ratio > 9:1) */
+
+  /* ==========================================================================
+     2. TOKENS SEMÁNTICOS DE INTERACCIÓN (Semantic Interaction Tokens)
+     ========================================================================== */
+  /* Acción Principal (Naranja #F98001 con texto azul institucional #062F66, ratio AAA > 5.05:1 / 6.6:1) */
+  --color-action-primary: var(--color-brand-orange);
+  --color-action-primary-hover: var(--color-brand-orange-hover);
+  --color-action-primary-active: var(--color-brand-orange-active);
+  --color-action-primary-text: var(--color-brand-blue);
+  --color-action-primary-border: #EA7500;
+  --color-action-primary-hover-border: #D96800;
+  --color-action-primary-shadow: 0 1px 3px rgba(6, 47, 102, 0.12), 0 1px 2px rgba(249, 128, 1, 0.22);
+  --color-action-primary-shadow-hover: 0 4px 14px rgba(249, 128, 1, 0.35), 0 2px 4px rgba(6, 47, 102, 0.1);
+
+  /* Acción Secundaria (Superficie clara con texto azul institucional) */
+  --color-action-secondary-bg: var(--color-brand-surface-blue);
+  --color-action-secondary-text: var(--color-brand-blue);
+  --color-action-secondary-border: #BFDBFE;
+  --color-action-secondary-hover-bg: #DBEAFE;
+  --color-action-secondary-hover-border: #93C5FD;
+
+  /* Acción Contorno (Outline) */
+  --color-action-outline-bg: transparent;
+  --color-action-outline-text: var(--color-brand-blue);
+  --color-action-outline-border: #CBD5E1;
+  --color-action-outline-hover-bg: var(--color-brand-surface-blue);
+  --color-action-outline-hover-border: var(--color-brand-sky);
+
+  /* Enlaces y Navegación */
+  --color-link: var(--color-brand-sky);
+  --color-link-hover: var(--color-brand-sky-hover);
+  --color-nav-active: var(--color-brand-sky);
+
+  /* Anillo de Foco Accesible (Focus-Visible) */
+  --color-focus-ring: var(--color-brand-sky);
+  --color-focus-ring-shadow: 0 0 0 3px rgba(2, 132, 199, 0.25);
+
+  /* Superficies y Fondos */
+  --color-bg-body: #F8FAFC;             /* Fondo base neutro y descansado */
+  --color-surface-card: #FFFFFF;        /* Blanco puro para tarjetas */
+  --color-surface-light: #F1F5F9;       /* Superficie gris neutra clara */
+  --color-surface-blue-soft: var(--color-brand-surface-blue); /* Superficie azul claro #EFF6FF */
+  --color-surface-accent-subtle: var(--color-brand-sky-subtle);
+
+  /* Bordes */
+  --color-border: #E2E8F0;              /* Bordes nítidos de precisión */
+  --color-border-hover: #94A3B8;        /* Borde activo */
+  --color-border-subtle: #EDF2F7;       /* Borde tenue secundario */
+  --color-border-focus: var(--color-brand-sky);
 
   /* Textos y Lectura (Escala Slate estricta para legibilidad) */
-  --color-text-main: #0F172A;        /* Slate 900: texto principal nítido */
-  --color-text-secondary: #334155;   /* Slate 700: texto secundario (ratio > 9:1) */
-  --color-text-muted: #64748B;       /* Slate 500: metadatos */
-  --color-text-inverse: #FFFFFF;     /* Texto blanco */
-  --color-text-inverse-muted: #CBD5E1; /* Slate 300 para textos secundarios sobre azul oscuro */
+  --color-text-main: #0F172A;           /* Slate 900: texto principal nítido */
+  --color-text-secondary: var(--color-brand-slate); /* Slate 700 (#334155): textos secundarios */
+  --color-text-muted: #64748B;          /* Slate 500: metadatos */
+  --color-text-inverse: #FFFFFF;        /* Texto blanco sobre fondos oscuros */
+  --color-text-inverse-muted: #CBD5E1;  /* Slate 300 para textos sobre azul oscuro */
 
-  /* Estados Funcionales */
+  /* Alias heredados para compatibilidad total con código existente */
+  --color-primary-dark: var(--color-brand-blue);
+  --color-primary-darker: var(--color-brand-blue-darker);
+  --color-primary-light: var(--color-brand-blue-light);
+  --color-accent: var(--color-brand-sky);
+  --color-accent-hover: var(--color-brand-sky-hover);
+  --color-accent-subtle: var(--color-brand-sky-subtle);
+  --color-accent-dark: var(--color-brand-sky-dark);
+
+  /* ==========================================================================
+     3. ESTADOS FUNCIONALES DE RECLAMOS (Diferenciados de acciones de marca)
+     ========================================================================== */
   --state-recibido: #0284C7;
   --state-recibido-bg: #E0F2FE;
   --state-revision: #D97706;
@@ -45,8 +116,10 @@
   --state-cancelado: #64748B;
   --state-cancelado-bg: #F1F5F9;
 
-  /* Categorías de Reclamos (Identidad visual unificada con Mapa, Formulario y Listados) */
-  --cat-pavimento: #C2410C;        /* Naranja institucional accesible (WCAG AA) */
+  /* ==========================================================================
+     4. CATEGORÍAS DE RECLAMOS (Colores semánticos cívicos preservados)
+     ========================================================================== */
+  --cat-pavimento: #C2410C;        /* Naranja/ámbar institucional accesible (WCAG AA) */
   --cat-pavimento-bg: #FFEDD5;     /* Naranja 100 tenue */
   --cat-pavimento-border: #FED7AA; /* Naranja 200 */
 
@@ -58,7 +131,9 @@
   --cat-alumbrado-bg: #EDE9FE;     /* Violeta 100 tenue */
   --cat-alumbrado-border: #DDD6FE; /* Violeta 200 */
 
-  /* Tipografía: Outfit para títulos e Inter para interfaz y texto */
+  /* ==========================================================================
+     5. TIPOGRAFÍA Y ESCALA MODULAR
+     ========================================================================== */
   --font-family-base: "Inter", system-ui, -apple-system, sans-serif;
   --font-family-display: "Outfit", system-ui, -apple-system, sans-serif;
   
@@ -127,7 +202,7 @@
   --header-height-desktop: 80px;
   --bottom-nav-height: 60px;
 
-  /* Hero Section: Azul institucional con armonía de cabecera */
-  --hero-bg: #072F66;
-  --hero-border-bottom: #0A3D80;
+  /* Hero Section: Azul institucional con profundidad cívica */
+  --hero-bg: #062F66;
+  --hero-border-bottom: #0B428C;
 }
