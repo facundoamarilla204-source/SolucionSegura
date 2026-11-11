@@ -23,15 +23,15 @@ export function setupNavigation({ activePage = 'inicio', basePath = '' } = {}) {
   const user = auth.getCurrentUser();
   const userActionsHtml = user
     ? `
-      <a href="${pages}notificaciones.html" class="icon-btn" aria-label="Notificaciones" title="Notificaciones">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-          <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-        </svg>
-        <span class="icon-btn__badge" aria-hidden="true"></span>
-      </a>
-
       <div class="user-menu-wrapper">
+        <a href="${pages}notificaciones.html" class="icon-btn header-notification-btn" aria-label="Notificaciones" title="Notificaciones">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+          <span class="icon-btn__badge" aria-hidden="true"></span>
+        </a>
+
         <button type="button" class="icon-btn user-menu-trigger" id="user-menu-btn" aria-haspopup="menu" aria-expanded="false" aria-label="Menú de cuenta: ${user.nombre}" title="${user.nombre}">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -89,35 +89,41 @@ export function setupNavigation({ activePage = 'inicio', basePath = '' } = {}) {
           </button>
         </div>
       </div>
+      <a href="${pages}nuevo-reclamo.html" class="btn btn--primary btn-header-cta js-btn-reportar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <path d="M12 5v14M5 12h14" />
+        </svg>
+        <span>Realizar reclamo</span>
+      </a>
     `
     : `
-      <div class="user-menu-wrapper">
-        <a href="${pages}iniciar-sesion.html" class="btn btn--outline-inverse btn--sm" id="btn-header-login">
-          Ingresar
-        </a>
-      </div>
+      <a href="${pages}iniciar-sesion.html" class="btn btn-header-login" id="btn-header-login">
+        Ingresar
+      </a>
+      <a href="${pages}nuevo-reclamo.html" class="btn btn--primary btn-header-cta js-btn-reportar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <path d="M12 5v14M5 12h14" />
+        </svg>
+        <span>Realizar reclamo</span>
+      </a>
     `;
 
   header.innerHTML = `
     <div class="container-desktop site-header__inner">
-      <a href="${root}index.html" class="brand-link" aria-label="SoluciónSegura: Inicio">
-        <img src="${root}assets/img/branding/logo-soluciones-segura.png" alt="SoluciónSegura: Reclamos Urbanos La Matanza" class="brand-logo-img">
-      </a>
+      <div class="header-zone header-zone--brand">
+        <a href="${root}index.html" class="brand-link" aria-label="SoluciónSegura: Inicio">
+          <img src="${root}assets/img/branding/logo-soluciones-segura.png" alt="SoluciónSegura: Reclamos Urbanos La Matanza" class="brand-logo-img">
+        </a>
+      </div>
 
-      <nav class="desktop-nav" role="navigation" aria-label="Navegación principal">
+      <nav class="desktop-nav header-zone header-zone--nav" role="navigation" aria-label="Navegación principal">
         <a href="${root}index.html" class="nav-link ${activePage === 'inicio' ? 'is-active' : ''}" data-page="inicio" ${activePage === 'inicio' ? 'aria-current="page"' : ''}>Inicio</a>
         <a href="${pages}explorar.html" class="nav-link ${activePage === 'explorar' ? 'is-active' : ''}" data-page="explorar" ${activePage === 'explorar' ? 'aria-current="page"' : ''}>Explorar</a>
         <a href="${pages}estadisticas.html" class="nav-link ${activePage === 'estadisticas' ? 'is-active' : ''}" data-page="estadisticas" ${activePage === 'estadisticas' ? 'aria-current="page"' : ''}>Estadísticas</a>
         <a href="${pages}ayuda.html" class="nav-link ${activePage === 'ayuda' ? 'is-active' : ''}" data-page="ayuda" ${activePage === 'ayuda' ? 'aria-current="page"' : ''}>Ayuda</a>
-        <a href="${pages}nuevo-reclamo.html" class="btn btn--primary btn--sm js-btn-reportar">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-            <path d="M12 5v14M5 12h14" />
-          </svg>
-          <span>Reportar</span>
-        </a>
       </nav>
 
-      <div class="header-actions">
+      <div class="header-actions header-zone header-zone--actions">
         ${userActionsHtml}
       </div>
     </div>

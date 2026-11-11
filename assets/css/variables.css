@@ -45,18 +45,18 @@
   --state-cancelado: #64748B;
   --state-cancelado-bg: #F1F5F9;
 
-  /* Categorías de Reclamos */
-  --cat-pavimento: #B45309;
-  --cat-pavimento-bg: #FEF3C7;
-  --cat-pavimento-border: #FDE68A;
+  /* Categorías de Reclamos (Identidad visual unificada con Mapa, Formulario y Listados) */
+  --cat-pavimento: #C2410C;        /* Naranja institucional accesible (WCAG AA) */
+  --cat-pavimento-bg: #FFEDD5;     /* Naranja 100 tenue */
+  --cat-pavimento-border: #FED7AA; /* Naranja 200 */
 
-  --cat-residuos: #047857;
-  --cat-residuos-bg: #D1FAE5;
-  --cat-residuos-border: #A7F3D0;
+  --cat-residuos: #047857;         /* Verde institucional accesible (WCAG AA) */
+  --cat-residuos-bg: #D1FAE5;      /* Verde 100 tenue */
+  --cat-residuos-border: #A7F3D0;  /* Verde 200 */
 
-  --cat-alumbrado: #6D28D9;
-  --cat-alumbrado-bg: #EDE9FE;
-  --cat-alumbrado-border: #DDD6FE;
+  --cat-alumbrado: #6D28D9;        /* Violeta institucional accesible (WCAG AA) */
+  --cat-alumbrado-bg: #EDE9FE;     /* Violeta 100 tenue */
+  --cat-alumbrado-border: #DDD6FE; /* Violeta 200 */
 
   /* Tipografía: Outfit para títulos e Inter para interfaz y texto */
   --font-family-base: "Inter", system-ui, -apple-system, sans-serif;
@@ -122,9 +122,9 @@
   --duration-slow: 350ms;
 
   /* Estructura Desktop */
-  --max-width-desktop: 1180px;
-  --header-height-mobile: 60px;
-  --header-height-desktop: 68px;
+  --max-width-desktop: 1280px;
+  --header-height-mobile: 64px;
+  --header-height-desktop: 80px;
   --bottom-nav-height: 60px;
 
   /* Hero Section: Azul institucional con armonía de cabecera */

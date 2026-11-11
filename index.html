@@ -33,29 +33,34 @@
   <!-- Cabecera Institucional -->
   <header class="site-header" role="banner">
     <div class="container-desktop site-header__inner">
-      <a href="index.html" class="brand-link" aria-label="SoluciónSegura: Inicio">
-        <img src="assets/img/branding/logotipo.png" alt="SoluciónSegura: Reclamos Urbanos La Matanza"
-          class="brand-logo-img">
-      </a>
+      <div class="header-zone header-zone--brand">
+        <a href="index.html" class="brand-link" aria-label="SoluciónSegura: Inicio">
+          <img src="assets/img/branding/logo-soluciones-segura.png" alt="SoluciónSegura: Reclamos Urbanos La Matanza"
+            class="brand-logo-img">
+        </a>
+      </div>
 
       <!-- Navegación Superior Desktop -->
-      <nav class="desktop-nav" role="navigation" aria-label="Navegación principal">
+      <nav class="desktop-nav header-zone header-zone--nav" role="navigation" aria-label="Navegación principal">
         <a href="index.html" class="nav-link is-active" data-page="inicio" aria-current="page">Inicio</a>
         <a href="pages/explorar.html" class="nav-link" data-page="explorar">Explorar</a>
         <a href="pages/estadisticas.html" class="nav-link" data-page="estadisticas">Estadísticas</a>
         <a href="pages/ayuda.html" class="nav-link" data-page="ayuda">Ayuda</a>
-        <a href="pages/nuevo-reclamo.html" class="btn btn--primary btn--sm js-btn-reportar">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+      </nav>
+
+      <!-- Acciones de Cabecera (Ingresar / Perfil / Realizar reclamo) -->
+      <div class="header-actions header-zone header-zone--actions">
+        <!-- Renderizado dinámico vía navbar.js -->
+        <a href="pages/iniciar-sesion.html" class="btn btn-header-login" id="btn-header-login">
+          Ingresar
+        </a>
+        <a href="pages/nuevo-reclamo.html" class="btn btn--primary btn-header-cta js-btn-reportar">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
             aria-hidden="true">
             <path d="M12 5v14M5 12h14" />
           </svg>
-          <span>Reportar</span>
+          <span>Realizar reclamo</span>
         </a>
-      </nav>
-
-      <!-- Acciones de Cabecera (Campana / Perfil / Login) -->
-      <div class="header-actions">
-        <!-- Renderizado dinámico vía navbar.js -->
       </div>
     </div>
   </header>
@@ -104,7 +109,7 @@
           </span>
           <span aria-hidden="true">·</span>
           <span class="hero-trust-proof__item">
-            +3.400 vecinos sumados
+            3.420 adhesiones vecinales
           </span>
           <span aria-hidden="true">·</span>
           <span class="hero-trust-proof__item">
@@ -155,7 +160,7 @@
               <div class="category-card__header">
                 <div class="category-card__icon-wrapper category-card__icon-wrapper--pavimento" aria-hidden="true">
                   <!-- Icono de Calzada / Carretera con demarcación vial central -->
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
                     <path d="M4 20L8 4h8l4 16" />
                     <line x1="12" y1="6" x2="12" y2="8" />
@@ -163,7 +168,6 @@
                     <line x1="12" y1="17" x2="12" y2="19" />
                   </svg>
                 </div>
-                <span class="category-card__pill category-card__pill--pavimento">Vial</span>
               </div>
 
               <h3 class="category-card__title">Calles y pavimento</h3>
@@ -189,7 +193,7 @@
               <div class="category-card__header">
                 <div class="category-card__icon-wrapper category-card__icon-wrapper--residuos" aria-hidden="true">
                   <!-- Icono de Contenedor Urbano de Residuos -->
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
                     <path d="M3 6h18" />
                     <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
@@ -198,7 +202,6 @@
                     <line x1="14" y1="11" x2="14" y2="16" />
                   </svg>
                 </div>
-                <span class="category-card__pill category-card__pill--residuos">Higiene</span>
               </div>
 
               <h3 class="category-card__title">Basura y residuos</h3>
@@ -224,7 +227,7 @@
               <div class="category-card__header">
                 <div class="category-card__icon-wrapper category-card__icon-wrapper--alumbrado" aria-hidden="true">
                   <!-- Icono de Farola / Poste de Alumbrado Público con haz de luz -->
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
                     <path d="M6 21V5a3 3 0 0 1 3-3h7a2 2 0 0 1 2 2v3" />
                     <path d="M15 7h6l-1.5 5h-3z" />
@@ -234,7 +237,6 @@
                     <line x1="3" y1="21" x2="9" y2="21" />
                   </svg>
                 </div>
-                <span class="category-card__pill category-card__pill--alumbrado">Iluminación</span>
               </div>
 
               <h3 class="category-card__title">Alumbrado público</h3>
@@ -294,16 +296,6 @@
               <p class="step-card__description">
                 Buscá la dirección, utilizá tu ubicación o marcá el lugar en el mapa.
               </p>
-              <div class="step-card__features" aria-hidden="true">
-                <span class="step-card__tag">
-                  <span class="step-card__tag-dot"></span>
-                  Dirección o mapa
-                </span>
-                <span class="step-card__tag">
-                  <span class="step-card__tag-dot"></span>
-                  Geolocalización
-                </span>
-              </div>
             </article>
           </li>
 
@@ -332,16 +324,6 @@
               <p class="step-card__description">
                 Elegí una categoría, describí el problema y agregá fotos si querés.
               </p>
-              <div class="step-card__features" aria-hidden="true">
-                <span class="step-card__tag">
-                  <span class="step-card__tag-dot"></span>
-                  Calles, residuos o luz
-                </span>
-                <span class="step-card__tag">
-                  <span class="step-card__tag-dot"></span>
-                  Fotos y detalles
-                </span>
-              </div>
             </article>
           </li>
 
@@ -367,20 +349,51 @@
               <p class="step-card__description">
                 Consultá el estado del reclamo, sus actualizaciones y los vecinos que se sumaron.
               </p>
-              <div class="step-card__features" aria-hidden="true">
-                <span class="step-card__tag">
-                  <span class="step-card__tag-dot"></span>
-                  Historial y avances
-                </span>
-                <span class="step-card__tag">
-                  <span class="step-card__tag-dot"></span>
-                  Comunidad barrial
-                </span>
+
+              <!-- Mini línea de progreso: Recibido → En revisión → En proceso → Resuelto -->
+              <div class="mini-status-tracker" role="group" aria-label="Evolución del reclamo: Recibido, En revisión, En proceso y Resuelto">
+                <div class="mini-status-step is-done">
+                  <span class="mini-status-dot" aria-hidden="true">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                  </span>
+                  <span class="mini-status-label">Recibido</span>
+                </div>
+                <span class="mini-status-connector is-done" aria-hidden="true"></span>
+                <div class="mini-status-step is-done">
+                  <span class="mini-status-dot" aria-hidden="true">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                  </span>
+                  <span class="mini-status-label">En revisión</span>
+                </div>
+                <span class="mini-status-connector is-current" aria-hidden="true"></span>
+                <div class="mini-status-step is-current">
+                  <span class="mini-status-dot" aria-hidden="true"></span>
+                  <span class="mini-status-label">En proceso</span>
+                </div>
+                <span class="mini-status-connector" aria-hidden="true"></span>
+                <div class="mini-status-step">
+                  <span class="mini-status-dot" aria-hidden="true"></span>
+                  <span class="mini-status-label">Resuelto</span>
+                </div>
               </div>
             </article>
           </li>
 
         </ol>
+
+        <!-- Enlace visible a Centro de Ayuda -->
+        <div class="section-how-it-works__footer">
+          <a href="pages/ayuda.html" class="how-it-works-help-link">
+            <span>Cómo usar SoluciónSegura</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </a>
+        </div>
 
       </div>
     </section>
@@ -580,7 +593,7 @@
                     <polyline points="22 4 12 14.01 9 11.01" />
                   </svg>
                 </span>
-                <span class="badge badge--resuelto">Solucionados</span>
+                <span class="badge badge--resuelto">90% resueltos</span>
               </div>
               <div>
                 <p class="stat-metric-card__number">1.156</p>
@@ -610,6 +623,28 @@
               </div>
             </div>
 
+            <!-- Balance cuantitativo unificado (Suma matemática coherente: 86 + 1.156 + 42 = 1.284) -->
+            <div class="stats-metric-panel__balance" role="note"
+              aria-label="Balance cuantitativo: 86 activos más 1.156 resueltos más 42 desestimados totalizan 1.284 reclamos registrados">
+              <div class="stats-balance-track">
+                <div class="stats-balance-seg stats-balance-seg--resuelto" style="width: 90%;"
+                  title="Resueltos: 90% (1.156 reclamos)"></div>
+                <div class="stats-balance-seg stats-balance-seg--activo" style="width: 6.7%;"
+                  title="Activos: 6.7% (86 reclamos)"></div>
+                <div class="stats-balance-seg stats-balance-seg--cancelado" style="width: 3.3%;"
+                  title="Rechazados o cancelados: 3.3% (42 reclamos)"></div>
+              </div>
+              <div class="stats-balance-legend">
+                <span class="stats-balance-item"><strong>1.156</strong> resueltos (90%)</span>
+                <span class="stats-balance-dot" aria-hidden="true">·</span>
+                <span class="stats-balance-item"><strong>86</strong> activos</span>
+                <span class="stats-balance-dot" aria-hidden="true">·</span>
+                <span class="stats-balance-item"><strong>42</strong> cancelados</span>
+                <span class="stats-balance-dot" aria-hidden="true">=</span>
+                <span class="stats-balance-item"><strong>1.284</strong> total</span>
+              </div>
+            </div>
+
           </div>
 
           <!-- Columna Derecha: Gráfico Proporcional de Distribución por Categoría -->
@@ -626,23 +661,30 @@
               <div class="distribution-stacked-bar" role="img"
                 aria-label="Gráfico de distribución: Calles 52%, Residuos 28%, Alumbrado 20%">
                 <div class="distribution-segment distribution-segment--pavimento" style="width: 52%;"
-                  title="Calles y pavimento: 52%"></div>
+                  title="Calles y pavimento: 52% (668 reclamos)"></div>
                 <div class="distribution-segment distribution-segment--residuos" style="width: 28%;"
-                  title="Basura y residuos: 28%"></div>
+                  title="Basura y residuos: 28% (359 reclamos)"></div>
                 <div class="distribution-segment distribution-segment--alumbrado" style="width: 20%;"
-                  title="Alumbrado público: 20%"></div>
+                  title="Alumbrado público: 20% (257 reclamos)"></div>
               </div>
 
-              <!-- Desglose por categoría con barras de progreso individuales -->
+              <!-- Desglose por categoría con barras de progreso individuales e iconografía accesible -->
               <ul class="distribution-breakdown" role="list">
 
-                <!-- Categoría 1: Pavimento -->
+                <!-- Categoría 1: Pavimento (Naranja) -->
                 <li class="distribution-item">
                   <div class="distribution-item__meta">
                     <span class="distribution-item__name">
-                      <span class="distribution-item__bullet distribution-item__bullet--pavimento"
-                        aria-hidden="true"></span>
-                      Calles y pavimento
+                      <span class="distribution-item__icon distribution-item__icon--pavimento" aria-hidden="true">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M4 20L8 4h8l4 16" />
+                          <line x1="12" y1="6" x2="12" y2="8" />
+                          <line x1="12" y1="11" x2="12" y2="14" />
+                          <line x1="12" y1="17" x2="12" y2="19" />
+                        </svg>
+                      </span>
+                      <span>Calles y pavimento</span>
                     </span>
                     <span class="distribution-item__values">
                       <strong class="distribution-item__percentage">52%</strong> (668 reclamos)
@@ -653,13 +695,19 @@
                   </div>
                 </li>
 
-                <!-- Categoría 2: Residuos -->
+                <!-- Categoría 2: Residuos (Verde) -->
                 <li class="distribution-item">
                   <div class="distribution-item__meta">
                     <span class="distribution-item__name">
-                      <span class="distribution-item__bullet distribution-item__bullet--residuos"
-                        aria-hidden="true"></span>
-                      Basura y residuos
+                      <span class="distribution-item__icon distribution-item__icon--residuos" aria-hidden="true">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M3 6h18" />
+                          <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                          <path d="M5 6l1.2 13.2A2 2 0 0 0 8.2 21h7.6a2 2 0 0 0 2-1.8L19 6" />
+                        </svg>
+                      </span>
+                      <span>Basura y residuos</span>
                     </span>
                     <span class="distribution-item__values">
                       <strong class="distribution-item__percentage">28%</strong> (359 reclamos)
@@ -670,13 +718,18 @@
                   </div>
                 </li>
 
-                <!-- Categoría 3: Alumbrado -->
+                <!-- Categoría 3: Alumbrado (Violeta) -->
                 <li class="distribution-item">
                   <div class="distribution-item__meta">
                     <span class="distribution-item__name">
-                      <span class="distribution-item__bullet distribution-item__bullet--alumbrado"
-                        aria-hidden="true"></span>
-                      Alumbrado público
+                      <span class="distribution-item__icon distribution-item__icon--alumbrado" aria-hidden="true">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M6 21V5a3 3 0 0 1 3-3h7a2 2 0 0 1 2 2v3" />
+                          <path d="M15 7h6l-1.5 5h-3z" />
+                        </svg>
+                      </span>
+                      <span>Alumbrado público</span>
                     </span>
                     <span class="distribution-item__values">
                       <strong class="distribution-item__percentage">20%</strong> (257 reclamos)
@@ -718,52 +771,26 @@
               Tu participación puede hacer la diferencia.
             </h2>
             <p class="cta-banner__desc">
-              Informá los problemas que encontrás en tu barrio y sumate a los reclamos de otros vecinos.
+              Informá los problemas que encontrás en tu barrio, consultá el seguimiento de estado y sumate a los reclamos de otros vecinos.
             </p>
-
-            <div class="cta-banner__actions">
-              <a href="pages/nuevo-reclamo.html" class="btn btn--primary btn--lg js-btn-reportar">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                  aria-hidden="true">
-                  <circle cx="12" cy="12" r="10" />
-                  <path d="M12 8v8M8 12h8" />
-                </svg>
-                <span>Realizar reclamo</span>
-              </a>
-              <a href="pages/explorar.html" class="btn btn--outline btn--lg">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                  aria-hidden="true">
-                  <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6" />
-                  <line x1="8" y1="2" x2="8" y2="18" />
-                  <line x1="16" y1="6" x2="16" y2="22" />
-                </svg>
-                <span>Explorar reclamos</span>
-              </a>
-            </div>
           </div>
 
-          <!-- Composición Asimétrica Territorial (Sin fotos duplicadas del hero) -->
-          <div class="cta-banner__visual" aria-hidden="true">
-            <div class="cta-territory-card">
-              <div class="cta-territory-card__header">
-                <h3 class="cta-territory-card__title">Red Comunitaria</h3>
-                <span class="cta-territory-card__tag">La Matanza</span>
-              </div>
-              <ul class="cta-territory-card__list">
-                <li class="cta-territory-card__item">
-                  <span class="cta-territory-card__dot"></span>
-                  <span>16 localidades conectadas</span>
-                </li>
-                <li class="cta-territory-card__item">
-                  <span class="cta-territory-card__dot"></span>
-                  <span>Seguimiento de estado en tiempo real</span>
-                </li>
-                <li class="cta-territory-card__item">
-                  <span class="cta-territory-card__dot"></span>
-                  <span>Adhesión de vecinos sin duplicar casos</span>
-                </li>
-              </ul>
-            </div>
+          <div class="cta-banner__actions">
+            <a href="pages/nuevo-reclamo.html" class="btn btn--primary btn--lg js-btn-reportar">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 8v8M8 12h8" />
+              </svg>
+              <span>Realizar reclamo</span>
+            </a>
+            <a href="pages/explorar.html" class="cta-secondary-link">
+              <span>Explorar reclamos</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </a>
           </div>
 
         </div>

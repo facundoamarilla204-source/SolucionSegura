@@ -243,15 +243,15 @@
 }
 
 .distribution-segment--pavimento {
-  background-color: #B45309;
+  background-color: var(--cat-pavimento);
 }
 
 .distribution-segment--residuos {
-  background-color: #047857;
+  background-color: var(--cat-residuos);
 }
 
 .distribution-segment--alumbrado {
-  background-color: #6D28D9;
+  background-color: var(--cat-alumbrado);
 }
 
 /* Lista de Desglose con Barras Horizontales Individuales */
@@ -286,6 +286,27 @@
   color: var(--color-text-main);
 }
 
+.distribution-item__icon {
+  width: 16px;
+  height: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.distribution-item__icon--pavimento {
+  color: var(--cat-pavimento);
+}
+
+.distribution-item__icon--residuos {
+  color: var(--cat-residuos);
+}
+
+.distribution-item__icon--alumbrado {
+  color: var(--cat-alumbrado);
+}
+
 .distribution-item__bullet {
   width: 10px;
   height: 10px;
@@ -294,15 +315,15 @@
 }
 
 .distribution-item__bullet--pavimento {
-  background-color: #B45309;
+  background-color: var(--cat-pavimento);
 }
 
 .distribution-item__bullet--residuos {
-  background-color: #047857;
+  background-color: var(--cat-residuos);
 }
 
 .distribution-item__bullet--alumbrado {
-  background-color: #6D28D9;
+  background-color: var(--cat-alumbrado);
 }
 
 .distribution-item__values {
@@ -329,15 +350,64 @@
 }
 
 .distribution-item__fill--pavimento {
-  background-color: #B45309;
+  background-color: var(--cat-pavimento);
 }
 
 .distribution-item__fill--residuos {
-  background-color: #047857;
+  background-color: var(--cat-residuos);
 }
 
 .distribution-item__fill--alumbrado {
-  background-color: #6D28D9;
+  background-color: var(--cat-alumbrado);
+}
+
+/* Barra de balance y coherencia matemática del panel cívico */
+.stats-metric-panel__balance {
+  grid-column: 1 / -1;
+  background-color: #F8FAFC;
+  border-top: 1px solid var(--color-border);
+  padding: var(--space-4) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.stats-balance-track {
+  display: flex;
+  height: 6px;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  background-color: #E2E8F0;
+}
+
+.stats-balance-seg--resuelto {
+  background-color: #059669;
+}
+
+.stats-balance-seg--activo {
+  background-color: #0284C7;
+}
+
+.stats-balance-seg--cancelado {
+  background-color: #94A3B8;
+}
+
+.stats-balance-legend {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+.stats-balance-item strong {
+  color: var(--color-primary-dark);
+}
+
+.stats-balance-dot {
+  color: #CBD5E1;
 }
 
 /* Enlace a la vista completa de estadísticas */

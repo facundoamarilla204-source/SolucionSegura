@@ -68,8 +68,31 @@
   }
 
   .brand-logo-img {
-    height: 34px;
+    height: 36px;
   }
 }
+
+/* Tablet: navegación fluida sin roturas de línea */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .desktop-nav {
+    gap: 6px;
+  }
+
+  .nav-link {
+    padding: 8px 10px;
+    font-size: 0.875rem; /* 14px en tablet para garantizar espacio */
+  }
+
+  .btn-header-cta {
+    padding: 0 14px;
+    font-size: 0.875rem;
+  }
+
+  .btn-header-login {
+    padding: 0 14px;
+    font-size: 0.875rem;
+  }
+}
+
 
 

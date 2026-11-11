@@ -66,8 +66,20 @@
   height: var(--header-height-mobile);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .site-header__inner {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    height: var(--header-height-desktop);
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     height: var(--header-height-desktop);
   }
 }
@@ -421,10 +433,9 @@
   padding: var(--space-8);
   color: var(--color-text-primary);
   box-shadow: 0 4px 20px -2px rgba(6, 47, 102, 0.06), 0 1px 3px rgba(6, 47, 102, 0.04);
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-8);
-  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
   position: relative;
   overflow: hidden;
 }
@@ -446,9 +457,11 @@
   }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 992px) {
   .cta-banner {
-    grid-template-columns: 1.35fr 0.9fr;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
     gap: var(--space-10);
   }
 }
@@ -458,6 +471,7 @@
   flex-direction: column;
   align-items: flex-start;
   text-align: left;
+  flex: 1;
 }
 
 .cta-banner__kicker {
@@ -491,8 +505,8 @@
   font-size: var(--font-size-base);
   line-height: var(--line-height-relaxed);
   color: var(--color-text-secondary);
-  margin-bottom: var(--space-6);
-  max-width: 48ch;
+  margin-bottom: 0;
+  max-width: 52ch;
   text-wrap: pretty;
 }
 
@@ -501,6 +515,7 @@
   flex-direction: column;
   width: 100%;
   gap: var(--space-3);
+  flex-shrink: 0;
 }
 
 @media (min-width: 540px) {
@@ -512,78 +527,50 @@
   }
 }
 
-/* Detalle Territorial Asimétrico Derecho: Tarjeta de contexto cívico */
-.cta-banner__visual {
-  display: none;
-}
-
-@media (min-width: 1024px) {
-  .cta-banner__visual {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-  }
-}
-
-.cta-territory-card {
-  background: #F8FAFC;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: var(--space-6);
-  width: 100%;
-  max-width: 320px;
-}
-
-.cta-territory-card__header {
-  display: flex;
+/* Enlace secundario estilizado para la CTA final (Diferenciado del botón del Hero) */
+.cta-secondary-link {
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: var(--space-4);
-  padding-bottom: var(--space-3);
-  border-bottom: 1px solid var(--color-border);
-}
-
-.cta-territory-card__title {
-  font-family: var(--font-family-display);
-  font-size: 0.9375rem;
-  font-weight: 700;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
   color: var(--color-primary-dark);
+  text-decoration: none;
+  padding: var(--space-3) var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  min-height: 48px;
+  box-sizing: border-box;
+  transition: all var(--duration-fast) var(--ease-out);
 }
 
-.cta-territory-card__tag {
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: #0369A1;
-  background: #E0F2FE;
-  padding: 3px 8px;
-  border-radius: var(--radius-full);
+.cta-secondary-link:hover {
+  color: var(--color-accent-dark);
+  border-color: #BAE6FD;
+  background-color: var(--color-accent-subtle);
+  text-decoration: none;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.08);
 }
 
-.cta-territory-card__list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  font-size: var(--font-size-xs);
-  color: var(--color-text-secondary);
+.cta-secondary-link:active {
+  transform: scale(0.98);
 }
 
-.cta-territory-card__item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.cta-secondary-link:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }
 
-.cta-territory-card__dot {
-  width: 7px;
-  height: 7px;
-  border-radius: var(--radius-full);
-  background-color: var(--color-accent);
-  flex-shrink: 0;
+.cta-secondary-link svg {
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.cta-secondary-link:hover svg {
+  transform: translateX(4px);
 }
 
 /* ==========================================================================
@@ -692,6 +679,12 @@
   text-decoration: underline;
 }
 
+.site-footer__link:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-xs);
+}
+
 .site-footer__locations {
   list-style: none;
   padding: 0;
@@ -745,7 +738,7 @@
 
 .site-footer__copy {
   font-size: var(--font-size-xs);
-  color: #64748B;
+  color: #94A3B8;
   margin: 0;
   white-space: nowrap;
 }
