@@ -317,7 +317,7 @@
 
     // 5. Simulación de Registro con Google
     const btnGoogle = document.getElementById('btn-register-google');
-    btnGoogle.addEventListener('click', () => {
+    btnGoogle.addEventListener('click', async () => {
       btnGoogle.style.opacity = '0.7';
       btnGoogle.style.pointerEvents = 'none';
 
@@ -327,22 +327,20 @@
         duration: 2000
       });
 
-      setTimeout(() => {
-        auth.loginWithGoogle(null, false);
-        showToast({
-          message: '¡Cuenta creada con éxito! Redirigiendo...',
-          type: 'success',
-          duration: 2500
-        });
+      await auth.loginWithGoogle(null, false);
+      showToast({
+        message: '¡Cuenta creada con éxito! Redirigiendo...',
+        type: 'success',
+        duration: 2500
+      });
 
-        setTimeout(() => {
-          auth.handleRedirect('../index.html');
-        }, 500);
-      }, 600);
+      setTimeout(() => {
+        auth.handleRedirect('../index.html');
+      }, 400);
     });
 
     // 6. Envío y Creación de Cuenta Simulada
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
       let hasErrors = false;
@@ -394,8 +392,24 @@
       btnText.textContent = 'Creando cuenta...';
       submitBtn.disabled = true;
 
-      setTimeout(() => {
-        auth.register(nameVal, emailVal, passVal, null, false);
+      try {
+        const res = await auth.register(nameVal, emailVal, passVal, null, false);
+        if (!res.success) {
+          submitBtn.classList.remove('is-loading');
+          btnText.textContent = 'Crear cuenta ciudadana';
+          submitBtn.disabled = false;
+
+          if (res.field === 'email') {
+            showError(emailInput, emailError, res.error);
+            emailInput.focus();
+          } else {
+            showToast({
+              message: res.error || 'Ocurrió un error al crear la cuenta.',
+              type: 'error'
+            });
+          }
+          return;
+        }
 
         showToast({
           message: '¡Cuenta ciudadana creada con éxito! Redirigiendo...',
@@ -405,8 +419,17 @@
 
         setTimeout(() => {
           auth.handleRedirect('../index.html');
-        }, 500);
-      }, 600);
+        }, 400);
+      } catch (err) {
+        console.error('[Registro] Error:', err);
+        submitBtn.classList.remove('is-loading');
+        btnText.textContent = 'Crear cuenta ciudadana';
+        submitBtn.disabled = false;
+        showToast({
+          message: 'Error al procesar el registro. Intentalo nuevamente.',
+          type: 'error'
+        });
+      }
     });
   </script>
 </body>

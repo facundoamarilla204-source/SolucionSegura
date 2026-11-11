@@ -24,23 +24,78 @@ export function setupNavigation({ activePage = 'inicio', basePath = '' } = {}) {
   const userActionsHtml = user
     ? `
       <a href="${pages}notificaciones.html" class="icon-btn" aria-label="Notificaciones" title="Notificaciones">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
           <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
         </svg>
         <span class="icon-btn__badge" aria-hidden="true"></span>
       </a>
-      <a href="${pages}perfil.html" class="icon-btn" aria-label="Mi Perfil" title="${user.nombre}">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-          <circle cx="12" cy="7" r="4"></circle>
-        </svg>
-      </a>
+
+      <div class="user-menu-wrapper">
+        <button type="button" class="icon-btn user-menu-trigger" id="user-menu-btn" aria-haspopup="menu" aria-expanded="false" aria-label="Menú de cuenta: ${user.nombre}" title="${user.nombre}">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </button>
+
+        <div class="user-menu-dropdown" id="user-menu-dropdown" role="menu" aria-labelledby="user-menu-btn" hidden>
+          <div class="user-menu-header">
+            <span class="user-menu-name">${user.nombre}</span>
+            <span class="user-menu-email">${user.email}</span>
+          </div>
+          <hr class="user-menu-divider" role="separator">
+          <a href="${pages}mis-reclamos.html" class="user-menu-item ${activePage === 'mis-reclamos' ? 'is-active' : ''}" role="menuitem">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+            <span>Mis reclamos</span>
+          </a>
+          <a href="${pages}perfil.html" class="user-menu-item ${activePage === 'perfil' ? 'is-active' : ''}" role="menuitem">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span>Mi perfil</span>
+          </a>
+          <a href="${pages}estadisticas.html" class="user-menu-item ${activePage === 'estadisticas' ? 'is-active' : ''}" role="menuitem">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <line x1="18" y1="20" x2="18" y2="10"></line>
+              <line x1="12" y1="20" x2="12" y2="4"></line>
+              <line x1="6" y1="20" x2="6" y2="14"></line>
+            </svg>
+            <span>Estadísticas</span>
+          </a>
+          <a href="${pages}ayuda.html" class="user-menu-item ${activePage === 'ayuda' ? 'is-active' : ''}" role="menuitem">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            <span>Ayuda</span>
+          </a>
+          <hr class="user-menu-divider" role="separator">
+          <button type="button" class="user-menu-item user-menu-item--danger js-logout-action" role="menuitem">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+            <span>Cerrar sesión</span>
+          </button>
+        </div>
+      </div>
     `
     : `
-      <a href="${pages}iniciar-sesion.html" class="btn btn--outline-inverse btn--sm">
-        Ingresar
-      </a>
+      <div class="user-menu-wrapper">
+        <a href="${pages}iniciar-sesion.html" class="btn btn--outline-inverse btn--sm" id="btn-header-login">
+          Ingresar
+        </a>
+      </div>
     `;
 
   header.innerHTML = `
@@ -196,5 +251,106 @@ export function setupNavigation({ activePage = 'inicio', basePath = '' } = {}) {
       }
     });
   });
+
+  // 5. INTERACTIVIDAD DEL MENÚ CONTEXTUAL DE PERFIL (Clic, Teclado, Touch, Escape y Logout)
+  const menuBtn = header.querySelector('#user-menu-btn');
+  const menuDropdown = header.querySelector('#user-menu-dropdown');
+
+  if (menuBtn && menuDropdown) {
+    const menuItems = Array.from(menuDropdown.querySelectorAll('[role="menuitem"]'));
+
+    const openMenu = () => {
+      menuDropdown.removeAttribute('hidden');
+      menuBtn.setAttribute('aria-expanded', 'true');
+      menuBtn.classList.add('is-active');
+    };
+
+    const closeMenu = (returnFocus = false) => {
+      menuDropdown.setAttribute('hidden', '');
+      menuBtn.setAttribute('aria-expanded', 'false');
+      menuBtn.classList.remove('is-active');
+      if (returnFocus) {
+        menuBtn.focus();
+      }
+    };
+
+    const toggleMenu = () => {
+      const isExpanded = menuBtn.getAttribute('aria-expanded') === 'true';
+      if (isExpanded) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    };
+
+    menuBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleMenu();
+    });
+
+    menuBtn.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openMenu();
+        if (menuItems.length > 0) {
+          menuItems[0].focus();
+        }
+      } else if (e.key === 'Escape') {
+        closeMenu(true);
+      }
+    });
+
+    menuDropdown.addEventListener('keydown', (e) => {
+      const currentIndex = menuItems.indexOf(document.activeElement);
+
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closeMenu(true);
+      } else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        const nextIndex = currentIndex < menuItems.length - 1 ? currentIndex + 1 : 0;
+        menuItems[nextIndex].focus();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        const prevIndex = currentIndex > 0 ? currentIndex - 1 : menuItems.length - 1;
+        menuItems[prevIndex].focus();
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        if (menuItems.length > 0) menuItems[0].focus();
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        if (menuItems.length > 0) menuItems[menuItems.length - 1].focus();
+      } else if (e.key === 'Tab') {
+        closeMenu();
+      }
+    });
+
+    menuItems.forEach(item => {
+      item.addEventListener('click', () => {
+        closeMenu();
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!menuBtn.contains(e.target) && !menuDropdown.contains(e.target)) {
+        closeMenu();
+      }
+    });
+
+    const logoutBtn = menuDropdown.querySelector('.js-logout-action');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        auth.logout();
+        closeMenu();
+        const currentPath = window.location.pathname.toLowerCase();
+        if (currentPath.includes('mis-reclamos') || currentPath.includes('perfil') || currentPath.includes('detalle-reclamo') || currentPath.includes('nuevo-reclamo')) {
+          window.location.href = `${root}index.html`;
+        } else {
+          setupNavigation({ activePage, basePath });
+        }
+      });
+    }
+  }
 }
 

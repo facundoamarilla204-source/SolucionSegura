@@ -5,6 +5,7 @@
 
 const STORAGE_KEYS = {
   CURRENT_USER: 'solucionsegura_current_user',
+  USERS: 'solucionsegura_users',
   RECLAMOS: 'solucionsegura_reclamos',
   BORRADOR: 'solucionsegura_borrador',
   NOTIFICACIONES: 'solucionsegura_notificaciones',

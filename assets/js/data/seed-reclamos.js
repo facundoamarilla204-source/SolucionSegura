@@ -59,7 +59,7 @@ export const INITIAL_RECLAMOS = [
     fotos: [
       'assets/img/reclamos/residuos/basura-1.png'
     ],
-    participantes: ['usr_vecino_05', 'usr_vecino_06', 'usr_vecino_07'],
+    participantes: ['usr_vecino_05', 'usr_vecino_06', 'usr_vecino_07', 'usr_vecino_demo'],
     historial: [
       {
         fecha: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
@@ -161,6 +161,200 @@ export const INITIAL_RECLAMOS = [
         fecha: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
         estado: 'recibido',
         nota: 'Reporte ingresado hace pocas horas.'
+      }
+    ]
+  },
+  {
+    id: 'LM-48350',
+    titulo: 'Bache profundo sobre calle Almafuerte',
+    categoria: 'pavimento',
+    descripcion: 'Pozo de reciente formación a 20 metros de la intersección. Dificulta la salida de vehículos particulares.',
+    direccion: 'Almafuerte 3150, San Justo',
+    localidadId: 'san-justo',
+    lat: -34.6791,
+    lng: -58.5574,
+    creadorId: 'usr_vecino_demo',
+    creadorNombre: 'Mariana G.',
+    fecha: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
+    estado: 'recibido',
+    prioridad: 'media',
+    fotos: [
+      'assets/img/reclamos/calles/calle-1.jpg',
+      'assets/img/reclamos/calles/calle-2.jpg'
+    ],
+    participantes: ['usr_vecino_demo'],
+    historial: [
+      {
+        fecha: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
+        estado: 'recibido',
+        nota: 'Reclamo recibido en la plataforma ciudadana.'
+      }
+    ]
+  },
+  {
+    id: 'LM-48220',
+    titulo: 'Reparación de calzada en Av. de Mayo',
+    categoria: 'pavimento',
+    descripcion: 'Reparación de bache sobre carril principal reportado la semana pasada.',
+    direccion: 'Av. de Mayo y Belgrano, Ramos Mejía',
+    localidadId: 'ramos-mejia',
+    lat: -34.6480,
+    lng: -58.5645,
+    creadorId: 'usr_vecino_demo',
+    creadorNombre: 'Mariana G.',
+    fecha: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString(),
+    estado: 'resuelto',
+    prioridad: 'media',
+    calificacionEstrellas: null,
+    evaluacionSolucion: null,
+    fotos: [
+      'assets/img/reclamos/calles/calle-3.jpg'
+    ],
+    participantes: ['usr_vecino_demo', 'usr_vecino_02'],
+    historial: [
+      {
+        fecha: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString(),
+        estado: 'recibido',
+        nota: 'Reclamo creado por el vecino.'
+      },
+      {
+        fecha: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+        estado: 'en_proceso',
+        nota: 'Cuadrilla técnica intervino la calzada.'
+      },
+      {
+        fecha: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+        estado: 'resuelto',
+        nota: 'Trabajo finalizado. Esperando validación del vecino creador.'
+      }
+    ]
+  },
+  {
+    id: 'LM-48150',
+    titulo: 'Basural clandestino sobre terreno baldío',
+    categoria: 'residuos',
+    descripcion: 'Acumulación de restos de obra y ramas en terreno sin cerco perimetral.',
+    direccion: 'Monseñor Marcón 3050, San Justo',
+    localidadId: 'san-justo',
+    lat: -34.6812,
+    lng: -58.5541,
+    creadorId: 'usr_vecino_demo',
+    creadorNombre: 'Mariana G.',
+    fecha: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+    estado: 'rechazado',
+    subsanable: true,
+    motivoRechazo: 'La altura catastral informada no coincide con el trazado oficial de La Matanza. Por favor precisar la numeración correcta o calle transversal.',
+    fotos: [
+      'assets/img/reclamos/residuos/basura-1.png'
+    ],
+    participantes: ['usr_vecino_demo'],
+    historial: [
+      {
+        fecha: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+        estado: 'recibido',
+        nota: 'Reclamo recibido.'
+      },
+      {
+        fecha: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+        estado: 'rechazado',
+        nota: 'Rechazado temporalmente: altura catastral no localizada (subsanable).'
+      }
+    ]
+  },
+  {
+    id: 'LM-48120',
+    titulo: 'Falla lumínica sobre colectora de Autopista',
+    categoria: 'alumbrado',
+    descripcion: 'Columna apagada en tramo de alta velocidad de acceso autopista.',
+    direccion: 'Av. Juan Manuel de Rosas 10500, Isidro Casanova',
+    localidadId: 'isidro-casanova',
+    lat: -34.7125,
+    lng: -58.5770,
+    creadorId: 'usr_vecino_demo',
+    creadorNombre: 'Mariana G.',
+    fecha: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+    estado: 'rechazado',
+    subsanable: false,
+    motivoRechazo: 'El tramo informado pertenece a jurisdicción nacional de Autopistas / DNV. No corresponde a mantenimiento municipal de La Matanza.',
+    fotos: [
+      'assets/img/reclamos/alumbrado/alumbrado-1.png'
+    ],
+    participantes: ['usr_vecino_demo'],
+    historial: [
+      {
+        fecha: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+        estado: 'recibido',
+        nota: 'Reclamo recibido.'
+      },
+      {
+        fecha: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
+        estado: 'rechazado',
+        nota: 'Rechazo definitivo por competencia interjurisdiccional federal.'
+      }
+    ]
+  },
+  {
+    id: 'LM-48050',
+    titulo: 'Contenedor averiado en San Justo',
+    categoria: 'residuos',
+    descripcion: 'Tapa rota de contenedor verde.',
+    direccion: 'Av. Dr. Ignacio Arieta 2200, San Justo',
+    localidadId: 'san-justo',
+    lat: -34.6745,
+    lng: -58.5598,
+    creadorId: 'usr_vecino_demo',
+    creadorNombre: 'Mariana G.',
+    fecha: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString(),
+    estado: 'cancelado',
+    fotos: [
+      'assets/img/reclamos/residuos/basura-1.png'
+    ],
+    participantes: ['usr_vecino_demo'],
+    historial: [
+      {
+        fecha: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString(),
+        estado: 'recibido',
+        nota: 'Reclamo recibido.'
+      },
+      {
+        fecha: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+        estado: 'cancelado',
+        nota: 'Reclamo cancelado por el creador.'
+      }
+    ]
+  },
+  {
+    id: 'LM-48010',
+    titulo: 'Luminaria intermitente en Ramos Mejía',
+    categoria: 'alumbrado',
+    descripcion: 'Lámpara titilando luego de la última tormenta.',
+    direccion: 'Av. Rivadavia 14200, Ramos Mejía',
+    localidadId: 'ramos-mejia',
+    lat: -34.6465,
+    lng: -58.5682,
+    creadorId: 'usr_vecino_demo',
+    creadorNombre: 'Mariana G.',
+    fecha: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+    estado: 'reabierto',
+    fotos: [
+      'assets/img/reclamos/alumbrado/alumbrado-1.png'
+    ],
+    participantes: ['usr_vecino_demo'],
+    historial: [
+      {
+        fecha: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+        estado: 'recibido',
+        nota: 'Reclamo recibido.'
+      },
+      {
+        fecha: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString(),
+        estado: 'resuelto',
+        nota: 'Caso cerrado tras cambio de fusible.'
+      },
+      {
+        fecha: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+        estado: 'reabierto',
+        nota: 'Caso reabierto por persistencia de falla eléctrica.'
       }
     ]
   }

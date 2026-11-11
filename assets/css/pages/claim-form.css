@@ -381,6 +381,490 @@
   white-space: nowrap;
 }
 
+/* ==========================================================================
+   Barra de Referencias / Leyenda Visual del Mapa
+   ========================================================================== */
+.claim-map-legend {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background-color: var(--color-surface-light);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-2);
+  font-size: var(--font-size-xs);
+}
+
+.claim-map-legend__items {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.claim-map-legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+.claim-map-legend__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 1.5px solid #FFFFFF;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.claim-map-legend__dot--pavimento {
+  background-color: #B45309;
+}
+
+.claim-map-legend__dot--residuos {
+  background-color: #047857;
+}
+
+.claim-map-legend__dot--alumbrado {
+  background-color: #6D28D9;
+}
+
+.claim-map-legend__dot--target {
+  background-color: #0284C7;
+  width: 12px;
+  height: 12px;
+  box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.35);
+  animation: legendDotPulse 2s infinite;
+}
+
+@keyframes legendDotPulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.claim-map-legend__badge {
+  font-size: 0.6875rem;
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-medium);
+}
+
+/* ==========================================================================
+   Banner Discreto de Descubrimiento de Reclamos Cercanos
+   ========================================================================== */
+.nearby-discovery-banner {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: 10px 14px;
+  background-color: #F0FDF4;
+  border: 1px solid #BBF7D0;
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-2);
+  font-size: var(--font-size-xs);
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.nearby-discovery-banner.is-visible {
+  display: flex;
+}
+
+.nearby-discovery-banner__left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: #166534;
+  font-weight: var(--font-weight-medium);
+}
+
+.nearby-discovery-banner__left svg {
+  color: #15803D;
+  flex-shrink: 0;
+}
+
+.nearby-discovery-banner__btn {
+  background: transparent;
+  border: 1px solid #86EFAC;
+  color: #15803D;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 0.6875rem;
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--duration-fast);
+}
+
+.nearby-discovery-banner__btn:hover {
+  background-color: #DCFCE7;
+  color: #14532D;
+}
+
+/* Lista Desplegable de Casos Cercanos */
+.nearby-claims-drawer {
+  display: none;
+  background-color: #F8FAFC;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  margin-bottom: var(--space-3);
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.nearby-claims-drawer.is-open {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.nearby-claim-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: 8px 12px;
+  background-color: var(--color-surface-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  cursor: pointer;
+  transition: all var(--duration-fast);
+}
+
+.nearby-claim-item:hover {
+  border-color: var(--color-accent);
+  background-color: #F0F9FF;
+  transform: translateY(-1px);
+}
+
+.nearby-claim-item__info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  overflow: hidden;
+}
+
+.nearby-claim-item__title {
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary-dark);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 320px;
+}
+
+.nearby-claim-item__dist {
+  color: var(--color-text-muted);
+  font-size: 0.6875rem;
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   Panel / Ficha Flotante de Reclamo Existente (Desktop + Mobile)
+   ========================================================================== */
+.existing-claim-panel {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  bottom: 12px;
+  width: 340px;
+  max-width: calc(100% - 24px);
+  background: var(--color-surface-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 12px 28px -4px rgba(6, 47, 102, 0.28), 0 4px 10px rgba(6, 47, 102, 0.1);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: translateX(110%);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: transform 240ms cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 200ms var(--ease-out),
+              visibility 200ms var(--ease-out);
+}
+
+.existing-claim-panel.is-visible {
+  transform: translateX(0);
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+@media (max-width: 640px) {
+  .existing-claim-panel {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: 100%;
+    max-height: 82%;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    transform: translateY(110%);
+    box-shadow: 0 -8px 26px rgba(6, 47, 102, 0.25);
+  }
+
+  .existing-claim-panel.is-visible {
+    transform: translateY(0);
+    visibility: visible;
+  }
+}
+
+.existing-claim-panel__grabber {
+  display: none;
+  width: 40px;
+  height: 4px;
+  background-color: var(--color-border);
+  border-radius: var(--radius-full);
+  margin: 8px auto 2px auto;
+}
+
+@media (max-width: 640px) {
+  .existing-claim-panel__grabber {
+    display: block;
+  }
+}
+
+.existing-claim-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-border);
+  background-color: #F8FAFC;
+  gap: var(--space-2);
+}
+
+.existing-claim-panel__tags {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.existing-claim-panel__close-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  border: none;
+  background: transparent;
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all var(--duration-fast);
+}
+
+.existing-claim-panel__close-btn:hover {
+  background-color: #E2E8F0;
+  color: var(--color-primary-dark);
+}
+
+.existing-claim-panel__body {
+  padding: 14px 16px;
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.existing-claim-panel__photo-container {
+  position: relative;
+  width: 100%;
+  height: 140px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  background-color: #0F172A;
+  cursor: pointer;
+}
+
+.existing-claim-panel__photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--duration-normal);
+}
+
+.existing-claim-panel__photo-container:hover .existing-claim-panel__photo-img {
+  transform: scale(1.04);
+}
+
+.existing-claim-panel__photo-badge {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background-color: rgba(6, 47, 102, 0.85);
+  color: #FFFFFF;
+  font-size: 0.6875rem;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: var(--font-weight-medium);
+}
+
+.existing-claim-panel__tracking {
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.04em;
+}
+
+.existing-claim-panel__title {
+  font-family: var(--font-family-display);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  line-height: 1.3;
+  margin: 0;
+}
+
+.existing-claim-panel__address {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+}
+
+.existing-claim-panel__address svg {
+  color: var(--color-accent);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.existing-claim-panel__desc {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  background-color: var(--color-surface-light);
+  border-left: 3px solid var(--color-accent);
+  padding: 8px 10px;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  line-height: var(--line-height-normal);
+}
+
+.existing-claim-panel__support-stat {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background-color: #E0F2FE;
+  border: 1px solid #BAE6FD;
+  border-radius: var(--radius-sm);
+  color: #0369A1;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+}
+
+.existing-claim-panel__footer {
+  padding: 12px 16px;
+  background-color: #F8FAFC;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* Estados de feedback dentro de la ficha de reclamo */
+.existing-claim-panel__joined-box {
+  background-color: #F0FDF4;
+  border: 1px solid #86EFAC;
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  text-align: center;
+  font-size: var(--font-size-xs);
+  color: #166534;
+}
+
+.existing-claim-panel__author-box {
+  background-color: #FEF3C7;
+  border: 1px solid #FDE68A;
+  border-radius: var(--radius-md);
+  padding: 8px 12px;
+  text-align: center;
+  font-size: var(--font-size-xs);
+  color: #92400E;
+  font-weight: var(--font-weight-medium);
+}
+
+/* ==========================================================================
+   Modal de Revisión y Confirmación Previa al Envío
+   ========================================================================== */
+.modal-review-summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-top: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+.modal-review-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.modal-review-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.modal-review-label {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+}
+
+.modal-review-value {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-main);
+  line-height: var(--line-height-normal);
+}
+
+.modal-review-value strong {
+  color: var(--color-primary-dark);
+}
+
+.modal-review-gallery {
+  display: flex;
+  gap: var(--space-2);
+  overflow-x: auto;
+  padding: 4px 0;
+}
+
+.modal-review-thumb {
+  width: 72px;
+  height: 52px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  border: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
 /* Resumen de la Ubicación Seleccionada */
 .location-summary-card {
   display: flex;
@@ -717,12 +1201,15 @@
   justify-content: center;
   padding: var(--space-4);
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
-  transition: opacity var(--duration-normal) var(--ease-out);
+  transition: opacity var(--duration-normal) var(--ease-out),
+              visibility var(--duration-normal) var(--ease-out);
 }
 
 .photo-lightbox.is-open {
   opacity: 1;
+  visibility: visible;
   pointer-events: auto;
 }
 
@@ -895,4 +1382,233 @@
   display: inline-block;
   font-weight: var(--font-weight-medium);
 }
+
+/* ==========================================================================
+   Etapa 05: Panel de Gestión de Reclamos Propios y Widgets Asociados
+   Tokens institucionales, micro-interacciones suaves, sin jerga ni elementos gigantes
+   ========================================================================== */
+
+.claim-owner-management {
+  border: 1px solid #BAE6FD;
+  background: linear-gradient(180deg, #F0F9FF 0%, #FFFFFF 100%);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  margin-bottom: var(--space-6);
+  box-shadow: 0 4px 16px -2px rgba(2, 132, 199, 0.08);
+}
+
+.claim-owner-management__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid #E0F2FE;
+}
+
+.claim-owner-management__title {
+  font-family: var(--font-family-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.claim-owner-management__desc {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-normal);
+  margin-bottom: var(--space-5);
+}
+
+.claim-owner-actions-grid {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.claim-owner-actions-grid .btn {
+  flex: 1 1 auto;
+  min-width: 170px;
+}
+
+@media (max-width: 639px) {
+  .claim-owner-actions-grid {
+    flex-direction: column;
+  }
+  .claim-owner-actions-grid .btn {
+    width: 100%;
+  }
+}
+
+/* Aviso de Rechazo */
+.claim-rejection-notice {
+  background-color: #FEF2F2;
+  border: 1px solid #FECACA;
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  margin-bottom: var(--space-5);
+}
+
+.claim-rejection-notice__title {
+  color: #991B1B;
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: var(--space-2);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.claim-rejection-notice__text {
+  color: #7F1D1D;
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+  margin: 0;
+}
+
+/* Aviso de Solicitud Pendiente */
+.claim-pending-request-notice {
+  background-color: #EFF6FF;
+  border: 1px solid #BFDBFE;
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  margin-bottom: var(--space-4);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.claim-pending-request-notice__text {
+  color: #1E40AF;
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-normal);
+  margin: 0;
+}
+
+/* Valoración por Estrellas (1 a 5) Accesible */
+.star-rating-box {
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  margin-top: var(--space-4);
+}
+
+.star-rating-widget {
+  display: inline-flex;
+  gap: var(--space-2);
+  margin: var(--space-2) 0 var(--space-3) 0;
+}
+
+.star-btn {
+  background: none;
+  border: none;
+  padding: var(--space-1);
+  font-size: 1.85rem;
+  line-height: 1;
+  color: #CBD5E1;
+  cursor: pointer;
+  transition: transform 0.15s ease, color 0.15s ease;
+  border-radius: var(--radius-sm);
+}
+
+.star-btn:hover,
+.star-btn.is-active {
+  color: #EAB308;
+}
+
+.star-btn:hover {
+  transform: scale(1.15);
+}
+
+.star-btn:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Modal de Gestión */
+.mgmt-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(6, 47, 102, 0.45);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.mgmt-modal-backdrop.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.mgmt-modal-container {
+  background: #FFFFFF;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 20px 40px -10px rgba(6, 47, 102, 0.25);
+  width: 100%;
+  max-width: 540px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border: 1px solid var(--color-border-subtle);
+  transform: translateY(12px) scale(0.98);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mgmt-modal-backdrop.is-open .mgmt-modal-container {
+  transform: translateY(0) scale(1);
+}
+
+.mgmt-modal-header {
+  padding: var(--space-5) var(--space-6);
+  border-bottom: 1px solid var(--color-border-subtle);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mgmt-modal-title {
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  margin: 0;
+}
+
+.mgmt-modal-body {
+  padding: var(--space-6);
+}
+
+.mgmt-modal-footer {
+  padding: var(--space-4) var(--space-6);
+  background-color: var(--color-surface-subtle);
+  border-top: 1px solid var(--color-border-subtle);
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+@media (max-width: 480px) {
+  .mgmt-modal-footer {
+    flex-direction: column-reverse;
+  }
+  .mgmt-modal-footer .btn {
+    width: 100%;
+  }
+}
+
 

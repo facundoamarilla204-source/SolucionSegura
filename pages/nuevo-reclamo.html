@@ -123,16 +123,101 @@
                 </div>
               </div>
 
-              <!-- Mapa Interactivo Leaflet -->
+              <!-- Referencias y Leyenda Visual de Marcadores -->
+              <div class="claim-map-legend" role="note" aria-label="Referencias de colores del mapa de reclamos">
+                <div class="claim-map-legend__items">
+                  <span class="claim-map-legend__item" title="Marcador naranja">
+                    <span class="claim-map-legend__dot claim-map-legend__dot--pavimento" aria-hidden="true"></span>
+                    <span>Calles y pavimento</span>
+                  </span>
+                  <span class="claim-map-legend__item" title="Marcador verde">
+                    <span class="claim-map-legend__dot claim-map-legend__dot--residuos" aria-hidden="true"></span>
+                    <span>Basura y residuos</span>
+                  </span>
+                  <span class="claim-map-legend__item" title="Marcador violeta">
+                    <span class="claim-map-legend__dot claim-map-legend__dot--alumbrado" aria-hidden="true"></span>
+                    <span>Alumbrado público</span>
+                  </span>
+                  <span class="claim-map-legend__item" title="Marcador azul destacado arrastrable">
+                    <span class="claim-map-legend__dot claim-map-legend__dot--target" aria-hidden="true"></span>
+                    <strong>Tu nuevo reclamo</strong>
+                  </span>
+                </div>
+                <span class="claim-map-legend__badge" id="existing-claims-count-badge">Reclamos existentes visibles</span>
+              </div>
+
+              <!-- Banner de Descubrimiento de Reclamos Cercanos (No intrusivo) -->
+              <div id="nearby-discovery-banner" class="nearby-discovery-banner" role="status" aria-live="polite">
+                <div class="nearby-discovery-banner__left">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                  </svg>
+                  <span id="nearby-discovery-text">Buscando reclamos registrados cerca de este punto...</span>
+                </div>
+                <button type="button" class="nearby-discovery-banner__btn" id="btn-toggle-nearby-list" aria-expanded="false">
+                  Ver lista cercana
+                </button>
+              </div>
+
+              <!-- Lista Desplegable de Casos Cercanos (Accesible) -->
+              <div id="nearby-claims-drawer" class="nearby-claims-drawer" role="region" aria-label="Lista de reclamos en la misma zona"></div>
+
+              <!-- Mapa Interactivo Leaflet con Ficha de Reclamo Integrada -->
               <div class="claim-map-wrapper">
                 <div class="claim-map-tip" aria-hidden="true">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                     <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
                     <circle cx="12" cy="10" r="3"/>
                   </svg>
-                  <span>Mové el marcador o tocá en el mapa para fijar el punto</span>
+                  <span>Mové el marcador azul o tocá un marcador existente para ver su ficha</span>
                 </div>
-                <div id="claim-interactive-map" class="claim-map" role="application" aria-label="Mapa para seleccionar la ubicación exacta del reclamo"></div>
+                <div id="claim-interactive-map" class="claim-map" role="application" aria-label="Mapa interactivo para seleccionar la ubicación exacta del reclamo y consultar incidencias existentes en La Matanza"></div>
+
+                <!-- Panel / Ficha Flotante de Reclamo Existente (Desktop overlay / Mobile bottom sheet) -->
+                <aside id="existing-claim-panel" class="existing-claim-panel" role="region" aria-label="Ficha de información del reclamo seleccionado" aria-hidden="true">
+                  <div class="existing-claim-panel__grabber" aria-hidden="true"></div>
+                  <div class="existing-claim-panel__header">
+                    <div class="existing-claim-panel__tags">
+                      <span id="ec-cat-badge" class="badge">Categoría</span>
+                      <span id="ec-state-badge" class="badge">Estado</span>
+                    </div>
+                    <button type="button" class="existing-claim-panel__close-btn" id="btn-close-ec-panel" aria-label="Cerrar ficha informativa">✕</button>
+                  </div>
+                  <div class="existing-claim-panel__body">
+                    <div id="ec-photo-container" class="existing-claim-panel__photo-container" role="button" tabindex="0" aria-label="Ver fotografía del reclamo ampliada">
+                      <img id="ec-photo-img" class="existing-claim-panel__photo-img" src="" alt="Fotografía del reclamo barrial" loading="lazy">
+                      <span class="existing-claim-panel__photo-badge">🔍 Ampliar foto</span>
+                    </div>
+
+                    <div>
+                      <span id="ec-tracking-id" class="existing-claim-panel__tracking">#LM-00000</span>
+                      <h3 id="ec-title" class="existing-claim-panel__title">Título del reclamo</h3>
+                    </div>
+
+                    <p id="ec-address" class="existing-claim-panel__address">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                        <circle cx="12" cy="10" r="3"/>
+                      </svg>
+                      <span id="ec-address-text">Dirección</span>
+                    </p>
+
+                    <div id="ec-supporters" class="existing-claim-panel__support-stat">
+                      👥 <strong id="ec-supporters-count">1</strong> vecinos ya apoyan este reclamo
+                    </div>
+
+                    <div id="ec-desc-wrapper">
+                      <p id="ec-desc-text" class="existing-claim-panel__desc"></p>
+                    </div>
+
+                    <p id="ec-meta" style="font-size: var(--font-size-xs); color: var(--color-text-muted); margin: 0;"></p>
+                  </div>
+
+                  <div class="existing-claim-panel__footer" id="ec-footer">
+                    <!-- Botones de Acción inyectados dinámicamente -->
+                  </div>
+                </aside>
               </div>
 
               <!-- Resumen de Ubicación Seleccionada -->
@@ -338,7 +423,7 @@
             </a>
             <button type="submit" class="btn btn--primary btn--lg btn-submit-auth" id="btn-submit-claim">
               <span class="btn-spinner" aria-hidden="true"></span>
-              <span class="btn-text">Enviar reclamo</span>
+              <span class="btn-text">Revisar reclamo</span>
             </button>
           </div>
         </form>
@@ -349,56 +434,79 @@
   </main>
 
   <!-- ========================================================
-       MODAL DE RECLAMOS SIMILARES CERCANOS (Prevención de Duplicados)
+       MODAL DE REVISIÓN Y CONFIRMACIÓN PREVIA AL REGISTRO
        ======================================================== -->
-  <div id="modal-similar-claim" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modal-similar-title">
-    <div class="modal-dialog">
+  <div id="modal-review-claim" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modal-review-title">
+    <div class="modal-dialog" style="max-width: 560px;">
       <div class="modal-header">
-        <h3 class="modal-title" id="modal-similar-title">Posible reclamo existente en tu zona</h3>
-        <button type="button" class="icon-btn" id="btn-close-modal-similar" aria-label="Cerrar ventana">
+        <h3 class="modal-title" id="modal-review-title">Revisá tu reclamo antes de registrarlo</h3>
+        <button type="button" class="icon-btn" id="btn-close-modal-review" aria-label="Cerrar ventana de revisión">
           ✕
         </button>
       </div>
       <div class="modal-body">
-        <p style="font-size: var(--font-size-sm); margin-bottom: var(--space-3);">
-          Detectamos que otros vecinos ya informaron un problema similar a pocos metros de esta ubicación. Si se trata del mismo hecho, podés sumarte para darle mayor prioridad vecinal.
+        <p style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-bottom: var(--space-4); line-height: var(--line-height-normal);">
+          Verificá que la ubicación, categoría y detalles sean correctos. Tu reclamo será visible públicamente en La Matanza para que otros vecinos puedan sumarse y darle mayor visibilidad.
         </p>
 
-        <!-- Tarjeta del Reclamo Coincidente -->
-        <div class="similar-claim-card" id="similar-claim-card">
-          <div class="similar-claim-card__meta">
-            <span id="similar-cat-badge" class="badge">Categoría</span>
-            <span id="similar-state-badge" class="badge">Estado</span>
+        <!-- Resumen Estructurado del Reclamo -->
+        <div class="modal-review-summary">
+          <!-- Ubicación -->
+          <div class="modal-review-row">
+            <span class="modal-review-label">Ubicación seleccionada</span>
+            <div class="modal-review-value" style="display: flex; align-items: flex-start; gap: 8px;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="color: var(--color-accent); flex-shrink: 0; margin-top: 2px;" aria-hidden="true">
+                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              <div>
+                <strong id="review-address-text" style="display: block; color: var(--color-primary-dark);">Almafuerte 3150, San Justo</strong>
+                <span id="review-coords-text" style="font-size: var(--font-size-xs); color: var(--color-text-muted);">San Justo · -34.6791, -58.5574</span>
+              </div>
+            </div>
           </div>
-          <h4 id="similar-claim-title" class="similar-claim-card__title">Título del reclamo</h4>
-          <p id="similar-claim-address" class="similar-claim-card__address">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
-              <circle cx="12" cy="10" r="3"/>
-            </svg>
-            <span id="similar-address-text">Dirección</span>
-          </p>
-          <div id="similar-claim-support" class="similar-claim-card__support">
-            👥 <strong>4 vecinos</strong> ya se sumaron a este caso
+
+          <!-- Categoría -->
+          <div class="modal-review-row">
+            <span class="modal-review-label">Categoría</span>
+            <div class="modal-review-value">
+              <span id="review-cat-badge" class="badge">Categoría</span>
+            </div>
+          </div>
+
+          <!-- Descripción -->
+          <div class="modal-review-row">
+            <span class="modal-review-label">Descripción</span>
+            <p id="review-desc-text" class="modal-review-value" style="margin: 0; font-style: normal;"></p>
+          </div>
+
+          <!-- Fotografías Asociadas -->
+          <div class="modal-review-row">
+            <span class="modal-review-label" id="review-photos-label">Fotografías de muestra asociadas</span>
+            <div id="review-photos-gallery" class="modal-review-gallery" aria-label="Fotografías adjuntas al reporte"></div>
+          </div>
+
+          <!-- Vecino Reportante -->
+          <div class="modal-review-row">
+            <span class="modal-review-label">Vecino reportante</span>
+            <div class="modal-review-value" style="display: flex; align-items: center; gap: 8px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--color-accent);" aria-hidden="true">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              <span id="review-user-name" style="font-weight: var(--font-weight-medium); color: var(--color-primary-dark);">Mariana Gómez</span>
+              <span class="badge" style="background-color: var(--color-surface-light); color: var(--color-text-muted); font-size: 0.6875rem;">Cuenta activa</span>
+            </div>
           </div>
         </div>
-
-        <p style="font-size: var(--font-size-xs); color: var(--color-text-muted);">
-          Si tu problema es distinto (otra calzada, otra luminaria o un evento separado), podés continuar con la creación de un nuevo reclamo independiente.
-        </p>
       </div>
-      <div class="modal-footer" style="flex-wrap: wrap; gap: var(--space-2);">
-        <button type="button" class="btn btn--outline btn--sm" id="btn-continue-create-new">
-          Es otro problema, crear uno nuevo
+      <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-2);">
+        <button type="button" class="btn btn--outline btn--sm" id="btn-review-back">
+          Volver a editar
         </button>
-        <button type="button" class="btn btn--primary btn--sm" id="btn-join-existing-claim">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-            <circle cx="9" cy="7" r="4"/>
-            <line x1="19" y1="8" x2="19" y2="14"/>
-            <line x1="22" y1="11" x2="16" y2="11"/>
-          </svg>
-          <span>Sumarme a este reclamo</span>
+        <button type="button" class="btn btn--primary btn--sm btn-submit-auth" id="btn-confirm-register">
+          <span class="btn-spinner" aria-hidden="true"></span>
+          <span class="btn-text">Confirmar y registrar</span>
         </button>
       </div>
     </div>
@@ -423,23 +531,28 @@
     import { formatters } from '../assets/js/utils/formatters.js';
     import { modal } from '../assets/js/components/modal.js';
     import { getSamplePhotosForCategory } from '../assets/js/data/sample-photos.js';
+    import { createCategoryIcon, createTargetPinIcon } from '../assets/js/modules/map.js';
 
     // 1. Configurar barra institucional
     setupNavigation({ activePage: 'reportar', basePath: '../' });
 
     // 2. Comprobación estricta de sesión simulada
+    let currentUser = null;
     if (!auth.isLoggedIn()) {
       auth.setRedirectUrl(window.location.href);
       window.location.href = `iniciar-sesion.html?redirect=${encodeURIComponent(window.location.href)}`;
     } else {
-      const user = auth.getCurrentUser();
+      currentUser = auth.getCurrentUser();
       const userBadge = document.getElementById('user-session-badge');
       const userName = document.getElementById('user-session-name');
-      if (user && userBadge && userName) {
-        userName.textContent = user.nombre || user.email || 'Vecino';
+      if (currentUser && userBadge && userName) {
+        userName.textContent = currentUser.nombre || currentUser.email || 'Vecino';
         userBadge.style.display = 'flex';
       }
     }
+
+    // Aislamiento del borrador por usuario
+    const draftStorageKey = currentUser ? `${storage.KEYS.BORRADOR}_${currentUser.id}` : storage.KEYS.BORRADOR;
 
     // =========================================================================
     // Base de datos de direcciones curadas de La Matanza para búsqueda rápida
@@ -471,13 +584,16 @@
       lng: -58.5574,
       categoria: null,
       descripcion: '',
-      fotos: [] // Rutas relativas a fotos curadas de ejemplo (sin binarios ni Base64)
+      fotos: [] // Rutas relativas a fotos curadas de ejemplo
     };
 
     let leafletMap = null;
-    let marker = null;
+    let targetMarker = null;
+    let existingMarkers = [];
     let autoSaveTimer = null;
-    let detectedSimilarClaim = null;
+    let isSubmitting = false;
+    let editingClaimId = null;
+    let originalClaim = null;
 
     // Elementos DOM
     const addressInput = document.getElementById('input-address-search');
@@ -500,8 +616,30 @@
     const submitBtnText = submitBtn.querySelector('.btn-text');
     const categoryButtons = document.querySelectorAll('.category-option-card');
 
+    // Elementos del Banner de Cercanía y Panel de Reclamo Existente
+    const nearbyBanner = document.getElementById('nearby-discovery-banner');
+    const nearbyText = document.getElementById('nearby-discovery-text');
+    const btnToggleNearbyList = document.getElementById('btn-toggle-nearby-list');
+    const nearbyDrawer = document.getElementById('nearby-claims-drawer');
+    const existingClaimsBadge = document.getElementById('existing-claims-count-badge');
+
+    const ecPanel = document.getElementById('existing-claim-panel');
+    const ecCatBadge = document.getElementById('ec-cat-badge');
+    const ecStateBadge = document.getElementById('ec-state-badge');
+    const ecCloseBtn = document.getElementById('btn-close-ec-panel');
+    const ecPhotoContainer = document.getElementById('ec-photo-container');
+    const ecPhotoImg = document.getElementById('ec-photo-img');
+    const ecTrackingId = document.getElementById('ec-tracking-id');
+    const ecTitle = document.getElementById('ec-title');
+    const ecAddressText = document.getElementById('ec-address-text');
+    const ecSupportersCount = document.getElementById('ec-supporters-count');
+    const ecDescText = document.getElementById('ec-desc-text');
+    const ecDescWrapper = document.getElementById('ec-desc-wrapper');
+    const ecMeta = document.getElementById('ec-meta');
+    const ecFooter = document.getElementById('ec-footer');
+
     // =========================================================================
-    // 3. Inicialización del Mapa Interactivo Leaflet
+    // 3. Inicialización del Mapa Interactivo Leaflet (Doble Propósito)
     // =========================================================================
     function initClaimMap(initialLat, initialLng) {
       if (typeof L === 'undefined') return;
@@ -519,45 +657,79 @@
       });
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap',
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>',
         maxZoom: 19
       }).addTo(leafletMap);
 
-      // Icono de Pin Destacado Arrastrable
-      const customPinIcon = L.divIcon({
-        className: 'custom-map-pin custom-map-pin--target',
-        html: `
-          <div class="pin-marker" style="transform: scale(1.15);">
-            <div class="pin-marker__body" style="background-color: var(--color-accent); border: 2px solid #FFFFFF;">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="3"/>
-                <path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>
-              </svg>
-            </div>
-            <div class="pin-marker__tip" style="border-top: 8px solid var(--color-accent);"></div>
-          </div>
-        `,
-        iconSize: [36, 44],
-        iconAnchor: [18, 44]
-      });
+      // Cargar y mostrar todos los reclamos públicos existentes (semilla + creados en localStorage)
+      renderExistingClaimsMarkers();
 
-      marker = L.marker([initialLat, initialLng], {
-        draggable: true,
-        icon: customPinIcon,
-        title: 'Mover para ajustar ubicación'
+      // Marcador azul distintivo para la NUEVA ubicación (arrastrable)
+      const targetPinIcon = createTargetPinIcon('Ubicación seleccionada para tu nuevo reclamo');
+
+      targetMarker = L.marker([initialLat, initialLng], {
+        draggable: true, // Solamente el marcador del nuevo reclamo puede ajustarse manualmente
+        icon: targetPinIcon,
+        title: 'Arrastrá este marcador azul para ajustar la ubicación del nuevo reclamo'
       }).addTo(leafletMap);
 
-      // Al arrastrar el marcador (dragend)
-      marker.on('dragend', () => {
-        const pos = marker.getLatLng();
+      // Al arrastrar el marcador azul (dragend)
+      targetMarker.on('dragend', () => {
+        closeExistingClaimPanel();
+        const pos = targetMarker.getLatLng();
         updateLocationFromCoords(pos.lat, pos.lng, true);
+        checkNearbyClaims();
       });
 
       // Al hacer clic en cualquier parte del mapa
       leafletMap.on('click', (e) => {
-        marker.setLatLng(e.latlng);
+        closeExistingClaimPanel();
+        targetMarker.setLatLng(e.latlng);
         updateLocationFromCoords(e.latlng.lat, e.latlng.lng, true);
+        checkNearbyClaims();
       });
+
+      // Actualizar cálculo inicial de reclamos cercanos
+      checkNearbyClaims();
+    }
+
+    /**
+     * Dibuja los marcadores interactivos de los reclamos existentes en La Matanza
+     * (Calles: naranja, Residuos: verde, Alumbrado: violeta — No arrastrables)
+     */
+    function renderExistingClaimsMarkers() {
+      if (!leafletMap || typeof L === 'undefined') return;
+
+      // Limpiar marcadores existentes si hubiera
+      existingMarkers.forEach(m => leafletMap.removeLayer(m));
+      existingMarkers = [];
+
+      const allClaims = claimsService.getAll();
+
+      allClaims.forEach(claim => {
+        if (!claim.lat || !claim.lng) return;
+
+        const icon = createCategoryIcon(claim.categoria, claim.titulo);
+        const marker = L.marker([claim.lat, claim.lng], {
+          icon: icon,
+          draggable: false, // Marcadores existentes estrictamente fijos
+          title: `${formatters.categoryLabel(claim.categoria)}: ${claim.titulo}`
+        }).addTo(leafletMap);
+
+        // Al hacer clic en un marcador existente, abrir su ficha informativa sin mover el marcador azul
+        marker.on('click', (e) => {
+          if (e && e.originalEvent) {
+            e.originalEvent.stopPropagation();
+          }
+          openExistingClaimPanel(claim);
+        });
+
+        existingMarkers.push(marker);
+      });
+
+      if (existingClaimsBadge) {
+        existingClaimsBadge.textContent = `${allClaims.length} casos registrados en La Matanza`;
+      }
     }
 
     function updateLocationFromCoords(lat, lng, synthesizeAddress = false) {
@@ -607,22 +779,282 @@
       const locObj = LOCALIDADES_LA_MATANZA.find(l => l.id === localidadId) || { nombre: 'La Matanza' };
       summaryCoordsText.textContent = `${locObj.nombre} · ${formState.lat}, ${formState.lng}`;
 
-      if (marker && leafletMap) {
-        marker.setLatLng([lat, lng]);
+      if (targetMarker && leafletMap) {
+        targetMarker.setLatLng([lat, lng]);
         leafletMap.setView([lat, lng], 16, { animate: true });
       }
 
       locationError.classList.remove('is-visible');
       document.getElementById('block-location').classList.remove('has-error');
       triggerAutoSave();
+      checkNearbyClaims();
     }
 
     // =========================================================================
-    // 4. Búsqueda y Autocompletado de Direcciones en La Matanza
+    // 4. Panel / Ficha de Reclamo Existente Seleccionado en el Mapa
+    // =========================================================================
+    let activeInspectedClaim = null;
+
+    function openExistingClaimPanel(claim) {
+      activeInspectedClaim = claim;
+
+      // 1. Categoría
+      ecCatBadge.className = `badge badge--cat-${claim.categoria}`;
+      ecCatBadge.textContent = formatters.categoryLabel(claim.categoria);
+
+      // 2. Estado
+      let stateClass = 'recibido';
+      if (claim.estado === 'en_revision') stateClass = 'revision';
+      else if (claim.estado === 'en_proceso') stateClass = 'proceso';
+      else if (claim.estado === 'resuelto') stateClass = 'resuelto';
+      else if (claim.estado === 'reabierto') stateClass = 'reabierto';
+      else if (claim.estado === 'rechazado') stateClass = 'rechazado';
+
+      ecStateBadge.className = `badge badge--${stateClass}`;
+      ecStateBadge.textContent = formatters.stateLabel(claim.estado);
+
+      // 3. Número de seguimiento
+      const trackingNumber = claim.id.startsWith('#') ? claim.id : `#${claim.id}`;
+      ecTrackingId.textContent = trackingNumber;
+
+      // 4. Título y Dirección
+      ecTitle.textContent = claim.titulo;
+      ecAddressText.textContent = claim.direccion;
+
+      // 5. Cantidad de vecinos sumados
+      const count = Array.isArray(claim.participantes) ? claim.participantes.length : 1;
+      ecSupportersCount.textContent = count;
+
+      // 6. Descripción
+      if (claim.descripcion && claim.descripcion.trim()) {
+        ecDescText.textContent = claim.descripcion.trim();
+        ecDescWrapper.style.display = 'block';
+      } else {
+        ecDescWrapper.style.display = 'none';
+      }
+
+      // 7. Fotografía de referencia
+      if (Array.isArray(claim.fotos) && claim.fotos.length > 0) {
+        const firstPhoto = claim.fotos[0].startsWith('../') ? claim.fotos[0] : `../${claim.fotos[0]}`;
+        ecPhotoImg.src = firstPhoto;
+        ecPhotoContainer.style.display = 'block';
+        ecPhotoContainer.onclick = () => openLightbox(firstPhoto, claim.titulo, 'Fotografía del reclamo');
+      } else {
+        ecPhotoContainer.style.display = 'none';
+      }
+
+      // 8. Meta fecha y autor
+      const relDate = formatters.relativeDate(claim.fecha);
+      ecMeta.textContent = `Reportado por ${claim.creadorNombre || 'un vecino'} · ${relDate}`;
+
+      // 9. Configuración de Acciones según Usuario y Estado del Reclamo
+      renderExistingClaimActions(claim);
+
+      // Mostrar panel con animación suave y foco accesible
+      ecPanel.classList.add('is-visible');
+      ecPanel.setAttribute('aria-hidden', 'false');
+    }
+
+    function renderExistingClaimActions(claim) {
+      const user = auth.getCurrentUser();
+      const isCreator = user && (claim.creadorId === user.id);
+      const isJoined = user && Array.isArray(claim.participantes) && claim.participantes.includes(user.id);
+      const isResolved = claim.estado === 'resuelto';
+      const claimDetailUrl = `detalle-reclamo.html?id=${encodeURIComponent(claim.id)}`;
+
+      ecFooter.innerHTML = '';
+
+      if (isCreator) {
+        // El usuario activo es el creador del reporte
+        ecFooter.innerHTML = `
+          <div class="existing-claim-panel__author-box">
+            <span>Sos el autor de este reclamo</span>
+          </div>
+          <a href="${claimDetailUrl}" class="btn btn--outline btn--sm w-100" target="_blank" rel="noopener">
+            Ver detalle completo ↗
+          </a>
+        `;
+      } else if (isJoined) {
+        // El usuario activo ya se sumó previamente
+        ecFooter.innerHTML = `
+          <div class="existing-claim-panel__joined-box">
+            <strong>✓ Ya te sumaste a este reclamo</strong>
+            <p style="margin: 2px 0 0 0; font-size: 0.6875rem;">Tu apoyo vecinal ya se encuentra registrado.</p>
+          </div>
+          <a href="${claimDetailUrl}" class="btn btn--outline btn--sm w-100" target="_blank" rel="noopener">
+            Ver detalle completo ↗
+          </a>
+        `;
+      } else if (isResolved) {
+        // El reclamo figura como resuelto: ofrecer «El problema sigue presente»
+        ecFooter.innerHTML = `
+          <div style="font-size: var(--font-size-xs); color: var(--color-text-secondary); background: var(--color-surface-light); padding: 8px 10px; border-radius: var(--radius-sm); border: 1px solid var(--color-border); text-align: center;">
+            <strong style="color: var(--state-resuelto); display: block; margin-bottom: 2px;">✓ Reclamo figuraba como Resuelto</strong>
+            <span>Si el inconveniente continúa, podés solicitar una revisión técnica.</span>
+          </div>
+          <button type="button" class="btn btn--secondary btn--sm w-100" id="btn-action-still-present">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+              <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+            </svg>
+            <span>El problema sigue presente</span>
+          </button>
+          <a href="${claimDetailUrl}" class="btn btn--ghost btn--sm w-100" target="_blank" rel="noopener">
+            Consultar información adicional ↗
+          </a>
+        `;
+
+        document.getElementById('btn-action-still-present').addEventListener('click', () => {
+          claimsService.reportStillPresent(claim.id);
+          showToast({
+            message: 'Solicitud de revisión técnica registrada para el reclamo.',
+            type: 'info',
+            duration: 3500
+          });
+
+          ecFooter.innerHTML = `
+            <div class="existing-claim-panel__joined-box">
+              <strong>Solicitud de revisión técnica enviada</strong>
+              <p style="margin: 4px 0 0 0; font-size: 0.75rem;">Se notificó al área de inspección vecinal de La Matanza.</p>
+            </div>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+              <a href="${claimDetailUrl}" class="btn btn--primary btn--sm" style="flex: 1;">Ver reclamo</a>
+              <a href="mis-reclamos.html" class="btn btn--outline btn--sm" style="flex: 1;">Mis reclamos</a>
+            </div>
+            <button type="button" class="btn btn--ghost btn--xs" id="btn-ec-dismiss">Continuar en el formulario</button>
+          `;
+          document.getElementById('btn-ec-dismiss').addEventListener('click', closeExistingClaimPanel);
+        });
+      } else {
+        // Caso normal: Reclamo activo al que el usuario puede sumarse
+        ecFooter.innerHTML = `
+          <button type="button" class="btn btn--primary btn--sm w-100" id="btn-action-join">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <line x1="19" y1="8" x2="19" y2="14"/>
+              <line x1="22" y1="11" x2="16" y2="11"/>
+            </svg>
+            <span>Sumarme a este reclamo</span>
+          </button>
+          <a href="${claimDetailUrl}" class="btn btn--ghost btn--sm w-100" target="_blank" rel="noopener">
+            Consultar información adicional ↗
+          </a>
+        `;
+
+        document.getElementById('btn-action-join').addEventListener('click', () => {
+          const result = claimsService.joinClaim(claim.id);
+
+          if (result.success) {
+            // Actualizar apoyos en la ficha
+            ecSupportersCount.textContent = result.count;
+
+            // Feedback inmediato dentro de la ficha sin borrar el borrador
+            ecFooter.innerHTML = `
+              <div class="existing-claim-panel__joined-box">
+                <strong>¡Te sumaste con éxito al reclamo!</strong>
+                <p style="margin: 4px 0 0 0; font-size: 0.75rem;">Tu apoyo ya fue computado. Podés ver el caso o seguir editando tu reporte nuevo.</p>
+              </div>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                <a href="${claimDetailUrl}" class="btn btn--primary btn--sm" style="flex: 1;">Ver reclamo</a>
+                <a href="mis-reclamos.html" class="btn btn--outline btn--sm" style="flex: 1;">Mis reclamos</a>
+              </div>
+              <button type="button" class="btn btn--ghost btn--xs" id="btn-ec-dismiss">Continuar con mi nuevo reporte</button>
+            `;
+
+            document.getElementById('btn-ec-dismiss').addEventListener('click', closeExistingClaimPanel);
+
+            // Refrescar marcadores existentes para reflejar el nuevo participante
+            renderExistingClaimsMarkers();
+
+            showToast({
+              message: `¡Te sumaste con éxito al reclamo #${claim.id}!`,
+              type: 'success',
+              duration: 3500
+            });
+          } else if (result.reason === 'already_joined') {
+            showToast({ message: 'Ya te encontrabas adherido a este reclamo.', type: 'info' });
+          } else if (result.reason === 'is_creator') {
+            showToast({ message: 'Sos el autor de este reclamo.', type: 'info' });
+          }
+        });
+      }
+    }
+
+    function closeExistingClaimPanel() {
+      ecPanel.classList.remove('is-visible');
+      ecPanel.setAttribute('aria-hidden', 'true');
+      activeInspectedClaim = null;
+    }
+
+    ecCloseBtn.addEventListener('click', closeExistingClaimPanel);
+
+    // =========================================================================
+    // 5. Descubrimiento de Reclamos Cercanos (No Intrusivo)
+    // =========================================================================
+    function checkNearbyClaims() {
+      if (!formState.lat || !formState.lng) return;
+
+      const nearby = claimsService.findNearby(formState.lat, formState.lng, 0.6);
+
+      if (nearby.length > 0) {
+        nearbyBanner.classList.add('is-visible');
+        nearbyText.textContent = `Hay ${nearby.length} ${nearby.length === 1 ? 'reclamo registrado' : 'reclamos registrados'} cerca de este punto (a menos de 600 m)`;
+
+        // Rellenar lista desplegable de casos cercanos
+        nearbyDrawer.innerHTML = nearby.map(c => `
+          <div class="nearby-claim-item" role="button" tabindex="0" data-claim-id="${c.id}" aria-label="Ver reclamo cercano: ${c.titulo}">
+            <div class="nearby-claim-item__info">
+              <span class="claim-map-legend__dot claim-map-legend__dot--${c.categoria}" aria-hidden="true"></span>
+              <span class="nearby-claim-item__title">${c.titulo}</span>
+            </div>
+            <span class="nearby-claim-item__dist">a ${c.distanceMeters} m →</span>
+          </div>
+        `).join('');
+
+        // Listeners para seleccionar e inspeccionar reclamo cercano en el mapa
+        nearbyDrawer.querySelectorAll('.nearby-claim-item').forEach(item => {
+          const handler = () => {
+            const cId = item.dataset.claimId;
+            const claimObj = claimsService.getById(cId);
+            if (claimObj) {
+              if (leafletMap) {
+                leafletMap.setView([claimObj.lat, claimObj.lng], 16, { animate: true });
+              }
+              openExistingClaimPanel(claimObj);
+            }
+          };
+          item.addEventListener('click', handler);
+          item.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              handler();
+            }
+          });
+        });
+      } else {
+        nearbyBanner.classList.remove('is-visible');
+        nearbyDrawer.classList.remove('is-open');
+        btnToggleNearbyList.setAttribute('aria-expanded', 'false');
+      }
+    }
+
+    btnToggleNearbyList.addEventListener('click', () => {
+      const isOpen = nearbyDrawer.classList.toggle('is-open');
+      btnToggleNearbyList.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      btnToggleNearbyList.textContent = isOpen ? 'Ocultar lista' : 'Ver lista cercana';
+    });
+
+    // =========================================================================
+    // 6. Búsqueda y Autocompletado de Direcciones en La Matanza
     // =========================================================================
     addressInput.addEventListener('input', () => {
       const q = addressInput.value.trim().toLowerCase();
       addressClearBtn.style.display = q ? 'flex' : 'none';
+
+      if (addressInput.value.trim()) {
+        formState.direccion = addressInput.value.trim();
+        summaryAddressText.textContent = formState.direccion;
+      }
 
       if (q.length < 2) {
         addressSuggestions.classList.remove('is-visible');
@@ -680,11 +1112,11 @@
     btnRefocusMap.addEventListener('click', () => {
       if (leafletMap && formState.lat && formState.lng) {
         leafletMap.setView([formState.lat, formState.lng], 16, { animate: true });
-        if (marker) marker.openPopup();
+        if (targetMarker) targetMarker.openPopup();
       }
     });
 
-    // Geolocalización
+    // Geolocalización del navegador
     btnUseGps.addEventListener('click', () => {
       if (!navigator.geolocation) {
         geoAlert.classList.add('is-visible');
@@ -709,10 +1141,12 @@
           const userLng = pos.coords.longitude;
           updateLocationFromCoords(userLat, userLng, true);
 
-          if (leafletMap && marker) {
-            marker.setLatLng([userLat, userLng]);
+          if (leafletMap && targetMarker) {
+            targetMarker.setLatLng([userLat, userLng]);
             leafletMap.setView([userLat, userLng], 16, { animate: true });
           }
+
+          checkNearbyClaims();
 
           showToast({
             message: 'Ubicación actual detectada en el mapa.',
@@ -720,7 +1154,7 @@
             duration: 2500
           });
         },
-        (err) => {
+        () => {
           btnUseGps.disabled = false;
           btnUseGps.innerHTML = `
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -735,7 +1169,7 @@
     });
 
     // =========================================================================
-    // 5. Selector Visual de Categorías
+    // 7. Selector Visual de Categorías
     // =========================================================================
     function selectCategory(catKey) {
       formState.categoria = catKey;
@@ -762,7 +1196,7 @@
     });
 
     // =========================================================================
-    // 6. Descripción y Contador de Caracteres
+    // 8. Descripción y Contador de Caracteres
     // =========================================================================
     descTextarea.addEventListener('input', () => {
       formState.descripcion = descTextarea.value;
@@ -772,7 +1206,7 @@
     });
 
     // =========================================================================
-    // 7. Fotografías Registradas por Categoría
+    // 9. Fotografías Registradas por Categoría y Lightbox
     // =========================================================================
     const photoLightbox = document.getElementById('photo-lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
@@ -798,9 +1232,15 @@
     photoLightbox.addEventListener('click', (e) => {
       if (e.target === photoLightbox) closeLightbox();
     });
+
+    // Cerrar panel o lightbox con tecla Escape
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && photoLightbox.classList.contains('is-open')) {
-        closeLightbox();
+      if (e.key === 'Escape') {
+        if (photoLightbox.classList.contains('is-open')) {
+          closeLightbox();
+        } else if (ecPanel.classList.contains('is-visible')) {
+          closeExistingClaimPanel();
+        }
       }
     });
 
@@ -847,7 +1287,7 @@
     }
 
     // =========================================================================
-    // 8. Autoguardado del Borrador (localStorage)
+    // 10. Autoguardado del Borrador y Persistencia Aislada por Cuenta
     // =========================================================================
     function triggerAutoSave() {
       draftStatusIndicator.classList.add('is-saving');
@@ -865,6 +1305,9 @@
           fotos: formState.fotos,
           updatedAt: new Date().toISOString()
         };
+
+        // Guardar por usuario y clave global
+        storage.set(draftStorageKey, draftData);
         storage.set(storage.KEYS.BORRADOR, draftData);
 
         draftStatusIndicator.classList.remove('is-saving');
@@ -874,8 +1317,71 @@
 
     function loadDraftOrParams() {
       const urlParams = new URLSearchParams(window.location.search);
+      const editParam = urlParams.get('edit');
       const catParam = urlParams.get('cat');
-      const draft = storage.get(storage.KEYS.BORRADOR, null);
+
+      if (editParam) {
+        // MODO EDICIÓN DE RECLAMO EXISTENTE PROPIO
+        const targetId = editParam.replace('#', '');
+        const existing = claimsService.getById(targetId);
+
+        if (existing) {
+          // Verificar si el usuario activo es el creador
+          if (!currentUser || existing.creadorId !== currentUser.id) {
+            showToast({
+              message: 'No tenés permisos para editar este reclamo.',
+              type: 'error',
+              duration: 3500
+            });
+            setTimeout(() => { window.location.href = `detalle-reclamo.html?id=${encodeURIComponent(targetId)}`; }, 1500);
+            return;
+          }
+
+          editingClaimId = existing.id;
+          originalClaim = existing;
+
+          // Adaptar textos y títulos para la edición
+          document.querySelector('.claim-form-title').textContent = `Modificar reclamo #${existing.id}`;
+          document.querySelector('.claim-form-subtitle').textContent =
+            existing.estado === 'rechazado'
+              ? 'Ajustá los datos solicitados para corregir y reenviar tu reclamo a revisión.'
+              : 'Actualizá la ubicación, categoría o descripción antes de que ingrese a revisión.';
+
+          const draftStatusIndicator = document.getElementById('draft-status-indicator');
+          if (draftStatusIndicator) draftStatusIndicator.style.display = 'none';
+
+          const backLink = document.querySelector('.claim-back-link');
+          if (backLink) {
+            backLink.href = `detalle-reclamo.html?id=${encodeURIComponent(existing.id)}`;
+            backLink.querySelector('span').textContent = 'Volver al detalle';
+          }
+
+          submitBtnText.textContent = 'Revisar modificaciones';
+
+          // Poblar estado
+          formState.direccion = existing.direccion || '';
+          formState.localidadId = existing.localidadId || 'san-justo';
+          formState.lat = existing.lat || -34.6791;
+          formState.lng = existing.lng || -58.5574;
+          formState.categoria = existing.categoria || null;
+          formState.descripcion = existing.descripcion || '';
+          formState.fotos = existing.fotos || [];
+
+          descTextarea.value = formState.descripcion;
+          charCounterText.textContent = `${formState.descripcion.length} / 500 caracteres`;
+
+          initClaimMap(formState.lat, formState.lng);
+          setLocation(formState.direccion, formState.lat, formState.lng, formState.localidadId);
+
+          if (formState.categoria) {
+            selectCategory(formState.categoria);
+          }
+          return;
+        }
+      }
+
+      // Cargar borrador específico del usuario activo o genérico
+      const draft = storage.get(draftStorageKey, null) || storage.get(storage.KEYS.BORRADOR, null);
 
       if (draft) {
         if (draft.direccion && draft.lat && draft.lng) {
@@ -894,12 +1400,12 @@
         }
       }
 
-      // Parámetro query tiene prioridad para categoría si viene desde la Home
+      // Parámetro query tiene prioridad para categoría si proviene desde la Home
       if (catParam && ['pavimento', 'residuos', 'alumbrado'].includes(catParam)) {
         formState.categoria = catParam;
       }
 
-      // Inicializar mapa con las coordenadas resueltas
+      // Inicializar mapa interactivo con las coordenadas resueltas
       initClaimMap(formState.lat, formState.lng);
       setLocation(formState.direccion, formState.lat, formState.lng, formState.localidadId);
 
@@ -911,104 +1417,155 @@
     }
 
     // =========================================================================
-    // 9. Detección de Reclamos Similares (Duplicate Prevention)
+    // 11. Modal de Revisión y Confirmación Previa al Registro
     // =========================================================================
-    function checkSimilarClaims() {
-      if (!formState.categoria || !formState.lat || !formState.lng) return null;
-      return claimsService.findSimilar(formState.categoria, formState.lat, formState.lng, 0.015);
+    const reviewModal = document.getElementById('modal-review-claim');
+    const btnCloseReviewModal = document.getElementById('btn-close-modal-review');
+    const btnReviewBack = document.getElementById('btn-review-back');
+    const btnConfirmRegister = document.getElementById('btn-confirm-register');
+
+    const reviewAddressText = document.getElementById('review-address-text');
+    const reviewCoordsText = document.getElementById('review-coords-text');
+    const reviewCatBadge = document.getElementById('review-cat-badge');
+    const reviewDescText = document.getElementById('review-desc-text');
+    const reviewPhotosGallery = document.getElementById('review-photos-gallery');
+    const reviewPhotosLabel = document.getElementById('review-photos-label');
+    const reviewUserName = document.getElementById('review-user-name');
+
+    function openReviewModal() {
+      // Título y botón del modal según modo
+      const modalTitleEl = document.getElementById('modal-review-title');
+      if (modalTitleEl) {
+        modalTitleEl.textContent = editingClaimId ? 'Revisá los cambios de tu reclamo' : 'Revisá tu reclamo antes de enviarlo';
+      }
+      const confirmBtnText = btnConfirmRegister.querySelector('.btn-text');
+      if (confirmBtnText) {
+        confirmBtnText.textContent = editingClaimId ? 'Guardar y confirmar cambios' : 'Confirmar y registrar';
+      }
+
+      // 1. Resumen de Ubicación
+      reviewAddressText.textContent = formState.direccion;
+      const locObj = LOCALIDADES_LA_MATANZA.find(l => l.id === formState.localidadId) || { nombre: 'La Matanza' };
+      reviewCoordsText.textContent = `${locObj.nombre} · Coordenadas: ${formState.lat}, ${formState.lng}`;
+
+      // 2. Resumen de Categoría
+      reviewCatBadge.className = `badge badge--cat-${formState.categoria}`;
+      reviewCatBadge.textContent = formatters.categoryLabel(formState.categoria);
+
+      // 3. Resumen de Descripción
+      if (formState.descripcion && formState.descripcion.trim()) {
+        reviewDescText.textContent = formState.descripcion.trim();
+        reviewDescText.style.fontStyle = 'normal';
+        reviewDescText.style.color = 'var(--color-text-main)';
+      } else {
+        reviewDescText.textContent = 'Sin descripción adicional (opcional)';
+        reviewDescText.style.fontStyle = 'italic';
+        reviewDescText.style.color = 'var(--color-text-muted)';
+      }
+
+      // 4. Resumen de Fotografías
+      if (Array.isArray(formState.fotos) && formState.fotos.length > 0) {
+        reviewPhotosLabel.textContent = `Fotografías adjuntas (${formState.fotos.length})`;
+        reviewPhotosGallery.innerHTML = formState.fotos.map((url, i) => `
+          <img src="../${url}" alt="Foto adjunta ${i + 1}" class="modal-review-thumb" loading="lazy">
+        `).join('');
+        reviewPhotosGallery.style.display = 'flex';
+      } else {
+        reviewPhotosLabel.textContent = 'Fotografías adjuntas';
+        reviewPhotosGallery.innerHTML = '<span style="font-size: var(--font-size-xs); color: var(--color-text-muted); font-style: italic;">Sin fotografías adicionales</span>';
+      }
+
+      // 5. Usuario reportante activo
+      reviewUserName.textContent = currentUser ? currentUser.nombre : 'Vecino';
+
+      modal.open('modal-review-claim');
     }
 
-    function openSimilarClaimModal(similar) {
-      detectedSimilarClaim = similar;
-
-      const catBadge = document.getElementById('similar-cat-badge');
-      const stateBadge = document.getElementById('similar-state-badge');
-      const titleEl = document.getElementById('similar-claim-title');
-      const addressEl = document.getElementById('similar-address-text');
-      const supportEl = document.getElementById('similar-claim-support');
-
-      catBadge.className = `badge badge--cat-${similar.categoria}`;
-      catBadge.textContent = formatters.categoryLabel(similar.categoria);
-
-      stateBadge.className = `badge badge--${similar.estado === 'en_proceso' ? 'proceso' : similar.estado === 'en_revision' ? 'revision' : 'recibido'}`;
-      stateBadge.textContent = formatters.stateLabel(similar.estado);
-
-      titleEl.textContent = similar.titulo;
-      addressEl.textContent = similar.direccion;
-      const count = similar.participantes ? similar.participantes.length : 1;
-      supportEl.innerHTML = `👥 <strong>${count} ${count === 1 ? 'vecino' : 'vecinos'}</strong> ya se sumaron a este caso`;
-
-      modal.open('modal-similar-claim');
-    }
-
-    document.getElementById('btn-close-modal-similar').addEventListener('click', () => {
-      modal.close('modal-similar-claim');
+    btnCloseReviewModal.addEventListener('click', () => {
+      modal.close('modal-review-claim');
+      submitBtn.focus();
     });
 
-    // Acción 1: Sumarme al reclamo existente
-    document.getElementById('btn-join-existing-claim').addEventListener('click', () => {
-      if (!detectedSimilarClaim) return;
-      claimsService.joinClaim(detectedSimilarClaim.id);
-      storage.remove(storage.KEYS.BORRADOR);
-      modal.close('modal-similar-claim');
+    btnReviewBack.addEventListener('click', () => {
+      modal.close('modal-review-claim');
+      submitBtn.focus();
+    });
 
-      showToast({
-        message: '¡Te sumaste con éxito al reclamo existente!',
-        type: 'success',
-        duration: 3000
-      });
+    // Acción definitiva: Confirmar y registrar (o guardar modificaciones)
+    btnConfirmRegister.addEventListener('click', () => {
+      if (isSubmitting) return;
+      isSubmitting = true;
+
+      btnConfirmRegister.classList.add('is-loading');
+      const btnText = btnConfirmRegister.querySelector('.btn-text');
+      if (btnText) btnText.textContent = editingClaimId ? 'Guardando modificaciones...' : 'Registrando reclamo...';
+      btnConfirmRegister.disabled = true;
 
       setTimeout(() => {
-        window.location.href = `confirmacion.html?id=${detectedSimilarClaim.id}&joined=true`;
-      }, 450);
-    });
+        if (editingClaimId) {
+          // Actualización de reclamo existente
+          const updateRes = claimsService.updateClaim(editingClaimId, {
+            categoria: formState.categoria,
+            descripcion: formState.descripcion,
+            direccion: formState.direccion,
+            localidadId: formState.localidadId,
+            lat: formState.lat,
+            lng: formState.lng,
+            fotos: formState.fotos
+          });
 
-    // Acción 2: Es otro problema, crear uno nuevo
-    document.getElementById('btn-continue-create-new').addEventListener('click', () => {
-      modal.close('modal-similar-claim');
-      executeCreateClaim();
+          showToast({
+            message: '¡Reclamo actualizado correctamente!',
+            type: 'success',
+            duration: 3000
+          });
+
+          setTimeout(() => {
+            window.location.href = `detalle-reclamo.html?id=${encodeURIComponent(editingClaimId)}`;
+          }, 450);
+        } else {
+          // Creación de nuevo reclamo
+          const newClaim = claimsService.createClaim({
+            categoria: formState.categoria,
+            descripcion: formState.descripcion,
+            direccion: formState.direccion,
+            localidadId: formState.localidadId,
+            lat: formState.lat,
+            lng: formState.lng,
+            fotos: formState.fotos
+          });
+
+          // Limpiar únicamente el borrador tras registro exitoso
+          storage.remove(draftStorageKey);
+          storage.remove(storage.KEYS.BORRADOR);
+
+          showToast({
+            message: '¡Reclamo registrado con éxito en SoluciónSegura!',
+            type: 'success',
+            duration: 3000
+          });
+
+          setTimeout(() => {
+            window.location.href = `confirmacion.html?id=${newClaim.id}`;
+          }, 450);
+        }
+      }, 500);
     });
 
     // =========================================================================
-    // 10. Envío y Validación del Formulario
+    // 12. Envío y Validación del Formulario («Revisar reclamo»)
     // =========================================================================
-    function executeCreateClaim() {
-      submitBtn.classList.add('is-loading');
-      submitBtnText.textContent = 'Registrando reclamo...';
-      submitBtn.disabled = true;
-
-      setTimeout(() => {
-        const newClaim = claimsService.createClaim({
-          categoria: formState.categoria,
-          descripcion: formState.descripcion,
-          direccion: formState.direccion,
-          localidadId: formState.localidadId,
-          lat: formState.lat,
-          lng: formState.lng,
-          fotos: formState.fotos
-        });
-
-        // Limpiar borrador tras envío exitoso
-        storage.remove(storage.KEYS.BORRADOR);
-
-        showToast({
-          message: '¡Reclamo registrado con éxito!',
-          type: 'success',
-          duration: 3000
-        });
-
-        setTimeout(() => {
-          window.location.href = `confirmacion.html?id=${newClaim.id}`;
-        }, 450);
-      }, 600);
-    }
-
     document.getElementById('nuevo-reclamo-form').addEventListener('submit', (e) => {
       e.preventDefault();
 
       let hasErrors = false;
       const blockLocation = document.getElementById('block-location');
       const blockCategory = document.getElementById('block-category');
+
+      // Asegurar captura de texto de dirección si fue escrito manualmente
+      if (addressInput.value.trim()) {
+        formState.direccion = addressInput.value.trim();
+      }
 
       // Validar Ubicación
       if (!formState.direccion || !formState.lat || !formState.lng) {
@@ -1042,13 +1599,8 @@
         return;
       }
 
-      // Comprobar reclamos similares cercanos antes de crear
-      const similar = checkSimilarClaims();
-      if (similar) {
-        openSimilarClaimModal(similar);
-      } else {
-        executeCreateClaim();
-      }
+      // Formulario válido: abrir diálogo de revisión y confirmación
+      openReviewModal();
     });
 
     // Cargar borrador o parámetros al inicio

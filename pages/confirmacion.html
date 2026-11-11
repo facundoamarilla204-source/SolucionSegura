@@ -78,10 +78,10 @@
           <a href="detalle-reclamo.html" class="btn btn--primary btn--lg" id="btn-view-detail">
             Ver detalle del reclamo
           </a>
-          <a href="mis-reclamos.html" class="btn btn--outline">
+          <a href="mis-reclamos.html" class="btn btn--outline" id="btn-to-my-claims">
             Ir a mis reclamos
           </a>
-          <a href="../index.html" class="btn btn--ghost btn--sm">
+          <a href="../index.html" class="btn btn--ghost btn--sm" id="btn-to-home">
             Volver al inicio
           </a>
         </div>
@@ -95,11 +95,11 @@
     import { setupNavigation, claimsService } from '../assets/js/main.js';
     import { formatters } from '../assets/js/utils/formatters.js';
 
-    setupNavigation({ activePage: 'reportar', basePath: '../' });
+    setupNavigation({ activePage: 'confirmacion', basePath: '../' });
 
     // Leer parámetros de URL
     const params = new URLSearchParams(window.location.search);
-    const id = params.get('id');
+    const rawId = params.get('id');
     const isJoined = params.get('joined') === 'true';
 
     const titleEl = document.getElementById('confirm-title');
@@ -109,7 +109,6 @@
     const catEl = document.getElementById('tracking-cat');
     const addressEl = document.getElementById('tracking-address');
     const dateEl = document.getElementById('tracking-date');
-
     const btnViewDetail = document.getElementById('btn-view-detail');
 
     if (isJoined) {
@@ -117,34 +116,47 @@
       subtitleEl.innerHTML = 'Sumaste tu apoyo vecinal a este caso existente para visibilizar su pronta atención.';
     }
 
-    if (id) {
-      trackingNumEl.textContent = id.startsWith('#') ? id : `#${id}`;
+    // Resolver reclamo por ID o fallback al más reciente
+    let cleanId = rawId ? rawId.replace('#', '') : null;
+    let claim = cleanId ? claimsService.getById(cleanId) : null;
+
+    if (!claim) {
+      const userClaims = claimsService.getByCurrentUser();
+      claim = userClaims.length > 0 ? userClaims[0] : (claimsService.getAll()[0] || null);
+      if (claim) {
+        cleanId = claim.id;
+      }
+    }
+
+    if (claim) {
+      trackingNumEl.textContent = claim.id.startsWith('#') ? claim.id : `#${claim.id}`;
       if (btnViewDetail) {
-        btnViewDetail.href = `detalle-reclamo.html?id=${encodeURIComponent(id.replace('#', ''))}`;
+        btnViewDetail.href = `detalle-reclamo.html?id=${encodeURIComponent(claim.id)}&from=confirmacion`;
       }
 
-      // Buscar el reclamo en claimsService para mostrar datos reales
-      const cleanId = id.replace('#', '');
-      const claim = claimsService.getById(cleanId);
-      if (claim) {
-        catEl.textContent = formatters.categoryLabel(claim.categoria);
-        addressEl.textContent = claim.direccion;
-        dateEl.textContent = formatters.relativeDate(claim.fecha);
-        stateBadgeEl.textContent = formatters.stateLabel(claim.estado);
-        stateBadgeEl.className = `badge badge--${claim.estado === 'en_proceso' ? 'proceso' : claim.estado === 'en_revision' ? 'revision' : 'recibido'}`;
+      catEl.textContent = formatters.categoryLabel(claim.categoria);
+      addressEl.textContent = claim.direccion;
+      dateEl.textContent = formatters.relativeDate(claim.fecha);
+      stateBadgeEl.textContent = formatters.stateLabel(claim.estado);
+      stateBadgeEl.className = `badge badge--${claim.estado === 'en_proceso' ? 'proceso' : claim.estado === 'en_revision' ? 'revision' : 'recibido'}`;
 
-        // Mostrar miniatura de la evidencia fotográfica adjunta
-        if (Array.isArray(claim.fotos) && claim.fotos.length > 0) {
-          const photosRow = document.getElementById('tracking-photos-row');
-          const thumbEl = document.getElementById('tracking-photo-thumb');
-          const countEl = document.getElementById('tracking-photos-count');
-          if (photosRow && thumbEl) {
-            const firstPhoto = claim.fotos[0];
-            thumbEl.src = firstPhoto.startsWith('../') ? firstPhoto : `../${firstPhoto}`;
-            countEl.textContent = `${claim.fotos.length} fotografías adjuntas`;
-            photosRow.style.display = 'flex';
-          }
+      // Mostrar miniatura de la evidencia fotográfica adjunta
+      if (Array.isArray(claim.fotos) && claim.fotos.length > 0) {
+        const photosRow = document.getElementById('tracking-photos-row');
+        const thumbEl = document.getElementById('tracking-photo-thumb');
+        const countEl = document.getElementById('tracking-photos-count');
+        if (photosRow && thumbEl) {
+          const firstPhoto = claim.fotos[0];
+          thumbEl.src = firstPhoto.startsWith('../') ? firstPhoto : `../${firstPhoto}`;
+          countEl.textContent = `${claim.fotos.length} ${claim.fotos.length === 1 ? 'fotografía adjunta' : 'fotografías adjuntas'}`;
+          photosRow.style.display = 'flex';
         }
+      }
+    } else {
+      trackingNumEl.textContent = '#LM-00000';
+      if (btnViewDetail) {
+        btnViewDetail.href = 'mis-reclamos.html';
+        btnViewDetail.textContent = 'Ir a mis reclamos';
       }
     }
   </script>

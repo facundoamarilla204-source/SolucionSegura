@@ -42,6 +42,51 @@ export function createCategoryIcon(categoria, titulo = '') {
 }
 
 /**
+ * Crea el icono distintivo azul para el punto seleccionado del nuevo reclamo
+ */
+export function createTargetPinIcon(titulo = 'Ubicación seleccionada para tu nuevo reclamo') {
+  if (typeof L === 'undefined') return null;
+
+  return L.divIcon({
+    className: 'custom-map-pin custom-map-pin--target',
+    html: `
+      <div class="pin-marker pin-marker--target" title="${titulo}" role="button" aria-label="${titulo}">
+        <div class="pin-marker__body">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>
+          </svg>
+        </div>
+        <div class="pin-marker__tip" aria-hidden="true"></div>
+      </div>
+    `,
+    iconSize: [40, 48],
+    iconAnchor: [20, 48],
+    popupAnchor: [0, -48]
+  });
+}
+
+/**
+ * Crea el icono distintivo "Vos estás acá" para geolocalización activa
+ */
+export function createUserLocationIcon(titulo = 'Vos estás acá') {
+  if (typeof L === 'undefined') return null;
+
+  return L.divIcon({
+    className: 'user-location-wrapper',
+    html: `
+      <div class="user-pulse-marker" role="note" aria-label="${titulo}" title="${titulo}">
+        <div class="user-pulse-marker__halo" aria-hidden="true"></div>
+        <div class="user-pulse-marker__core" aria-hidden="true"></div>
+      </div>
+    `,
+    iconSize: [28, 28],
+    iconAnchor: [14, 14],
+    popupAnchor: [0, -14]
+  });
+}
+
+/**
  * Genera el HTML de la ficha compacta para el Popup de Leaflet
  */
 export function createClaimPopupHtml(claim, basePath = '') {
@@ -49,7 +94,7 @@ export function createClaimPopupHtml(claim, basePath = '') {
   const stateLabel = formatters.stateLabel(claim.estado);
   const dateFormatted = formatters.relativeDate(claim.fecha);
   const countVecinos = claim.participantes ? claim.participantes.length : 1;
-  const claimUrl = `${basePath}pages/detalle-reclamo.html?id=${encodeURIComponent(claim.id)}`;
+  const claimUrl = `${basePath}pages/detalle-reclamo.html?id=${encodeURIComponent(claim.id)}&from=explorar`;
 
   // Mapeo seguro de clase de estado para el badge
   let stateClass = 'recibido';
@@ -58,6 +103,13 @@ export function createClaimPopupHtml(claim, basePath = '') {
   else if (claim.estado === 'resuelto') stateClass = 'resuelto';
   else if (claim.estado === 'reabierto') stateClass = 'reabierto';
   else if (claim.estado === 'rechazado') stateClass = 'rechazado';
+  else if (claim.estado === 'cancelado') stateClass = 'cancelado';
+
+  const hasPhoto = Array.isArray(claim.fotos) && claim.fotos.length > 0;
+  const rawPhoto = hasPhoto ? claim.fotos[0] : null;
+  const photoUrl = rawPhoto
+    ? (rawPhoto.startsWith('http') || rawPhoto.startsWith('../') ? rawPhoto : `${basePath}${rawPhoto}`)
+    : null;
 
   return `
     <article class="claim-popup" role="dialog" aria-labelledby="popup-title-${claim.id}">
@@ -65,6 +117,12 @@ export function createClaimPopupHtml(claim, basePath = '') {
         <span class="badge badge--cat-${claim.categoria}">${catLabel}</span>
         <span class="badge badge--${stateClass}">${stateLabel}</span>
       </div>
+
+      ${photoUrl ? `
+        <div class="claim-popup__photo-wrap" style="margin-bottom: var(--space-2); border-radius: var(--radius-sm); overflow: hidden; height: 110px; background-color: #0F172A; border: 1px solid var(--color-border-subtle);">
+          <img src="${photoUrl}" alt="${claim.titulo}" style="width: 100%; height: 100%; object-fit: cover; display: block;" loading="lazy">
+        </div>
+      ` : ''}
 
       <h4 id="popup-title-${claim.id}" class="claim-popup__title">
         <a href="${claimUrl}" class="claim-popup__title-link">${claim.titulo}</a>
@@ -93,7 +151,7 @@ export function createClaimPopupHtml(claim, basePath = '') {
 
       <div class="claim-popup__footer">
         <a href="${claimUrl}" class="btn btn--primary btn--sm claim-popup__btn">
-          <span>Ver reclamo</span>
+          <span>Ver detalle</span>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
             <path d="M5 12h14M12 5l7 7-7 7"/>
           </svg>
@@ -156,18 +214,45 @@ export function initLeafletMap(containerId, options = {}) {
 }
 
 /**
- * Renderiza los marcadores de los reclamos en el mapa
+ * Renderiza los marcadores de los reclamos en el mapa con soporte para clustering opcional
  */
-export function renderClaimMarkers(map, claims = [], basePath = '') {
-  if (!map || typeof L === 'undefined') return [];
+export function renderClaimMarkers(map, claims = [], basePath = '', options = {}) {
+  if (!map || typeof L === 'undefined') return { markers: [], clusterGroup: null };
 
   const markers = [];
+  const useCluster = Boolean(options.useClustering && typeof L.markerClusterGroup === 'function');
+
+  let clusterGroup = null;
+  if (useCluster) {
+    clusterGroup = L.markerClusterGroup({
+      showCoverageOnHover: false,
+      maxClusterRadius: 45,
+      spiderfyOnMaxZoom: true,
+      zoomToBoundsOnClick: true,
+      iconCreateFunction: function(cluster) {
+        const count = cluster.getChildCount();
+        return L.divIcon({
+          html: `
+            <div class="custom-cluster-badge" role="button" aria-label="${count} reclamos agrupados">
+              <span class="custom-cluster-badge__count">${count}</span>
+            </div>
+          `,
+          className: 'custom-cluster-wrapper',
+          iconSize: [42, 42],
+          iconAnchor: [21, 21]
+        });
+      }
+    });
+  }
 
   claims.forEach(claim => {
     if (!claim.lat || !claim.lng) return;
 
     const icon = createCategoryIcon(claim.categoria, claim.titulo);
-    const marker = L.marker([claim.lat, claim.lng], { icon: icon });
+    const marker = L.marker([claim.lat, claim.lng], {
+      icon: icon,
+      title: `${claim.titulo} (${formatters.categoryLabel(claim.categoria)})`
+    });
 
     const popupContent = createClaimPopupHtml(claim, basePath);
     marker.bindPopup(popupContent, {
@@ -176,11 +261,27 @@ export function renderClaimMarkers(map, claims = [], basePath = '') {
       className: 'custom-leaflet-popup'
     });
 
-    marker.addTo(map);
+    marker.claimData = claim;
+
+    if (typeof options.onMarkerSelect === 'function') {
+      marker.on('click', () => {
+        options.onMarkerSelect(claim, marker);
+      });
+    }
+
+    if (useCluster && clusterGroup) {
+      clusterGroup.addLayer(marker);
+    } else {
+      marker.addTo(map);
+    }
     markers.push(marker);
   });
 
-  return markers;
+  if (useCluster && clusterGroup) {
+    map.addLayer(clusterGroup);
+  }
+
+  return { markers, clusterGroup };
 }
 
 /**

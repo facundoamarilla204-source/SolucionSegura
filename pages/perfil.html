@@ -41,7 +41,7 @@
 
       <div class="card" style="margin-bottom: var(--space-6);">
         <div style="display: flex; align-items: center; gap: var(--space-4); margin-bottom: var(--space-6);">
-          <div style="width: 56px; height: 56px; border-radius: var(--radius-full); background-color: var(--color-surface-light); color: var(--color-primary-dark); display: flex; align-items: center; justify-content: center; font-size: var(--font-size-xl); font-weight: bold;">
+          <div style="width: 56px; height: 56px; border-radius: var(--radius-full); background-color: var(--color-surface-light); color: var(--color-primary-dark); display: flex; align-items: center; justify-content: center; font-size: var(--font-size-xl); font-weight: bold;" id="profile-avatar-initials">
             MG
           </div>
           <div>
@@ -72,6 +72,52 @@
           </button>
         </div>
       </div>
+
+      <!-- Sección integrada: Mis reclamos y actividad comunitaria -->
+      <section class="card" style="margin-bottom: var(--space-6);" aria-labelledby="section-claims-title">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4); flex-wrap: wrap; gap: var(--space-2);">
+          <div>
+            <h2 id="section-claims-title" style="font-family: var(--font-family-display); font-size: var(--font-size-base); font-weight: 700; color: var(--color-primary-dark); margin-bottom: 2px;">
+              Mis reclamos
+            </h2>
+            <p style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin: 0;">
+              Consultá el estado y las novedades de tus reclamos y adhesiones.
+            </p>
+          </div>
+          <span class="badge badge--recibido" id="profile-total-claims-badge">0 casos</span>
+        </div>
+
+        <!-- Resumen de actividad ciudadana -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: var(--space-3); margin-bottom: var(--space-4);">
+          <div style="background-color: var(--color-surface-subtle); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md); padding: var(--space-3) var(--space-4);">
+            <span style="display: block; font-size: var(--font-size-xs); color: var(--color-text-muted); margin-bottom: 2px;">Creados por mí</span>
+            <strong style="font-family: var(--font-family-display); font-size: var(--font-size-xl); color: var(--color-primary-dark);" id="profile-claims-created">0</strong>
+          </div>
+          <div style="background-color: var(--color-surface-subtle); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md); padding: var(--space-3) var(--space-4);">
+            <span style="display: block; font-size: var(--font-size-xs); color: var(--color-text-muted); margin-bottom: 2px;">Reclamos que apoyo</span>
+            <strong style="font-family: var(--font-family-display); font-size: var(--font-size-xl); color: var(--color-accent);" id="profile-claims-joined">0</strong>
+          </div>
+        </div>
+
+        <!-- Fila de acceso directo hacia Mis reclamos -->
+        <a href="mis-reclamos.html" id="profile-to-claims-btn" class="btn btn--secondary" style="width: 100%; display: flex; justify-content: space-between; align-items: center; text-decoration: none; padding: var(--space-3) var(--space-4);">
+          <span style="display: flex; align-items: center; gap: var(--space-2); font-weight: var(--font-weight-semibold); color: var(--color-primary-dark);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+            </svg>
+            <span>Ver mis reclamos</span>
+          </span>
+          <span style="display: flex; align-items: center; gap: 4px; font-size: var(--font-size-xs); color: var(--color-accent); font-weight: var(--font-weight-bold);">
+            <span>Ir al listado</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+              <path d="m9 18 6-6-6-6"/>
+            </svg>
+          </span>
+        </a>
+      </section>
 
       <!-- Control de reinicio académico de datos de prueba -->
       <aside class="card" style="background-color: var(--color-bg-body); border-style: dashed;">
@@ -110,13 +156,66 @@
 
   <script type="module">
     import { setupNavigation, auth, claimsService, showToast } from '../assets/js/main.js';
+    import { storage } from '../assets/js/utils/storage.js';
+
+    // Comprobación de autenticación simulada
+    if (!auth.isLoggedIn()) {
+      auth.setRedirectUrl(window.location.href);
+      window.location.href = `iniciar-sesion.html?redirect=${encodeURIComponent(window.location.href)}`;
+    }
+
     setupNavigation({ activePage: 'perfil', basePath: '../' });
 
     const user = auth.getCurrentUser();
     if (user) {
       document.getElementById('profile-name').textContent = user.nombre;
       document.getElementById('profile-email').textContent = user.email;
+
+      // Iniciales para el avatar
+      const initials = (user.nombre || 'U')
+        .split(' ')
+        .filter(Boolean)
+        .map(n => n.charAt(0))
+        .slice(0, 2)
+        .join('')
+        .toUpperCase();
+      const initialsEl = document.getElementById('profile-avatar-initials');
+      if (initialsEl) initialsEl.textContent = initials;
+
+      // Localidad preferida
+      const locSelect = document.getElementById('profile-localidad');
+      if (locSelect && user.localidadPreferida) {
+        locSelect.value = user.localidadPreferida;
+      }
     }
+
+    function updateClaimsMetrics() {
+      const creados = claimsService.getByCurrentUser();
+      const sumados = claimsService.getJoinedByCurrentUser();
+
+      const createdEl = document.getElementById('profile-claims-created');
+      const joinedEl = document.getElementById('profile-claims-joined');
+      const totalBadge = document.getElementById('profile-total-claims-badge');
+
+      if (createdEl) createdEl.textContent = creados.length;
+      if (joinedEl) joinedEl.textContent = sumados.length;
+      const total = creados.length + sumados.length;
+      if (totalBadge) {
+        totalBadge.textContent = `${total} ${total === 1 ? 'caso' : 'casos'}`;
+      }
+    }
+
+    updateClaimsMetrics();
+
+    // Guardar localidad preferida
+    document.getElementById('btn-save-profile').addEventListener('click', () => {
+      const locSelect = document.getElementById('profile-localidad');
+      if (user && locSelect) {
+        user.localidadPreferida = locSelect.value;
+        storage.set(storage.KEYS.CURRENT_USER, user);
+        showToast({ message: 'Preferencias guardadas con éxito.', type: 'success' });
+      }
+    });
 
     document.getElementById('btn-logout').addEventListener('click', () => {
       auth.logout();
@@ -125,6 +224,7 @@
 
     document.getElementById('btn-reset-seed').addEventListener('click', () => {
       claimsService.resetToSeed();
+      updateClaimsMetrics();
       showToast({ message: 'Datos de prueba restablecidos correctamente.', type: 'success' });
     });
   </script>

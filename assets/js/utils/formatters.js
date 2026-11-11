@@ -46,6 +46,19 @@ export const formatters = {
     return labels[estado] || estado;
   },
 
+  stateBadgeClass(estado) {
+    const map = {
+      en_proceso: 'proceso',
+      en_revision: 'revision',
+      resuelto: 'resuelto',
+      rechazado: 'rechazado',
+      reabierto: 'reabierto',
+      cancelado: 'cancelado',
+      recibido: 'recibido'
+    };
+    return map[estado] || 'recibido';
+  },
+
   categoryLabel(categoria) {
     const labels = {
       pavimento: 'Calles y pavimento',

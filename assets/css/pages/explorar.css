@@ -1,0 +1,580 @@
+/* ==========================================================================
+   SoluciónSegura — Hoja de Estilos de Explorar Reclamos (Etapa 06)
+   Identidad visual: #062F66 (Institucional), #0284C7 (Acento), Outfit & Inter
+   Diseño accesible, responsive mobile-first y layout desktop controlado.
+   ========================================================================== */
+
+/* Barra de Encabezado y Contexto */
+.explorar-header {
+  margin-bottom: var(--space-6);
+}
+
+.explorar-header__title {
+  font-family: var(--font-family-display);
+  font-size: 2.125rem;
+  font-weight: 800;
+  color: var(--color-primary-dark);
+  letter-spacing: -0.025em;
+  line-height: var(--line-height-tight);
+  margin-bottom: var(--space-2);
+}
+
+.explorar-header__desc {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-relaxed);
+  max-width: 65ch;
+  margin: 0;
+}
+
+/* ==========================================================================
+   Barra Principal de Controles y Filtros
+   ========================================================================== */
+.explorar-toolbar {
+  background: var(--color-surface-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
+  box-shadow: 0 2px 8px -1px rgba(6, 47, 102, 0.05);
+  margin-bottom: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* Fila Superior: Alternador de Vistas (Mapa/Lista) y Resumen Activo */
+.explorar-toolbar__top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+/* Alternador Segmentado de Vista (Mapa / Lista) */
+.view-toggle-group {
+  display: inline-flex;
+  background-color: var(--color-surface-light);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  padding: 3px;
+  gap: 2px;
+}
+
+.view-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  border: none;
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.view-toggle-btn:hover {
+  color: var(--color-primary-dark);
+}
+
+.view-toggle-btn.is-active {
+  background-color: var(--color-accent);
+  color: #FFFFFF;
+  box-shadow: 0 2px 6px rgba(2, 132, 199, 0.35);
+}
+
+.view-toggle-btn svg {
+  flex-shrink: 0;
+}
+
+/* Fila de Filtros y Ordenamiento */
+.explorar-toolbar__filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  justify-content: space-between;
+}
+
+.explorar-filter-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.explorar-select-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.explorar-select-label {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.explorar-select {
+  padding: 7px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface-card);
+  color: var(--color-text-main);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-xs);
+  outline: none;
+  cursor: pointer;
+  transition: border-color var(--duration-fast);
+}
+
+.explorar-select:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+}
+
+/* Categorías como Filtro Rápido (Badges clickeables) */
+.category-filter-chips {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.category-chip {
+  padding: 5px 11px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  border: 1px solid transparent;
+  background-color: var(--color-surface-light);
+  color: var(--color-text-secondary);
+  transition: all var(--duration-fast) var(--ease-out);
+  user-select: none;
+}
+
+.category-chip:hover {
+  background-color: #E2E8F0;
+  color: var(--color-primary-dark);
+}
+
+.category-chip.is-active {
+  background-color: var(--color-primary-dark);
+  color: #FFFFFF;
+}
+
+.category-chip--pavimento.is-active {
+  background-color: #B45309;
+  border-color: #92400E;
+  color: #FFFFFF;
+}
+
+.category-chip--residuos.is-active {
+  background-color: #047857;
+  border-color: #065F46;
+  color: #FFFFFF;
+}
+
+.category-chip--alumbrado.is-active {
+  background-color: #6D28D9;
+  border-color: #5B21B6;
+  color: #FFFFFF;
+}
+
+/* Barra de Estado de Filtros (Contador y Limpiar) */
+.active-filters-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.active-filters-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  background-color: #E0F2FE;
+  color: #0369A1;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.btn-clear-filters {
+  font-size: var(--font-size-xs);
+  color: #DC2626;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 2px 4px;
+}
+
+.btn-clear-filters:hover {
+  color: #991B1B;
+}
+
+/* ==========================================================================
+   Contenedor del Mapa
+   ========================================================================== */
+.explorar-map-card {
+  background: var(--color-surface-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: 0 4px 18px -2px rgba(6, 47, 102, 0.08);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.explorar-map-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 18px;
+  background-color: #F8FAFC;
+  border-bottom: 1px solid var(--color-border);
+  font-size: var(--font-size-xs);
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.explorar-map-toolbar__info {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-primary-dark);
+  font-weight: var(--font-weight-medium);
+}
+
+.explorar-map-toolbar__legend {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.map-legend-dot {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+}
+
+.map-legend-dot__circle {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+}
+
+.map-legend-dot__circle--pavimento { background-color: #B45309; }
+.map-legend-dot__circle--residuos { background-color: #047857; }
+.map-legend-dot__circle--alumbrado { background-color: #6D28D9; }
+
+/* Elemento del Mapa */
+#explorar-map {
+  width: 100%;
+  height: 540px;
+  min-height: 440px;
+  background-color: #E2E8F0;
+  position: relative;
+  z-index: 1;
+}
+
+@media (min-width: 1024px) {
+  #explorar-map {
+    height: 600px;
+  }
+}
+
+/* ==========================================================================
+   Ficha Inferior Móvil (Mobile Bottom Sheet para Marcadores)
+   ========================================================================== */
+.explorar-mobile-card {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 14px;
+  z-index: 1000;
+  background-color: var(--color-surface-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 14px 30px -4px rgba(6, 47, 102, 0.3);
+  padding: var(--space-4);
+  transform: translateY(120%);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1), opacity 220ms ease;
+}
+
+.explorar-mobile-card.is-visible {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.explorar-mobile-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-2);
+}
+
+.explorar-mobile-card__close {
+  background: transparent;
+  border: none;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-muted);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+}
+
+.explorar-mobile-card__close:hover {
+  background-color: var(--color-surface-light);
+  color: var(--color-text-main);
+}
+
+.explorar-mobile-card__content {
+  display: flex;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.explorar-mobile-card__thumb {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+  background: #0F172A;
+  border: 1px solid var(--color-border-subtle);
+}
+
+.explorar-mobile-card__title {
+  font-family: var(--font-family-display);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  margin-bottom: 2px;
+  line-height: var(--line-height-snug);
+}
+
+.explorar-mobile-card__address {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 4px;
+}
+
+.explorar-mobile-card__meta {
+  font-size: 0.75rem;
+  color: #0369A1;
+  font-weight: 600;
+}
+
+.explorar-mobile-card__actions {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.explorar-mobile-card__actions .btn {
+  flex: 1;
+  justify-content: center;
+}
+
+/* ==========================================================================
+   Vista Lista: Grilla de Tarjetas de Reclamos
+   ========================================================================== */
+.explorar-list-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+}
+
+@media (min-width: 640px) {
+  .explorar-list-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .explorar-list-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.claim-list-card {
+  background: var(--color-surface-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  box-shadow: 0 2px 6px -1px rgba(6, 47, 102, 0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform var(--duration-fast) var(--ease-out),
+              box-shadow var(--duration-fast) var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out);
+}
+
+.claim-list-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -3px rgba(6, 47, 102, 0.12);
+  border-color: #BAE6FD;
+}
+
+.claim-list-card:focus-within {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2);
+}
+
+.claim-list-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.claim-list-card__body {
+  display: flex;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.claim-list-card__thumb-wrap {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  flex-shrink: 0;
+  background-color: var(--color-surface-light);
+  border: 1px solid var(--color-border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.claim-list-card__thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.claim-list-card__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.claim-list-card__title {
+  font-family: var(--font-family-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  line-height: var(--line-height-snug);
+  margin-bottom: 4px;
+}
+
+.claim-list-card__title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.claim-list-card__title a:hover {
+  color: var(--color-accent);
+}
+
+.claim-list-card__address {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.claim-list-card__date {
+  font-size: 0.6875rem;
+  color: var(--color-text-muted);
+}
+
+.claim-list-card__footer {
+  border-top: 1px solid var(--color-border-subtle);
+  padding-top: var(--space-3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.claim-list-card__support-count {
+  font-size: var(--font-size-xs);
+  color: #0369A1;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.claim-list-card__actions {
+  display: inline-flex;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+/* ==========================================================================
+   Estado Vacío
+   ========================================================================== */
+.explorar-empty-state {
+  text-align: center;
+  padding: var(--space-12) var(--space-6);
+  background-color: var(--color-surface-card);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  margin: var(--space-6) 0;
+}
+
+.explorar-empty-state__icon {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-full);
+  background: var(--color-surface-light);
+  color: var(--color-accent);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-3);
+}
+
+.explorar-empty-state__title {
+  font-family: var(--font-family-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  margin-bottom: var(--space-2);
+}
+
+.explorar-empty-state__desc {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  max-width: 44ch;
+  margin: 0 auto var(--space-5) auto;
+  line-height: var(--line-height-relaxed);
+}
+

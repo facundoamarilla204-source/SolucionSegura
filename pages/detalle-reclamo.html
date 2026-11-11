@@ -105,9 +105,11 @@
           <article class="card" style="margin-bottom: var(--space-6); padding: var(--space-6);">
             
             <div style="display: flex; justify-content: space-between; align-items: center; gap: var(--space-2); margin-bottom: var(--space-3); flex-wrap: wrap;">
-              <div style="display: flex; gap: var(--space-2); flex-wrap: wrap;">
+              <div style="display: flex; gap: var(--space-2); flex-wrap: wrap; align-items: center;">
                 <span id="detail-category-badge" class="badge badge--cat-pavimento">Calles y pavimento</span>
                 <span id="detail-state-badge" class="badge badge--recibido">Recibido</span>
+                <span id="detail-owner-badge" class="badge" style="display: none; background-color: #E0F2FE; color: var(--color-accent-dark); border: 1px solid #BAE6FD; font-weight: 700;">Reclamo creado por vos</span>
+                <span id="detail-neighbor-badge" style="display: none; font-size: var(--font-size-xs); color: var(--color-text-secondary); background: var(--color-surface-subtle); padding: 3px 8px; border-radius: var(--radius-sm); border: 1px solid var(--color-border-subtle);"></span>
               </div>
               <span id="detail-id-badge" style="font-size: var(--font-size-xs); font-family: monospace; font-weight: 700; color: var(--color-text-muted); background: var(--color-surface-subtle); padding: 4px 8px; border-radius: var(--radius-sm); border: 1px solid var(--color-border-subtle);">
                 #LM-00000
@@ -138,7 +140,7 @@
             </div>
 
             <!-- Respaldo Vecinal y Acción -->
-            <div style="border-top: 1px solid var(--color-border); padding-top: var(--space-4); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-3);">
+            <div style="border-top: 1px solid var(--color-border); padding-top: var(--space-4); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-3);" id="detail-support-section">
               <div>
                 <strong id="detail-supporters-count" style="font-size: var(--font-size-xl); color: var(--color-primary-dark); font-family: var(--font-family-display);">
                   1 vecino
@@ -146,18 +148,102 @@
                 <span id="detail-supporters-label" style="color: var(--color-text-secondary); font-size: var(--font-size-sm);"> respalda este reclamo</span>
               </div>
 
-              <button type="button" class="btn btn--primary" id="btn-support-claim">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-                  <circle cx="9" cy="7" r="4"/>
-                  <line x1="19" y1="8" x2="19" y2="14"/>
-                  <line x1="22" y1="11" x2="16" y2="11"/>
-                </svg>
-                <span id="btn-support-text">Sumarme a este reclamo</span>
-              </button>
+              <div id="detail-action-slot">
+                <button type="button" class="btn btn--primary" id="btn-support-claim">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                    <circle cx="9" cy="7" r="4"/>
+                    <line x1="19" y1="8" x2="19" y2="14"/>
+                    <line x1="22" y1="11" x2="16" y2="11"/>
+                  </svg>
+                  <span id="btn-support-text">Sumarme a este reclamo</span>
+                </button>
+                <div id="owner-action-notice" style="display: none; align-items: center; gap: var(--space-2); color: var(--color-primary-dark); font-size: var(--font-size-xs); font-weight: var(--font-weight-medium); background-color: #F0F9FF; border: 1px solid #BAE6FD; padding: 6px 14px; border-radius: var(--radius-sm);">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color: var(--color-accent); flex-shrink: 0;" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                  <span>Reclamo creado por vos</span>
+                </div>
+              </div>
             </div>
 
           </article>
+
+          <!-- SECCIÓN: Gestionar mi reclamo (Sólo visible para el creador del reporte) -->
+          <section id="owner-management-card" class="claim-owner-management" style="display: none;" aria-labelledby="owner-management-title">
+            <div class="claim-owner-management__header">
+              <h2 id="owner-management-title" class="claim-owner-management__title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M12 20h9"/>
+                  <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                </svg>
+                Gestionar mi reclamo
+              </h2>
+              <span id="owner-state-indicator" class="badge badge--recibido">Estado actual</span>
+            </div>
+
+            <p id="owner-management-desc" class="claim-owner-management__desc">
+              Como creador de este reporte podés gestionar los datos y el curso de la solicitud.
+            </p>
+
+            <!-- Aviso específico de rechazo si aplica -->
+            <div id="owner-rejection-box" class="claim-rejection-notice" style="display: none;">
+              <div class="claim-rejection-notice__title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                <span>Motivo de rechazo</span>
+              </div>
+              <p id="owner-rejection-reason" class="claim-rejection-notice__text"></p>
+            </div>
+
+            <!-- Aviso de solicitudes en trámite si aplica -->
+            <div id="owner-pending-notice" class="claim-pending-request-notice" style="display: none;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink: 0;" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <p id="owner-pending-text" class="claim-pending-request-notice__text"></p>
+            </div>
+
+            <!-- Botones de Acción según estado -->
+            <div id="owner-actions-container" class="claim-owner-actions-grid">
+              <!-- Inyectado dinámicamente según el estado del reclamo -->
+            </div>
+
+            <!-- Bloque de Calificación y Solución si estado === 'resuelto' -->
+            <div id="owner-solution-evaluation-box" class="star-rating-box" style="display: none;">
+              <h3 style="font-family: var(--font-family-display); font-size: var(--font-size-base); font-weight: 700; color: var(--color-primary-dark); margin-bottom: var(--space-1);">
+                ¿Cómo evaluás la resolución de este problema?
+              </h3>
+              <p style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-bottom: var(--space-3);">
+                Tu calificación ayuda a auditar la efectividad de las cuadrillas municipales en el barrio.
+              </p>
+
+              <div id="star-rating-container" class="star-rating-widget" role="radiogroup" aria-label="Calificación del 1 al 5 de la solución">
+                <button type="button" class="star-btn" data-star="1" role="radio" aria-checked="false" aria-label="1 estrella: Insatisfactorio">★</button>
+                <button type="button" class="star-btn" data-star="2" role="radio" aria-checked="false" aria-label="2 estrellas: Regular">★</button>
+                <button type="button" class="star-btn" data-star="3" role="radio" aria-checked="false" aria-label="3 estrellas: Aceptable">★</button>
+                <button type="button" class="star-btn" data-star="4" role="radio" aria-checked="false" aria-label="4 estrellas: Bueno">★</button>
+                <button type="button" class="star-btn" data-star="5" role="radio" aria-checked="false" aria-label="5 estrellas: Excelente">★</button>
+              </div>
+              <div id="star-rating-label" style="font-size: var(--font-size-xs); font-weight: 600; color: var(--color-text-primary); margin-bottom: var(--space-3);">
+                Seleccioná una calificación
+              </div>
+
+              <div class="form-group" style="margin-bottom: var(--space-3);">
+                <label for="eval-comment" class="form-label" style="font-size: var(--font-size-xs);">Comentario u observación (opcional):</label>
+                <textarea id="eval-comment" class="form-control" rows="2" placeholder="Contanos qué te pareció el trabajo realizado..." style="font-size: var(--font-size-sm);"></textarea>
+              </div>
+
+              <button type="button" class="btn btn--primary btn--sm" id="btn-save-evaluation">
+                Guardar valoración
+              </button>
+            </div>
+
+            <!-- Bloque de Calificación ya registrada -->
+            <div id="owner-evaluated-box" style="display: none; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: var(--radius-md); padding: var(--space-4); margin-top: var(--space-4);">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-2);">
+                <strong style="color: var(--color-primary-dark); font-size: var(--font-size-sm);">Valoración registrada por vos</strong>
+                <span id="evaluated-stars" style="color: #EAB308; font-size: 1.15rem; letter-spacing: 2px;">★★★★★</span>
+              </div>
+              <p id="evaluated-comment" style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin: 0;"></p>
+            </div>
+
+          </section>
 
           <!-- SECCIÓN: Fotografías del reporte -->
           <section class="card" style="padding: var(--space-6);" aria-labelledby="photos-section-title">
@@ -190,7 +276,7 @@
               Evolución del caso
             </h2>
 
-            <div class="timeline-list">
+            <div class="timeline-list" id="timeline-steps-container">
               <div class="timeline-step" id="step-recibido">
                 <div class="timeline-step__bullet">1</div>
                 <div class="timeline-step__body">
@@ -220,6 +306,16 @@
                 <div class="timeline-step__body">
                   <h3>Resuelto</h3>
                   <p id="step-resuelto-desc">Intervención finalizada y validada</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Paso especial para Cancelado / Rechazado si corresponde -->
+            <div id="timeline-terminal-step" style="display: none; margin-top: var(--space-3); padding-top: var(--space-3); border-top: 1px dashed var(--color-border);">
+              <div class="timeline-step is-current" style="padding-left: 0;">
+                <div class="timeline-step__body">
+                  <h3 id="terminal-step-title" style="color: #991B1B;">Caso cerrado</h3>
+                  <p id="terminal-step-desc" style="font-size: var(--font-size-xs); color: var(--color-text-secondary);"></p>
                 </div>
               </div>
             </div>
@@ -258,6 +354,59 @@
     </a>
   </nav>
 
+  <!-- Modales de Gestión de Reclamos Propios -->
+  <!-- Modal 1: Cancelar Reclamo -->
+  <div id="modal-cancel-claim" class="mgmt-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-cancel-title">
+    <div class="mgmt-modal-container">
+      <div class="mgmt-modal-header">
+        <h3 id="modal-cancel-title" class="mgmt-modal-title">Cancelar reclamo</h3>
+        <button type="button" class="btn-close-modal" id="btn-close-cancel-modal" aria-label="Cerrar ventana" style="background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--color-text-muted);">×</button>
+      </div>
+      <div class="mgmt-modal-body">
+        <p style="color: var(--color-text-primary); font-size: var(--font-size-sm); line-height: var(--line-height-relaxed); margin-bottom: var(--space-4);">
+          ¿Estás seguro de que deseás cancelar este reclamo? El reporte dejará de estar activo y las cuadrillas no continuarán su intervención.
+        </p>
+        <p style="font-size: var(--font-size-xs); color: var(--color-text-muted); background: var(--color-surface-subtle); padding: var(--space-3); border-radius: var(--radius-sm); border: 1px solid var(--color-border-subtle); margin-bottom: var(--space-4);">
+          ℹ️ <strong>Importante:</strong> El caso no se borrará físicamente. Permanecerá guardado en tu historial con la etiqueta de «Cancelado».
+        </p>
+        <div class="form-group">
+          <label for="cancel-reason-input" class="form-label" style="font-size: var(--font-size-xs);">Motivo de la cancelación (opcional):</label>
+          <input type="text" id="cancel-reason-input" class="form-control" placeholder="Ej.: El problema fue resuelto por la empresa de servicios..." style="font-size: var(--font-size-sm);">
+        </div>
+      </div>
+      <div class="mgmt-modal-footer">
+        <button type="button" class="btn btn--outline" id="btn-keep-claim">Conservar reclamo</button>
+        <button type="button" class="btn btn--danger" id="btn-confirm-cancel-claim">Confirmar cancelación</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Solicitar Corrección o Cancelación en Estados Avanzados / Reapertura -->
+  <div id="modal-request-action" class="mgmt-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-request-title">
+    <div class="mgmt-modal-container">
+      <div class="mgmt-modal-header">
+        <h3 id="modal-request-title" class="mgmt-modal-title">Solicitar acción</h3>
+        <button type="button" class="btn-close-modal" id="btn-close-request-modal" aria-label="Cerrar ventana" style="background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--color-text-muted);">×</button>
+      </div>
+      <div class="mgmt-modal-body">
+        <p id="modal-request-desc" style="color: var(--color-text-secondary); font-size: var(--font-size-sm); line-height: var(--line-height-relaxed); margin-bottom: var(--space-4);">
+          Tu solicitud será enviada a la cuadrilla o equipo de inspección correspondiente.
+        </p>
+        <div class="form-group">
+          <label for="modal-request-reason" id="modal-request-label" class="form-label" style="font-size: var(--font-size-xs);">
+            Detalle del pedido:
+          </label>
+          <textarea id="modal-request-reason" class="form-control" rows="3" placeholder="Explicá claramente la solicitud o cambio requerido..." required style="font-size: var(--font-size-sm);"></textarea>
+          <small id="modal-request-error" style="color: #DC2626; font-size: var(--font-size-xs); display: none; margin-top: 4px;">Por favor, ingresá una breve explicación para continuar.</small>
+        </div>
+      </div>
+      <div class="mgmt-modal-footer">
+        <button type="button" class="btn btn--ghost" id="btn-cancel-request">Volver</button>
+        <button type="button" class="btn btn--primary" id="btn-submit-request">Enviar solicitud</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Lightbox Accesible de Fotografía en Pantalla Completa -->
   <div id="photo-lightbox" class="photo-lightbox" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Fotografía ampliada">
     <div class="photo-lightbox__content">
@@ -272,22 +421,51 @@
     import { formatters } from '../assets/js/utils/formatters.js';
     import { getSamplePhotosForCategory } from '../assets/js/data/sample-photos.js';
 
-    setupNavigation({ activePage: 'explorar', basePath: '../' });
-
     const params = new URLSearchParams(window.location.search);
     const rawId = params.get('id');
     const cleanId = rawId ? rawId.replace('#', '') : null;
+    const fromSource = params.get('from');
+    const referrer = (document.referrer || '').toLowerCase();
+    const btnBackLink = document.getElementById('btn-back-link');
 
-    // Buscar reclamo o fallback al primero
-    let claim = cleanId ? claimsService.getById(cleanId) : null;
-    if (!claim) {
-      const all = claimsService.getAll();
-      claim = all.length ? all[0] : null;
+    // Contexto de retorno dinámico y estado de navegación
+    if (fromSource === 'explorar' || referrer.includes('explorar.html')) {
+      btnBackLink.href = 'explorar.html';
+      btnBackLink.textContent = '← Volver a Explorar';
+      setupNavigation({ activePage: 'explorar', basePath: '../' });
+    } else if (fromSource === 'confirmacion' || referrer.includes('confirmacion.html')) {
+      btnBackLink.href = 'mis-reclamos.html';
+      btnBackLink.textContent = '← Ir a Mis reclamos';
+      setupNavigation({ activePage: 'detalle', basePath: '../' });
+    } else {
+      btnBackLink.href = 'mis-reclamos.html';
+      btnBackLink.textContent = '← Volver a Mis reclamos';
+      setupNavigation({ activePage: 'mis-reclamos', basePath: '../' });
+    }
+
+    // Buscar reclamo por su identificador real
+    let claim = null;
+    if (cleanId) {
+      claim = claimsService.getById(cleanId);
+    } else {
+      // Si no se proporcionó id en la URL, mostrar el primer reclamo del usuario o el primero disponible
+      const userClaims = claimsService.getByCurrentUser();
+      claim = userClaims.length > 0 ? userClaims[0] : (claimsService.getAll()[0] || null);
     }
 
     if (!claim) {
+      document.getElementById('detail-category-badge').style.display = 'none';
+      document.getElementById('detail-state-badge').style.display = 'none';
+      document.getElementById('detail-id-badge').textContent = cleanId ? `#${cleanId}` : '#LM-???';
       document.getElementById('detail-title').textContent = 'Reclamo no encontrado';
-      document.getElementById('detail-description').textContent = 'El identificador solicitado no corresponde a ningún reclamo activo en el sistema local.';
+      document.getElementById('detail-address-row').style.display = 'none';
+      document.getElementById('detail-description').textContent = 'El identificador de reclamo solicitado no existe en la base de datos local.';
+      const supportSection = document.getElementById('detail-support-section');
+      if (supportSection) supportSection.style.display = 'none';
+      const photosContainer = document.getElementById('detail-photos-container');
+      if (photosContainer) {
+        photosContainer.innerHTML = '<p style="color: var(--color-text-secondary); font-size: var(--font-size-sm);">No hay información fotográfica disponible.</p>';
+      }
     } else {
       populateClaimDetail(claim);
     }
@@ -295,6 +473,8 @@
     function populateClaimDetail(c) {
       const catBadge = document.getElementById('detail-category-badge');
       const stateBadge = document.getElementById('detail-state-badge');
+      const ownerBadge = document.getElementById('detail-owner-badge');
+      const neighborBadge = document.getElementById('detail-neighbor-badge');
       const idBadge = document.getElementById('detail-id-badge');
       const titleEl = document.getElementById('detail-title');
       const addressEl = document.getElementById('detail-address');
@@ -304,6 +484,7 @@
       const countLabel = document.getElementById('detail-supporters-label');
       const btnSupport = document.getElementById('btn-support-claim');
       const btnSupportText = document.getElementById('btn-support-text');
+      const ownerActionNotice = document.getElementById('owner-action-notice');
       const photosContainer = document.getElementById('detail-photos-container');
       const photosBadge = document.getElementById('detail-photos-badge');
 
@@ -319,40 +500,123 @@
       titleEl.textContent = c.titulo;
       addressEl.textContent = c.direccion;
       dateEl.textContent = formatters.relativeDate(c.fecha);
-      descEl.textContent = c.descripcion;
 
-      // 2. Respaldo vecinal
+      if (c.descripcion && c.descripcion.trim()) {
+        descEl.textContent = c.descripcion;
+      } else {
+        descEl.innerHTML = '<em style="color: var(--color-text-muted);">Sin descripción adicional proporcionada al momento de la carga.</em>';
+      }
+
+      // 2. Identificación de creador vs vecino
+      const user = auth.getCurrentUser();
+      const isOwner = Boolean(user && c.creadorId === user.id);
+
+      if (isOwner) {
+        ownerBadge.style.display = 'inline-flex';
+        neighborBadge.style.display = 'none';
+        btnSupport.style.display = 'none';
+        ownerActionNotice.style.display = 'inline-flex';
+        setupOwnerManagement(c, user);
+      } else {
+        ownerBadge.style.display = 'none';
+        neighborBadge.style.display = 'inline-flex';
+        neighborBadge.textContent = `Reportado por ${c.creadorNombre || 'otro vecino'}`;
+        ownerActionNotice.style.display = 'none';
+        btnSupport.style.display = 'inline-flex';
+
+        // Ocultar sección de gestión si no es creador
+        const ownerMgmtCard = document.getElementById('owner-management-card');
+        if (ownerMgmtCard) ownerMgmtCard.style.display = 'none';
+
+        const alreadyJoined = Boolean(user && c.participantes && c.participantes.includes(user.id));
+
+        if (c.estado === 'cancelado' || c.estado === 'rechazado') {
+          btnSupport.style.display = 'none';
+          ownerActionNotice.style.display = 'inline-flex';
+          ownerActionNotice.innerHTML = `
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--color-text-muted); flex-shrink: 0;" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+            <span>No se admiten adhesiones para este reporte.</span>
+          `;
+        } else if (c.estado === 'resuelto') {
+          // Opción para vecinos cuando está resuelto: «El problema sigue presente»
+          btnSupport.classList.add('btn--outline');
+          btnSupport.classList.remove('btn--primary');
+          btnSupportText.textContent = 'El problema sigue presente';
+          btnSupport.disabled = false;
+          btnSupport.onclick = () => {
+            if (!auth.isLoggedIn()) {
+              auth.setRedirectUrl(window.location.href);
+              window.location.href = `iniciar-sesion.html?redirect=${encodeURIComponent(window.location.href)}`;
+              return;
+            }
+            claimsService.reportStillPresent(c.id);
+            btnSupportText.textContent = 'Revisión técnica solicitada';
+            btnSupport.disabled = true;
+            showToast({
+              message: 'Se registró tu aviso. Se notificó al área de inspección.',
+              type: 'info',
+              duration: 3500
+            });
+            setTimeout(() => window.location.reload(), 1500);
+          };
+        } else if (alreadyJoined) {
+          btnSupport.classList.add('btn--outline');
+          btnSupport.classList.remove('btn--primary');
+          btnSupportText.textContent = 'Ya estás sumado · Retirar apoyo';
+          btnSupport.disabled = false;
+          btnSupport.onclick = () => {
+            const res = claimsService.leaveClaim(c.id);
+            if (res.success) {
+              showToast({
+                message: 'Se retiró tu adhesión al reclamo.',
+                type: 'info',
+                duration: 3000
+              });
+              renderClaimDetail(c.id);
+            }
+          };
+        } else {
+          btnSupport.classList.add('btn--primary');
+          btnSupport.classList.remove('btn--outline');
+          btnSupportText.textContent = 'Sumarme a este reclamo';
+          btnSupport.disabled = false;
+
+          btnSupport.onclick = () => {
+            if (!auth.isLoggedIn()) {
+              auth.setRedirectUrl(window.location.href);
+              window.location.href = `iniciar-sesion.html?redirect=${encodeURIComponent(window.location.href)}`;
+              return;
+            }
+
+            const res = claimsService.joinClaim(c.id);
+            if (res.success) {
+              showToast({
+                message: '¡Te sumaste con éxito a este reclamo!',
+                type: 'success',
+                duration: 3000
+              });
+              renderClaimDetail(c.id);
+            } else if (res.reason === 'already_joined') {
+              showToast({
+                message: 'Ya te sumaste a este reclamo.',
+                type: 'info',
+                duration: 3000
+              });
+            } else if (res.reason === 'is_creator') {
+              showToast({
+                message: 'No podés sumarte a un reclamo creado por vos.',
+                type: 'warning',
+                duration: 3000
+              });
+            }
+          };
+        }
+      }
+
+      // Conteo de respaldos
       const count = c.participantes ? c.participantes.length : 1;
       countEl.textContent = `${count} ${count === 1 ? 'vecino' : 'vecinos'}`;
       countLabel.textContent = count === 1 ? ' respalda este reclamo' : ' respaldan este reclamo';
-
-      const user = auth.getCurrentUser();
-      const alreadyJoined = user && c.participantes && c.participantes.includes(user.id);
-
-      if (alreadyJoined) {
-        btnSupport.classList.add('btn--outline');
-        btnSupport.classList.remove('btn--primary');
-        btnSupportText.textContent = 'Ya estás sumado';
-        btnSupport.disabled = true;
-      } else {
-        btnSupport.addEventListener('click', () => {
-          claimsService.joinClaim(c.id);
-          const updated = claimsService.getById(c.id);
-          const newCount = updated.participantes ? updated.participantes.length : count + 1;
-          countEl.textContent = `${newCount} vecinos`;
-          countLabel.textContent = ' respaldan este reclamo';
-          btnSupport.classList.add('btn--outline');
-          btnSupport.classList.remove('btn--primary');
-          btnSupportText.textContent = 'Ya estás sumado';
-          btnSupport.disabled = true;
-
-          showToast({
-            message: '¡Te sumaste con éxito a este reclamo!',
-            type: 'success',
-            duration: 3000
-          });
-        });
-      }
 
       // 3. Fotografías del reclamo (Continuidad entre pantallas)
       const photoLightbox = document.getElementById('photo-lightbox');
@@ -431,24 +695,368 @@
         });
       });
 
-      // 4. Actualizar Timeline
-      updateTimeline(c.estado);
+      // 4. Actualizar Timeline y notas de evolución histórica
+      updateTimeline(c);
     }
 
-    function updateTimeline(estado) {
+    function setupOwnerManagement(c, user) {
+      const card = document.getElementById('owner-management-card');
+      const indicator = document.getElementById('owner-state-indicator');
+      const desc = document.getElementById('owner-management-desc');
+      const rejectionBox = document.getElementById('owner-rejection-box');
+      const rejectionReason = document.getElementById('owner-rejection-reason');
+      const pendingNotice = document.getElementById('owner-pending-notice');
+      const pendingText = document.getElementById('owner-pending-text');
+      const actionsContainer = document.getElementById('owner-actions-container');
+      const evalBox = document.getElementById('owner-solution-evaluation-box');
+      const evaluatedBox = document.getElementById('owner-evaluated-box');
+
+      card.style.display = 'block';
+      const stateBadgeClass = c.estado === 'en_proceso' ? 'proceso' : c.estado === 'en_revision' ? 'revision' : c.estado === 'resuelto' ? 'resuelto' : c.estado === 'rechazado' ? 'rechazado' : c.estado === 'cancelado' ? 'cancelado' : c.estado === 'reabierto' ? 'reabierto' : 'recibido';
+      indicator.className = `badge badge--${stateBadgeClass}`;
+      indicator.textContent = formatters.stateLabel(c.estado);
+
+      // Mostrar solicitudes pendientes si existen
+      if (Array.isArray(c.solicitudesPendientes) && c.solicitudesPendientes.length > 0) {
+        const ult = c.solicitudesPendientes[c.solicitudesPendientes.length - 1];
+        const tipoText = ult.tipo === 'cancelacion' ? 'cancelación' : 'corrección';
+        pendingNotice.style.display = 'flex';
+        pendingText.innerHTML = `<strong>Solicitud de ${tipoText} registrada (${formatters.relativeDate(ult.fecha)}):</strong> "${ult.motivo}". Se encuentra en análisis por el equipo operativo.`;
+      } else if (c.solicitudReapertura) {
+        pendingNotice.style.display = 'flex';
+        pendingText.innerHTML = `<strong>Solicitud de reapertura registrada (${formatters.relativeDate(c.solicitudReapertura.fecha)}):</strong> "${c.solicitudReapertura.motivo}". Se encuentra en revisión por el supervisor barrial.`;
+      } else {
+        pendingNotice.style.display = 'none';
+      }
+
+      // Configurar vista según estado
+      actionsContainer.innerHTML = '';
+      rejectionBox.style.display = 'none';
+      evalBox.style.display = 'none';
+      evaluatedBox.style.display = 'none';
+
+      switch (c.estado) {
+        case 'recibido':
+          desc.textContent = 'Tu reclamo aún no entró en revisión técnica. Podés editar la ubicación, categoría o descripción, o cancelarlo si ya no es necesario.';
+          actionsContainer.innerHTML = `
+            <a href="nuevo-reclamo.html?edit=${encodeURIComponent(c.id)}" class="btn btn--primary" id="btn-owner-edit">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              Editar reclamo
+            </a>
+            <button type="button" class="btn btn--outline" id="btn-owner-cancel" style="color: #DC2626; border-color: #FCA5A5;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+              Cancelar reclamo
+            </button>
+          `;
+          document.getElementById('btn-owner-cancel').onclick = () => openCancelModal(c);
+          break;
+
+        case 'en_revision':
+        case 'en_proceso':
+          desc.textContent = c.estado === 'en_revision'
+            ? 'El reclamo está siendo verificado técnicamente. Las cuadrillas están organizando su intervención operativa.'
+            : 'Una cuadrilla de trabajo se encuentra interviniendo la zona o programada para resolver el desperfecto.';
+          actionsContainer.innerHTML = `
+            <button type="button" class="btn btn--outline" id="btn-owner-req-correction">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              Solicitar corrección
+            </button>
+            <button type="button" class="btn btn--ghost" id="btn-owner-req-cancellation" style="color: #DC2626;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+              Solicitar cancelación
+            </button>
+          `;
+          document.getElementById('btn-owner-req-correction').onclick = () => openRequestActionModal(c, 'correccion');
+          document.getElementById('btn-owner-req-cancellation').onclick = () => openRequestActionModal(c, 'cancelacion');
+          break;
+
+        case 'resuelto':
+          desc.textContent = 'El municipio y la cuadrilla han marcado este reporte como completado en calle.';
+          if (c.evaluacion && c.evaluacion.confirmado) {
+            evaluatedBox.style.display = 'block';
+            document.getElementById('evaluated-stars').textContent = '★'.repeat(c.evaluacion.estrellas) + '☆'.repeat(5 - c.evaluacion.estrellas);
+            document.getElementById('evaluated-comment').textContent = c.evaluacion.comentario ? `"${c.evaluacion.comentario}"` : 'Sin comentarios adicionales.';
+          } else {
+            evalBox.style.display = 'block';
+            setupRatingWidget(c);
+          }
+          actionsContainer.innerHTML = `
+            <button type="button" class="btn btn--outline" id="btn-owner-req-reopen" style="border-color: #F59E0B; color: #B45309;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+              El problema continúa (Reapertura)
+            </button>
+          `;
+          document.getElementById('btn-owner-req-reopen').onclick = () => openRequestActionModal(c, 'reapertura');
+          break;
+
+        case 'rechazado':
+          desc.textContent = 'El reclamo no pudo ser admitido o procesado en esta instancia por el municipio.';
+          rejectionBox.style.display = 'block';
+          rejectionReason.textContent = c.motivoRechazo || 'El reporte no cumple con las condiciones técnicas para su intervención directa.';
+          if (c.subsanable === true) {
+            actionsContainer.innerHTML = `
+              <a href="nuevo-reclamo.html?edit=${encodeURIComponent(c.id)}" class="btn btn--primary" id="btn-owner-resubmit">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                Corregir y reenviar
+              </a>
+            `;
+          } else {
+            actionsContainer.innerHTML = `
+              <span style="font-size: var(--font-size-xs); color: var(--color-text-muted);">
+                Este rechazo es definitivo debido a que corresponde a otra jurisdicción o no aplica a servicios municipales.
+              </span>
+            `;
+          }
+          break;
+
+        case 'reabierto':
+          desc.textContent = 'El caso fue reabierto tras una revisión técnica. Podés consultar la evolución histórica o solicitar correcciones de datos.';
+          actionsContainer.innerHTML = `
+            <button type="button" class="btn btn--outline" id="btn-owner-req-correction-reopen">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              Solicitar corrección
+            </button>
+          `;
+          document.getElementById('btn-owner-req-correction-reopen').onclick = () => openRequestActionModal(c, 'correccion');
+          break;
+
+        case 'cancelado':
+          desc.textContent = 'Cancelaste este reclamo. Permanece conservado en tu historial municipal como registro de antecedente.';
+          actionsContainer.innerHTML = `
+            <span style="font-size: var(--font-size-xs); color: var(--color-text-muted); display: flex; align-items: center; gap: var(--space-2);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+              No hay acciones disponibles para reclamos cancelados.
+            </span>
+          `;
+          break;
+      }
+    }
+
+    // Modal de Cancelación de Reclamos en estado 'recibido'
+    function openCancelModal(c) {
+      const modal = document.getElementById('modal-cancel-claim');
+      const btnClose = document.getElementById('btn-close-cancel-modal');
+      const btnKeep = document.getElementById('btn-keep-claim');
+      const btnConfirm = document.getElementById('btn-confirm-cancel-claim');
+      const reasonInput = document.getElementById('cancel-reason-input');
+
+      reasonInput.value = '';
+      modal.classList.add('is-open');
+
+      const closeModal = () => {
+        modal.classList.remove('is-open');
+      };
+
+      btnClose.onclick = closeModal;
+      btnKeep.onclick = closeModal;
+      modal.onclick = (e) => { if (e.target === modal) closeModal(); };
+
+      btnConfirm.onclick = () => {
+        const motivo = reasonInput.value.trim();
+        const res = claimsService.cancelClaim(c.id, motivo);
+        if (res.success) {
+          closeModal();
+          showToast({
+            message: 'El reclamo ha sido cancelado con éxito.',
+            type: 'success',
+            duration: 3500
+          });
+          setTimeout(() => window.location.reload(), 1000);
+        } else {
+          showToast({
+            message: 'No se pudo cancelar el reclamo.',
+            type: 'error',
+            duration: 3500
+          });
+        }
+      };
+    }
+
+    // Modal para Solicitar Corrección / Cancelación / Reapertura
+    function openRequestActionModal(c, tipo) {
+      const modal = document.getElementById('modal-request-action');
+      const modalTitle = document.getElementById('modal-request-title');
+      const modalDesc = document.getElementById('modal-request-desc');
+      const label = document.getElementById('modal-request-label');
+      const reasonArea = document.getElementById('modal-request-reason');
+      const errorMsg = document.getElementById('modal-request-error');
+      const btnClose = document.getElementById('btn-close-request-modal');
+      const btnCancel = document.getElementById('btn-cancel-request');
+      const btnSubmit = document.getElementById('btn-submit-request');
+
+      reasonArea.value = '';
+      errorMsg.style.display = 'none';
+
+      if (tipo === 'correccion') {
+        modalTitle.textContent = 'Solicitar corrección de datos';
+        modalDesc.textContent = 'Indicanos qué información necesitás actualizar en el reclamo. Un operador municipal revisará la modificación.';
+        label.textContent = 'Detalle de la corrección solicitada:';
+        reasonArea.placeholder = 'Ej.: Se modificó la altura exacta de la calle a 3180...';
+      } else if (tipo === 'cancelacion') {
+        modalTitle.textContent = 'Solicitar cancelación del reclamo';
+        modalDesc.textContent = 'Dado que el reclamo ya se encuentra en trámite operativo, tu solicitud de cancelación pasará a verificación por el supervisor de zona.';
+        label.textContent = 'Motivo de la solicitud de cancelación:';
+        reasonArea.placeholder = 'Explicá por qué considerás que ya no es necesaria la intervención...';
+      } else if (tipo === 'reapertura') {
+        modalTitle.textContent = 'Solicitar reapertura («El problema continúa»)';
+        modalDesc.textContent = 'Si el problema no fue solucionado adecuadamente o volvió a ocurrir en el mismo lugar, detallá la situación para programar una nueva inspección.';
+        label.textContent = 'Situación actual del problema:';
+        reasonArea.placeholder = 'Describí cómo se encuentra la calle o qué quedó pendiente...';
+      }
+
+      modal.classList.add('is-open');
+
+      const closeModal = () => modal.classList.remove('is-open');
+      btnClose.onclick = closeModal;
+      btnCancel.onclick = closeModal;
+      modal.onclick = (e) => { if (e.target === modal) closeModal(); };
+
+      btnSubmit.onclick = () => {
+        const text = reasonArea.value.trim();
+        if (!text) {
+          errorMsg.style.display = 'block';
+          reasonArea.focus();
+          return;
+        }
+
+        if (tipo === 'reapertura') {
+          claimsService.requestReopen(c.id, { motivo: text });
+          showToast({
+            message: 'Solicitud de reapertura registrada correctamente.',
+            type: 'info',
+            duration: 3500
+          });
+        } else {
+          claimsService.requestAction(c.id, { tipo, motivo: text });
+          showToast({
+            message: `Solicitud de ${tipo === 'cancelacion' ? 'cancelación' : 'corrección'} registrada correctamente.`,
+            type: 'info',
+            duration: 3500
+          });
+        }
+        closeModal();
+        setTimeout(() => window.location.reload(), 1000);
+      };
+    }
+
+    // Configuración del Widget de Calificación (1 a 5 estrellas)
+    function setupRatingWidget(c) {
+      const container = document.getElementById('star-rating-container');
+      const label = document.getElementById('star-rating-label');
+      const commentInput = document.getElementById('eval-comment');
+      const btnSave = document.getElementById('btn-save-evaluation');
+      const stars = container.querySelectorAll('.star-btn');
+      let currentRating = 5;
+
+      const labels = {
+        1: '1 estrella: Muy insatisfecho',
+        2: '2 estrellas: Insatisfecho',
+        3: '3 estrellas: Regular / Aceptable',
+        4: '4 estrellas: Satisfecho',
+        5: '5 estrellas: Excelente resolución'
+      };
+
+      const setStars = (score) => {
+        currentRating = score;
+        stars.forEach(st => {
+          const val = Number(st.dataset.star);
+          if (val <= score) {
+            st.classList.add('is-active');
+            st.setAttribute('aria-checked', 'true');
+          } else {
+            st.classList.remove('is-active');
+            st.setAttribute('aria-checked', 'false');
+          }
+        });
+        label.textContent = labels[score] || `${score} estrellas`;
+      };
+
+      setStars(5);
+
+      stars.forEach(st => {
+        st.onclick = () => {
+          const score = Number(st.dataset.star);
+          setStars(score);
+        };
+        st.onmouseenter = () => {
+          const score = Number(st.dataset.star);
+          stars.forEach(s => {
+            s.style.color = Number(s.dataset.star) <= score ? '#EAB308' : '#CBD5E1';
+          });
+        };
+        st.onmouseleave = () => {
+          stars.forEach(s => {
+            s.style.color = '';
+          });
+        };
+      });
+
+      btnSave.onclick = () => {
+        const comentario = commentInput.value.trim();
+        claimsService.evaluateSolution(c.id, { estrellas: currentRating, comentario });
+        showToast({
+          message: '¡Muchas gracias por valorar la solución de este reclamo!',
+          type: 'success',
+          duration: 3500
+        });
+        setTimeout(() => window.location.reload(), 1000);
+      };
+    }
+
+    function updateTimeline(c) {
+      const estado = c.estado;
       const steps = ['recibido', 'revision', 'proceso', 'resuelto'];
-      const targetIdx = estado === 'recibido' ? 0 : estado === 'en_revision' ? 1 : estado === 'en_proceso' ? 2 : 3;
+      const targetIdx = estado === 'recibido' ? 0 : estado === 'en_revision' ? 1 : estado === 'en_proceso' ? 2 : estado === 'resuelto' ? 3 : -1;
+
+      const terminalContainer = document.getElementById('timeline-terminal-step');
+      const terminalTitle = document.getElementById('terminal-step-title');
+      const terminalDesc = document.getElementById('terminal-step-desc');
+
+      if (estado === 'cancelado') {
+        terminalContainer.style.display = 'block';
+        terminalTitle.textContent = 'Reclamo cancelado';
+        terminalTitle.style.color = 'var(--state-cancelado, #64748B)';
+        terminalDesc.textContent = 'El reporte fue cancelado por el creador y no continuará en trámite.';
+      } else if (estado === 'rechazado') {
+        terminalContainer.style.display = 'block';
+        terminalTitle.textContent = 'Reclamo rechazado';
+        terminalTitle.style.color = 'var(--state-rechazado, #DC2626)';
+        terminalDesc.textContent = c.motivoRechazo || 'El reporte no cumple con las condiciones técnicas requeridas.';
+      } else if (estado === 'reabierto') {
+        terminalContainer.style.display = 'block';
+        terminalTitle.textContent = 'Reclamo reabierto';
+        terminalTitle.style.color = 'var(--state-reabierto, #D97706)';
+        terminalDesc.textContent = 'El caso fue reabierto tras una solicitud vecinal para una nueva intervención.';
+      } else {
+        terminalContainer.style.display = 'none';
+      }
 
       steps.forEach((st, idx) => {
         const stepEl = document.getElementById(`step-${st}`);
         if (!stepEl) return;
         stepEl.classList.remove('is-done', 'is-current');
-        if (idx < targetIdx) {
+        if (targetIdx !== -1) {
+          if (idx < targetIdx) {
+            stepEl.classList.add('is-done');
+          } else if (idx === targetIdx) {
+            stepEl.classList.add('is-current');
+          }
+        } else {
+          // Si es cancelado o rechazado, marcar los pasos previos como completados hasta donde llegó
           stepEl.classList.add('is-done');
-        } else if (idx === targetIdx) {
-          stepEl.classList.add('is-current');
         }
       });
+
+      // Incorporar notas y fechas históricas si existen
+      if (Array.isArray(c.historial)) {
+        c.historial.forEach(h => {
+          const stepKey = h.estado === 'en_proceso' ? 'proceso' : h.estado === 'en_revision' ? 'revision' : h.estado;
+          const descEl = document.getElementById(`step-${stepKey}-desc`);
+          if (descEl) {
+            descEl.textContent = `${h.nota} (${formatters.relativeDate(h.fecha)})`;
+          }
+        });
+      }
     }
   </script>
 </body>

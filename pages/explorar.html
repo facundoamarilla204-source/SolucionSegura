@@ -3,127 +3,888 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Explorá los reclamos urbanos de La Matanza en SoluciónSegura. Mapa interactivo con marcadores, listado vecinal y adhesiones comunitarias.">
   <title>Explorar Reclamos — SoluciónSegura</title>
+
+  <!-- Tipografías Outfit e Inter y Estilos Principales -->
   <link rel="stylesheet" href="../assets/css/main.css">
+
+  <!-- Librería Leaflet y Plugin Oficial de Clustering -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 </head>
 <body class="app-shell">
 
-  <!-- Cabecera -->
-  <header class="site-header" role="banner">
-    <div class="container-desktop site-header__inner">
-      <a href="../index.html" class="brand-link" aria-label="SoluciónSegura: Inicio">
-        <img src="../assets/img/branding/logo-soluciones-segura.png" alt="SoluciónSegura: Reclamos Urbanos La Matanza" class="brand-logo-img">
-      </a>
+  <!-- Cabecera Institucional (inyectada y sincronizada por navbar.js) -->
+  <header class="site-header" role="banner"></header>
 
-      <nav class="desktop-nav" role="navigation" aria-label="Navegación principal">
-        <a href="../index.html" class="nav-link" data-page="inicio">Inicio</a>
-        <a href="explorar.html" class="nav-link is-active" data-page="explorar">Explorar</a>
-        <a href="estadisticas.html" class="nav-link" data-page="estadisticas">Estadísticas</a>
-        <a href="ayuda.html" class="nav-link" data-page="ayuda">Ayuda</a>
-        <a href="nuevo-reclamo.html" class="btn btn--primary btn--sm">Realizar reclamo</a>
-      </nav>
-
-      <div class="header-actions"></div>
-    </div>
-  </header>
-
-  <!-- Contenido -->
+  <!-- Contenido Principal -->
   <main class="main-content" id="main-content" role="main">
     <div class="container-desktop section-spacer">
       
-      <div class="section-header">
-        <h1 class="section-header__title">Explorar reclamos en La Matanza</h1>
-        <p class="section-header__subtitle">Consultá los problemas informados por los vecinos, conocé su estado y sumate con un toque.</p>
-      </div>
+      <!-- Encabezado de la Sección -->
+      <section class="explorar-header" aria-labelledby="explorar-page-title">
+        <h1 id="explorar-page-title" class="explorar-header__title">Explorá los reclamos</h1>
+        <p class="explorar-header__desc">
+          Conocé los problemas registrados en La Matanza, consultá su estado y sumate a los que también te afectan.
+        </p>
+      </section>
 
-      <!-- Barra de herramientas (selector de localidad, filtros y alternador de vista) -->
-      <section class="card" style="margin-bottom: var(--space-6); padding: var(--space-4);">
-        <div style="display: flex; gap: var(--space-4); flex-wrap: wrap; justify-content: space-between; align-items: center;">
+      <!-- Barra de Herramientas y Filtros -->
+      <section class="explorar-toolbar" aria-label="Controles de búsqueda y filtros de reclamos">
+        
+        <!-- Fila Superior: Vistas y Resumen Activo -->
+        <div class="explorar-toolbar__top">
+          <!-- Alternador de Vista (Mapa / Lista) -->
+          <div class="view-toggle-group" role="tablist" aria-label="Formato de visualización">
+            <button type="button" class="view-toggle-btn is-active" id="btn-view-map" role="tab" aria-selected="true" aria-controls="view-map-container">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/>
+                <line x1="8" y1="2" x2="8" y2="18"/>
+                <line x1="16" y1="6" x2="16" y2="22"/>
+              </svg>
+              <span>Vista Mapa</span>
+            </button>
+            <button type="button" class="view-toggle-btn" id="btn-view-list" role="tab" aria-selected="false" aria-controls="view-list-container">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                <line x1="8" y1="6" x2="21" y2="6"/>
+                <line x1="8" y1="12" x2="21" y2="12"/>
+                <line x1="8" y1="18" x2="21" y2="18"/>
+                <line x1="3" y1="6" x2="3.01" y2="6"/>
+                <line x1="3" y1="12" x2="3.01" y2="12"/>
+                <line x1="3" y1="18" x2="3.01" y2="18"/>
+              </svg>
+              <span>Vista Lista</span>
+            </button>
+          </div>
+
+          <!-- Indicador de Filtros Activos y Limpiar -->
+          <div class="active-filters-bar" id="active-filters-bar" style="display: none;">
+            <span class="active-filters-badge" id="active-filters-text">0 filtros activos</span>
+            <button type="button" class="btn-clear-filters" id="btn-clear-filters">Limpiar filtros</button>
+          </div>
+        </div>
+
+        <!-- Fila de Filtros y Ordenamiento -->
+        <div class="explorar-toolbar__filters">
           
-          <!-- Selector de Localidad trasladado del Hero -->
-          <form id="form-filtro-localidad" action="explorar.html" method="get" style="display: flex; gap: var(--space-2); align-items: center; flex-wrap: wrap;">
-            <label for="filtro-localidad" style="font-size: var(--font-size-sm); font-weight: var(--font-weight-medium); color: var(--color-text-secondary); white-space: nowrap;">
-              Localidad:
-            </label>
-            <select id="filtro-localidad" name="localidad" style="padding: 6px 12px; border-radius: var(--radius-sm); border: 1px solid var(--color-border); font-size: var(--font-size-sm); background-color: var(--color-surface-card); color: var(--color-text-main); outline: none;">
-              <option value="">Todas las localidades</option>
-              <option value="san-justo">San Justo</option>
-              <option value="ramos-mejia">Ramos Mejía</option>
-              <option value="laferrere">Gregorio de Laferrere</option>
-              <option value="gonzalez-catan">González Catán</option>
-              <option value="isidro-casanova">Isidro Casanova</option>
-              <option value="virrey-del-pino">Virrey del Pino</option>
-              <option value="villa-luzuriaga">Villa Luzuriaga</option>
-              <option value="ciudad-evita">Ciudad Evita</option>
-              <option value="tapiales">Tapiales</option>
-              <option value="aldo-bonzi">Aldo Bonzi</option>
-              <option value="lomas-del-mirador">Lomas del Mirador</option>
-              <option value="villa-madero">Villa Madero</option>
-            </select>
-            <button type="submit" class="btn btn--secondary btn--sm">Ir al mapa</button>
-          </form>
-
-          <!-- Categorías y Alternador de vista -->
-          <div style="display: flex; gap: var(--space-3); flex-wrap: wrap; align-items: center;">
-            <div style="display: flex; gap: var(--space-2); flex-wrap: wrap;">
-              <span class="badge badge--recibido">Todos</span>
-              <span class="badge badge--cat-pavimento">Calles</span>
-              <span class="badge badge--cat-residuos">Basura</span>
-              <span class="badge badge--cat-alumbrado">Alumbrado</span>
+          <div class="explorar-filter-group">
+            <!-- Selector de Categoría (Chips accesibles) -->
+            <div class="category-filter-chips" role="group" aria-label="Filtrar por categoría">
+              <button type="button" class="category-chip is-active" data-cat="todas">Todas</button>
+              <button type="button" class="category-chip category-chip--pavimento" data-cat="pavimento">Calles y baches</button>
+              <button type="button" class="category-chip category-chip--residuos" data-cat="residuos">Basura y residuos</button>
+              <button type="button" class="category-chip category-chip--alumbrado" data-cat="alumbrado">Alumbrado público</button>
             </div>
-            <div style="display: flex; gap: var(--space-2);">
-              <button type="button" class="btn btn--secondary btn--sm">Vista Lista</button>
-              <button type="button" class="btn btn--primary btn--sm">Vista Mapa</button>
+
+            <!-- Selector de Localidad -->
+            <div class="explorar-select-wrap">
+              <label for="select-localidad" class="explorar-select-label">Localidad:</label>
+              <select id="select-localidad" class="explorar-select" aria-label="Filtrar por localidad de La Matanza">
+                <option value="todas">Todas las localidades</option>
+              </select>
+            </div>
+
+            <!-- Selector de Estado -->
+            <div class="explorar-select-wrap">
+              <label for="select-estado" class="explorar-select-label">Estado:</label>
+              <select id="select-estado" class="explorar-select" aria-label="Filtrar por estado del reclamo">
+                <option value="activos" selected>Activos (en trámite)</option>
+                <option value="resuelto">Resueltos</option>
+                <option value="todos">Todos los públicos</option>
+              </select>
             </div>
           </div>
 
+          <!-- Controles de Ordenamiento y Cercanía -->
+          <div class="explorar-filter-group">
+            <div class="explorar-select-wrap">
+              <label for="select-orden" class="explorar-select-label">Ordenar:</label>
+              <select id="select-orden" class="explorar-select" aria-label="Ordenar listado de reclamos">
+                <option value="recientes" selected>Más recientes</option>
+                <option value="apoyos">Más apoyados</option>
+                <option value="cercania">Más cercanos</option>
+              </select>
+            </div>
+
+            <!-- Botón Voluntario de Detección de Ubicación -->
+            <button type="button" class="btn btn--outline btn--sm" id="btn-use-gps" title="Utilizar mi ubicación geográfica aproximada de forma voluntaria" style="padding: 6px 12px; gap: 4px;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <polygon points="3 11 22 2 13 21 11 13 3 11"/>
+              </svg>
+              <span id="gps-btn-label">Mi ubicación</span>
+            </button>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- VISTA 1: MAPA INTERACTIVO -->
+      <section id="view-map-container" class="explorar-map-card" role="tabpanel" aria-labelledby="btn-view-map">
+        
+        <!-- Barra de Estado del Mapa -->
+        <div class="explorar-map-toolbar">
+          <div class="explorar-map-toolbar__info">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            <span id="map-status-text">Cargando reclamos...</span>
+          </div>
+
+          <!-- Leyenda de Categorías en el Mapa -->
+          <div class="explorar-map-toolbar__legend" role="note" aria-label="Leyenda de colores de categorías">
+            <span class="map-legend-dot">
+              <span class="map-legend-dot__circle map-legend-dot__circle--pavimento" aria-hidden="true"></span>
+              <span>Calles</span>
+            </span>
+            <span class="map-legend-dot">
+              <span class="map-legend-dot__circle map-legend-dot__circle--residuos" aria-hidden="true"></span>
+              <span>Basura</span>
+            </span>
+            <span class="map-legend-dot">
+              <span class="map-legend-dot__circle map-legend-dot__circle--alumbrado" aria-hidden="true"></span>
+              <span>Alumbrado</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- Contenedor Leaflet -->
+        <div id="explorar-map" tabindex="0" role="application" aria-label="Mapa interactivo de reclamos urbanos de La Matanza">
+          <!-- Fallback si Leaflet o red no responden -->
+          <div class="map-fallback-box" style="padding: var(--space-6); text-align: center;">
+            <p>El mapa interactivo requiere JavaScript y conexión de red para cargar los mapas de OpenStreetMap.</p>
+          </div>
+        </div>
+
+        <!-- Ficha Inferior Móvil Accesible (Bottom Card) -->
+        <article id="explorar-mobile-card" class="explorar-mobile-card" aria-hidden="true" role="dialog" aria-labelledby="mobile-card-title">
+          <div class="explorar-mobile-card__header">
+            <div style="display: flex; gap: var(--space-2); align-items: center;">
+              <span id="mobile-card-cat-badge" class="badge badge--cat-pavimento">Calles</span>
+              <span id="mobile-card-state-badge" class="badge badge--recibido">Recibido</span>
+            </div>
+            <button type="button" class="explorar-mobile-card__close" id="btn-close-mobile-card" aria-label="Cerrar ficha de reclamo">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+
+          <div class="explorar-mobile-card__content">
+            <img id="mobile-card-img" src="../assets/img/branding/logo-soluciones-segura.png" alt="Foto del reclamo" class="explorar-mobile-card__thumb" style="display: none;">
+            <div style="flex: 1; min-width: 0;">
+              <h3 id="mobile-card-title" class="explorar-mobile-card__title">Título del reclamo</h3>
+              <p id="mobile-card-address" class="explorar-mobile-card__address">📍 Dirección</p>
+              <span id="mobile-card-supporters" class="explorar-mobile-card__meta">1 vecino sumado</span>
+            </div>
+          </div>
+
+          <div class="explorar-mobile-card__actions">
+            <button type="button" class="btn btn--outline btn--sm" id="mobile-card-btn-support">Sumarme</button>
+            <a href="#" class="btn btn--primary btn--sm" id="mobile-card-btn-detail">Ver detalle</a>
+          </div>
+        </article>
+
+      </section>
+
+      <!-- VISTA 2: LISTA DE TARJETAS -->
+      <section id="view-list-container" style="display: none;" role="tabpanel" aria-labelledby="btn-view-list">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4); flex-wrap: wrap; gap: var(--space-2);">
+          <span id="list-status-text" style="font-size: var(--font-size-sm); color: var(--color-text-secondary); font-weight: var(--font-weight-medium);">
+            Mostrando reclamos
+          </span>
+        </div>
+
+        <div class="explorar-list-grid" id="explorar-cards-grid" role="list">
+          <!-- Inyectado dinámicamente -->
         </div>
       </section>
 
-      <!-- Placeholder del mapa/lista -->
-      <div id="explorar-container" class="card" style="min-height: 400px; display: flex; align-items: center; justify-content: center; text-align: center;">
-        <p style="color: var(--color-text-secondary);">
-          Módulo de mapa interactivo y listado sincronizado preparado para la etapa de desarrollo funcional.
+      <!-- ESTADO VACÍO (Sin resultados para filtros) -->
+      <section id="explorar-empty-state" class="explorar-empty-state" style="display: none;" role="status">
+        <div class="explorar-empty-state__icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            <line x1="8" y1="11" x2="14" y2="11"/>
+          </svg>
+        </div>
+        <h2 class="explorar-empty-state__title">No se encontraron reclamos</h2>
+        <p class="explorar-empty-state__desc">
+          No hay reportes que coincidan con la combinación de filtros seleccionada en esta zona.
         </p>
-      </div>
+        <button type="button" class="btn btn--primary btn--sm" id="btn-reset-filters-empty">
+          Restablecer filtros
+        </button>
+      </section>
 
     </div>
   </main>
 
-  <!-- Navegación móvil fija -->
-  <nav class="mobile-bottom-nav" role="navigation" aria-label="Navegación inferior móvil">
-    <a href="../index.html" class="mobile-nav-item" data-page="inicio">
-      <span class="mobile-nav-item__icon" aria-hidden="true">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-      </span>
-      <span>Inicio</span>
-    </a>
-    <a href="explorar.html" class="mobile-nav-item is-active" data-page="explorar">
-      <span class="mobile-nav-item__icon" aria-hidden="true">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-      </span>
-      <span>Explorar</span>
-    </a>
-    <a href="nuevo-reclamo.html" class="mobile-nav-item" data-page="reportar">
-      <span class="mobile-nav-item__icon" aria-hidden="true">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
-      </span>
-      <span>Reportar</span>
-    </a>
-  </nav>
+  <!-- Navegación móvil fija (inyectada y sincronizada por navbar.js) -->
+  <nav class="mobile-bottom-nav" role="navigation" aria-label="Navegación inferior móvil"></nav>
 
+  <!-- Lógica Integral de la Pantalla Explorar -->
   <script type="module">
-    import { setupNavigation } from '../assets/js/main.js';
+    import { setupNavigation, claimsService, auth, showToast } from '../assets/js/main.js';
+    import { LOCALIDADES_LA_MATANZA, MAPA_CONFIG } from '../assets/js/data/localidades.js';
+    import { formatters } from '../assets/js/utils/formatters.js';
+    import { initLeafletMap, renderClaimMarkers } from '../assets/js/modules/map.js';
+
+    // 1. Inicializar Navegación Institucional
     setupNavigation({ activePage: 'explorar', basePath: '../' });
 
-    // Sincronizar selector con query param si existe
-    const params = new URLSearchParams(window.location.search);
-    const loc = params.get('localidad');
-    if (loc) {
-      const select = document.getElementById('filtro-localidad');
-      if (select) select.value = loc;
+    // 2. Estado de Explorar (Filtros, Vista, Ubicación de Referencia)
+    const STORAGE_KEY_STATE = 'solucionsegura_explorar_state';
+
+    const state = {
+      view: 'map', // 'map' | 'list'
+      categoria: 'todas',
+      localidad: 'todas',
+      estado: 'activos', // 'activos' | 'resuelto' | 'todos'
+      orden: 'recientes', // 'recientes' | 'apoyos' | 'cercania'
+      userLocation: null, // { lat, lng } detectado voluntariamente
+      selectedClaimId: null
+    };
+
+    // Referencias al DOM
+    const btnViewMap = document.getElementById('btn-view-map');
+    const btnViewList = document.getElementById('btn-view-list');
+    const viewMapContainer = document.getElementById('view-map-container');
+    const viewListContainer = document.getElementById('view-list-container');
+    const emptyStateContainer = document.getElementById('explorar-empty-state');
+    const selectLocalidad = document.getElementById('select-localidad');
+    const selectEstado = document.getElementById('select-estado');
+    const selectOrden = document.getElementById('select-orden');
+    const btnUseGps = document.getElementById('btn-use-gps');
+    const gpsBtnLabel = document.getElementById('gps-btn-label');
+    const activeFiltersBar = document.getElementById('active-filters-bar');
+    const activeFiltersText = document.getElementById('active-filters-text');
+    const btnClearFilters = document.getElementById('btn-clear-filters');
+    const btnResetEmpty = document.getElementById('btn-reset-filters-empty');
+    const categoryChips = document.querySelectorAll('.category-chip');
+    const mapStatusText = document.getElementById('map-status-text');
+    const listStatusText = document.getElementById('list-status-text');
+    const cardsGrid = document.getElementById('explorar-cards-grid');
+
+    // Ficha móvil
+    const mobileCard = document.getElementById('explorar-mobile-card');
+    const btnCloseMobileCard = document.getElementById('btn-close-mobile-card');
+    const mobileCardCat = document.getElementById('mobile-card-cat-badge');
+    const mobileCardState = document.getElementById('mobile-card-state-badge');
+    const mobileCardImg = document.getElementById('mobile-card-img');
+    const mobileCardTitle = document.getElementById('mobile-card-title');
+    const mobileCardAddress = document.getElementById('mobile-card-address');
+    const mobileCardSupporters = document.getElementById('mobile-card-supporters');
+    const mobileCardBtnSupport = document.getElementById('mobile-card-btn-support');
+    const mobileCardBtnDetail = document.getElementById('mobile-card-btn-detail');
+
+    // Estado del Mapa Leaflet
+    let map = null;
+    let markersLayerGroup = null;
+
+    // 3. Poblar Selector de Localidades de La Matanza
+    LOCALIDADES_LA_MATANZA.forEach(loc => {
+      const opt = document.createElement('option');
+      opt.value = loc.id;
+      opt.textContent = loc.nombre + (loc.esCabecera ? ' (Cabecera)' : '');
+      selectLocalidad.appendChild(opt);
+    });
+
+    // 4. Restauración de Estado previo (Query Params / SessionStorage / Perfil)
+    function restoreInitialState() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const savedStateJson = sessionStorage.getItem(STORAGE_KEY_STATE);
+      let savedState = null;
+      if (savedStateJson) {
+        try { savedState = JSON.parse(savedStateJson); } catch (e) {}
+      }
+
+      // Parámetros de URL tienen prioridad máxima
+      const paramLoc = urlParams.get('localidad') || urlParams.get('loc');
+      const paramCat = urlParams.get('categoria') || urlParams.get('cat');
+      const paramEst = urlParams.get('estado');
+      const paramView = urlParams.get('vista') || urlParams.get('view');
+      const paramOrden = urlParams.get('orden');
+
+      if (paramLoc) state.localidad = paramLoc;
+      else if (savedState && savedState.localidad) state.localidad = savedState.localidad;
+
+      if (paramCat) state.categoria = paramCat;
+      else if (savedState && savedState.categoria) state.categoria = savedState.categoria;
+
+      if (paramEst) state.estado = paramEst;
+      else if (savedState && savedState.estado) state.estado = savedState.estado;
+
+      if (paramView) state.view = paramView;
+      else if (savedState && savedState.view) state.view = savedState.view;
+
+      if (paramOrden) state.orden = paramOrden;
+      else if (savedState && savedState.orden) state.orden = savedState.orden;
+
+      // Localidad preferida del perfil como centro de referencia inicial si no se especificó localidad
+      const currentUser = auth.getCurrentUser();
+      if (currentUser && currentUser.localidadPreferida && state.localidad === 'todas' && !paramLoc && !savedState) {
+        // Guardar referencia para centrar el mapa sin restringir el filtro de exploración
+        state.initialCenterLocId = currentUser.localidadPreferida;
+      }
+
+      // Sincronizar controles visuales con el estado
+      syncControlsWithState();
     }
+
+    function syncControlsWithState() {
+      selectLocalidad.value = state.localidad;
+      selectEstado.value = state.estado;
+      selectOrden.value = state.orden;
+
+      categoryChips.forEach(chip => {
+        const cat = chip.dataset.cat;
+        if (cat === state.categoria) {
+          chip.classList.add('is-active');
+        } else {
+          chip.classList.remove('is-active');
+        }
+      });
+
+      updateActiveFiltersIndicator();
+    }
+
+    function saveCurrentState() {
+      sessionStorage.setItem(STORAGE_KEY_STATE, JSON.stringify({
+        view: state.view,
+        categoria: state.categoria,
+        localidad: state.localidad,
+        estado: state.estado,
+        orden: state.orden
+      }));
+    }
+
+    function updateActiveFiltersIndicator() {
+      let count = 0;
+      if (state.categoria !== 'todas') count++;
+      if (state.localidad !== 'todas') count++;
+      if (state.estado !== 'activos') count++;
+      if (state.orden !== 'recientes') count++;
+
+      if (count > 0) {
+        activeFiltersBar.style.display = 'inline-flex';
+        activeFiltersText.textContent = `${count} ${count === 1 ? 'filtro activo' : 'filtros activos'}`;
+      } else {
+        activeFiltersBar.style.display = 'none';
+      }
+    }
+
+    // 5. Filtrar y Ordenar Reclamos
+    function getFilteredAndSortedClaims() {
+      // Filtrar usando el servicio central de reclamos
+      const filtered = claimsService.filter({
+        categoria: state.categoria,
+        localidad: state.localidad,
+        estado: state.estado
+      });
+
+      // Resolver coordenadas de referencia para cálculo de cercanía
+      let refLat = null;
+      let refLng = null;
+
+      if (state.userLocation) {
+        refLat = state.userLocation.lat;
+        refLng = state.userLocation.lng;
+      } else if (state.localidad !== 'todas') {
+        const loc = LOCALIDADES_LA_MATANZA.find(l => l.id === state.localidad);
+        if (loc) {
+          refLat = loc.lat;
+          refLng = loc.lng;
+        }
+      }
+
+      return claimsService.sort(filtered, state.orden, refLat, refLng);
+    }
+
+    // 6. Inicialización del Mapa
+    function initMap() {
+      let initialLocId = null;
+      if (state.localidad !== 'todas') {
+        initialLocId = state.localidad;
+      } else if (state.initialCenterLocId) {
+        initialLocId = state.initialCenterLocId;
+      }
+
+      map = initLeafletMap('explorar-map', {
+        localidadId: initialLocId,
+        zoom: initialLocId ? 14 : 12,
+        enableTouchDragging: true
+      });
+
+      if (!map) return;
+
+      // Al hacer tap/clic en el mapa, ocultar la ficha móvil si estuviera abierta
+      map.on('click', () => {
+        closeMobileCard();
+      });
+    }
+
+    // 7. Renderizado en el Mapa (Clustering de Marcadores)
+    function renderMapContent(claims) {
+      if (!map) return;
+
+      // Limpiar capas previas
+      if (markersLayerGroup) {
+        if (typeof markersLayerGroup.clearLayers === 'function') {
+          markersLayerGroup.clearLayers();
+        }
+        map.removeLayer(markersLayerGroup);
+        markersLayerGroup = null;
+      }
+
+      // Renderizar marcadores interactivos con agrupación (Clustering)
+      const { markers, clusterGroup } = renderClaimMarkers(map, claims, '../', {
+        useClustering: true,
+        onMarkerSelect: (claim, marker) => {
+          handleMarkerSelected(claim, marker);
+        }
+      });
+
+      markersLayerGroup = clusterGroup || L.featureGroup(markers).addTo(map);
+
+      const countText = claims.length === 1 ? '1 reclamo visible' : `${claims.length} reclamos visibles`;
+      const locName = state.localidad !== 'todas'
+        ? (LOCALIDADES_LA_MATANZA.find(l => l.id === state.localidad)?.nombre || 'La Matanza')
+        : 'La Matanza';
+      mapStatusText.textContent = `${countText} · ${locName}`;
+
+      // Centrar el mapa si se seleccionó una localidad específica
+      if (state.localidad !== 'todas') {
+        const loc = LOCALIDADES_LA_MATANZA.find(l => l.id === state.localidad);
+        if (loc) {
+          map.setView([loc.lat, loc.lng], 14, { animate: true });
+        }
+      }
+    }
+
+    // Manejo de Selección de Marcador en Mobile y Desktop
+    function handleMarkerSelected(claim, marker) {
+      state.selectedClaimId = claim.id;
+      const isMobile = window.innerWidth < 768;
+
+      if (isMobile) {
+        openMobileCard(claim);
+      }
+    }
+
+    function openMobileCard(claim) {
+      const user = auth.getCurrentUser();
+      const isOwner = Boolean(user && claim.creadorId === user.id);
+      const isJoined = Boolean(user && claim.participantes && claim.participantes.includes(user.id));
+      const count = claim.participantes ? claim.participantes.length : 1;
+
+      mobileCardCat.className = `badge badge--cat-${claim.categoria}`;
+      mobileCardCat.textContent = formatters.categoryLabel(claim.categoria);
+
+      let stateClass = 'recibido';
+      if (claim.estado === 'en_revision') stateClass = 'revision';
+      else if (claim.estado === 'en_proceso') stateClass = 'proceso';
+      else if (claim.estado === 'resuelto') stateClass = 'resuelto';
+      else if (claim.estado === 'reabierto') stateClass = 'reabierto';
+      else if (claim.estado === 'rechazado') stateClass = 'rechazado';
+
+      mobileCardState.className = `badge badge--${stateClass}`;
+      mobileCardState.textContent = formatters.stateLabel(claim.estado);
+
+      mobileCardTitle.textContent = claim.titulo;
+      mobileCardAddress.textContent = `📍 ${claim.direccion}`;
+      mobileCardSupporters.textContent = `${count} ${count === 1 ? 'vecino sumado' : 'vecinos sumados'}`;
+
+      if (claim.fotos && claim.fotos.length > 0) {
+        const photo = claim.fotos[0];
+        mobileCardImg.src = photo.startsWith('http') || photo.startsWith('../') ? photo : `../${photo}`;
+        mobileCardImg.style.display = 'block';
+      } else {
+        mobileCardImg.style.display = 'none';
+      }
+
+      mobileCardBtnDetail.href = `detalle-reclamo.html?id=${encodeURIComponent(claim.id)}&from=explorar`;
+      mobileCardBtnDetail.onclick = () => saveCurrentState();
+
+      // Configurar acción de apoyo / sumarse en la ficha móvil
+      setupSupportButton(mobileCardBtnSupport, claim, () => {
+        openMobileCard(claimsService.getById(claim.id));
+        updateView();
+      });
+
+      mobileCard.classList.add('is-visible');
+      mobileCard.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeMobileCard() {
+      mobileCard.classList.remove('is-visible');
+      mobileCard.setAttribute('aria-hidden', 'true');
+    }
+
+    btnCloseMobileCard.addEventListener('click', closeMobileCard);
+
+    // 8. Renderizado en Vista Lista
+    function renderListContent(claims) {
+      const user = auth.getCurrentUser();
+      listStatusText.textContent = `Mostrando ${claims.length} ${claims.length === 1 ? 'reclamo registrado' : 'reclamos registrados'} en La Matanza:`;
+
+      cardsGrid.innerHTML = claims.map(c => {
+        const count = c.participantes ? c.participantes.length : 1;
+        const isOwner = Boolean(user && c.creadorId === user.id);
+        const isJoined = Boolean(user && c.participantes && c.participantes.includes(user.id));
+
+        let stateClass = 'recibido';
+        if (c.estado === 'en_revision') stateClass = 'revision';
+        else if (c.estado === 'en_proceso') stateClass = 'proceso';
+        else if (c.estado === 'resuelto') stateClass = 'resuelto';
+        else if (c.estado === 'reabierto') stateClass = 'reabierto';
+        else if (c.estado === 'rechazado') stateClass = 'rechazado';
+        else if (c.estado === 'cancelado') stateClass = 'cancelado';
+
+        const hasPhoto = Array.isArray(c.fotos) && c.fotos.length > 0;
+        const photoSrc = hasPhoto ? (c.fotos[0].startsWith('http') || c.fotos[0].startsWith('../') ? c.fotos[0] : `../${c.fotos[0]}`) : null;
+
+        return `
+          <article class="claim-list-card" role="listitem" tabindex="0" aria-label="Reclamo ${c.id}: ${c.titulo}">
+            <div>
+              <div class="claim-list-card__header">
+                <span class="badge badge--cat-${c.categoria}">${formatters.categoryLabel(c.categoria)}</span>
+                <span class="badge badge--${stateClass}">${formatters.stateLabel(c.estado)}</span>
+              </div>
+
+              <div class="claim-list-card__body">
+                <div class="claim-list-card__thumb-wrap">
+                  ${hasPhoto ? `
+                    <img src="${photoSrc}" alt="${c.titulo}" class="claim-list-card__thumb" loading="lazy">
+                  ` : `
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--color-text-muted);" aria-hidden="true">
+                      <rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
+                    </svg>
+                  `}
+                </div>
+                <div class="claim-list-card__info">
+                  <h3 class="claim-list-card__title">
+                    <a href="detalle-reclamo.html?id=${encodeURIComponent(c.id)}&from=explorar" class="js-claim-link" data-id="${c.id}">
+                      ${c.titulo}
+                    </a>
+                  </h3>
+                  <p class="claim-list-card__address">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                    <span>${c.direccion}</span>
+                  </p>
+                  <span class="claim-list-card__date">${formatters.relativeDate(c.fecha)}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="claim-list-card__footer">
+              <span class="claim-list-card__support-count" title="Vecinos que respaldan este reclamo">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+                <span><strong>${count}</strong> ${count === 1 ? 'vecino' : 'vecinos'}</span>
+              </span>
+
+              <div class="claim-list-card__actions">
+                <button type="button" class="btn btn--outline btn--sm js-btn-support" data-id="${c.id}">
+                  Sumarme
+                </button>
+                <a href="detalle-reclamo.html?id=${encodeURIComponent(c.id)}&from=explorar" class="btn btn--ghost btn--sm js-claim-link" data-id="${c.id}" style="color: var(--color-accent); font-weight: 600;">
+                  Detalle →
+                </a>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
+
+      // Asociar eventos de navegación y adhesión en las tarjetas de la lista
+      cardsGrid.querySelectorAll('.js-claim-link').forEach(link => {
+        link.addEventListener('click', () => saveCurrentState());
+      });
+
+      cardsGrid.querySelectorAll('.js-btn-support').forEach(btn => {
+        const claimId = btn.dataset.id;
+        const claimObj = claims.find(c => c.id === claimId);
+        if (claimObj) {
+          setupSupportButton(btn, claimObj, () => updateView());
+        }
+      });
+    }
+
+    // 9. Configuración del Botón de Adhesión (Reutilizable en Popup, Mobile Sheet y Lista)
+    function setupSupportButton(buttonEl, claim, onComplete) {
+      const user = auth.getCurrentUser();
+      const isOwner = Boolean(user && claim.creadorId === user.id);
+      const isJoined = Boolean(user && claim.participantes && claim.participantes.includes(user.id));
+
+      if (claim.estado === 'cancelado' || claim.estado === 'rechazado') {
+        buttonEl.disabled = true;
+        buttonEl.textContent = 'Sin adhesiones';
+        buttonEl.className = 'btn btn--outline btn--sm';
+        buttonEl.title = 'No se admiten adhesiones para reclamos cancelados o rechazados';
+        return;
+      }
+
+      if (claim.estado === 'resuelto') {
+        buttonEl.disabled = false;
+        buttonEl.textContent = 'Sigue presente';
+        buttonEl.className = 'btn btn--outline btn--sm';
+        buttonEl.title = 'Indicar que el problema continúa presente y solicitar revisión técnica';
+        buttonEl.onclick = (e) => {
+          e.stopPropagation();
+          if (!auth.isLoggedIn()) {
+            saveCurrentState();
+            const redirectTarget = `detalle-reclamo.html?id=${encodeURIComponent(claim.id)}&from=explorar`;
+            auth.setRedirectUrl(redirectTarget);
+            window.location.href = `iniciar-sesion.html?redirect=${encodeURIComponent(redirectTarget)}`;
+            return;
+          }
+          claimsService.reportStillPresent(claim.id);
+          showToast({
+            message: 'Aviso registrado. Se notificó al equipo de inspección técnica.',
+            type: 'info',
+            duration: 3500
+          });
+          buttonEl.disabled = true;
+          buttonEl.textContent = 'Aviso enviado';
+        };
+        return;
+      }
+
+      if (isOwner) {
+        buttonEl.disabled = true;
+        buttonEl.textContent = 'Tu reclamo';
+        buttonEl.className = 'btn btn--ghost btn--sm';
+        buttonEl.title = 'No podés sumarte a un reclamo creado por vos';
+        return;
+      }
+
+      if (isJoined) {
+        buttonEl.disabled = false;
+        buttonEl.textContent = 'Ya te sumaste · Retirar';
+        buttonEl.className = 'btn btn--outline btn--sm';
+        buttonEl.onclick = (e) => {
+          e.stopPropagation();
+          const res = claimsService.leaveClaim(claim.id);
+          if (res.success) {
+            showToast({
+              message: 'Se retiró tu adhesión al reclamo.',
+              type: 'info',
+              duration: 3000
+            });
+            if (typeof onComplete === 'function') onComplete();
+          }
+        };
+      } else {
+        buttonEl.disabled = false;
+        buttonEl.textContent = 'Sumarme';
+        buttonEl.className = 'btn btn--primary btn--sm';
+        buttonEl.onclick = (e) => {
+          e.stopPropagation();
+          if (!auth.isLoggedIn()) {
+            saveCurrentState();
+            const redirectTarget = `detalle-reclamo.html?id=${encodeURIComponent(claim.id)}&from=explorar`;
+            auth.setRedirectUrl(redirectTarget);
+            window.location.href = `iniciar-sesion.html?redirect=${encodeURIComponent(redirectTarget)}`;
+            return;
+          }
+
+          const res = claimsService.joinClaim(claim.id);
+          if (res.success) {
+            showToast({
+              message: '¡Te sumaste con éxito al reclamo! Podés seguirlo en Mis reclamos.',
+              type: 'success',
+              duration: 3500
+            });
+            if (typeof onComplete === 'function') onComplete();
+          } else if (res.reason === 'already_joined') {
+            showToast({
+              message: 'Ya te sumaste a este reclamo.',
+              type: 'info',
+              duration: 3000
+            });
+          } else if (res.reason === 'is_creator') {
+            showToast({
+              message: 'No podés sumarte a un reclamo creado por vos.',
+              type: 'warning',
+              duration: 3000
+            });
+          }
+        };
+      }
+    }
+
+    // 10. Actualización General de la Vista
+    function updateView() {
+      const claims = getFilteredAndSortedClaims();
+      saveCurrentState();
+
+      if (claims.length === 0) {
+        emptyStateContainer.style.display = 'block';
+        viewMapContainer.style.display = 'none';
+        viewListContainer.style.display = 'none';
+        return;
+      }
+
+      emptyStateContainer.style.display = 'none';
+
+      if (state.view === 'map') {
+        viewMapContainer.style.display = 'block';
+        viewListContainer.style.display = 'none';
+        btnViewMap.classList.add('is-active');
+        btnViewMap.setAttribute('aria-selected', 'true');
+        btnViewList.classList.remove('is-active');
+        btnViewList.setAttribute('aria-selected', 'false');
+
+        if (!map) {
+          initMap();
+        }
+        renderMapContent(claims);
+        // Ajustar tamaño de Leaflet tras visibilidad
+        setTimeout(() => { if (map) map.invalidateSize(); }, 50);
+      } else {
+        viewMapContainer.style.display = 'none';
+        viewListContainer.style.display = 'block';
+        btnViewList.classList.add('is-active');
+        btnViewList.setAttribute('aria-selected', 'true');
+        btnViewMap.classList.remove('is-active');
+        btnViewMap.setAttribute('aria-selected', 'false');
+
+        closeMobileCard();
+        renderListContent(claims);
+      }
+    }
+
+    // 11. Listeners de Eventos de la Interfaz
+    // Cambio de Vista: Mapa / Lista
+    btnViewMap.addEventListener('click', () => {
+      state.view = 'map';
+      updateView();
+    });
+
+    btnViewList.addEventListener('click', () => {
+      state.view = 'list';
+      updateView();
+    });
+
+    // Filtros de Categoría (Chips)
+    categoryChips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        state.categoria = chip.dataset.cat;
+        categoryChips.forEach(c => c.classList.remove('is-active'));
+        chip.classList.add('is-active');
+        updateActiveFiltersIndicator();
+        updateView();
+      });
+    });
+
+    // Filtro de Localidad
+    selectLocalidad.addEventListener('change', (e) => {
+      state.localidad = e.target.value;
+      updateActiveFiltersIndicator();
+      updateView();
+    });
+
+    // Filtro de Estado
+    selectEstado.addEventListener('change', (e) => {
+      state.estado = e.target.value;
+      updateActiveFiltersIndicator();
+      updateView();
+    });
+
+    // Criterio de Ordenamiento
+    selectOrden.addEventListener('change', (e) => {
+      state.orden = e.target.value;
+      if (state.orden === 'cercania' && !state.userLocation && state.localidad === 'todas') {
+        showToast({
+          message: 'Seleccioná una localidad o activá tu ubicación con "Mi ubicación" para ordenar por cercanía.',
+          type: 'info',
+          duration: 4500
+        });
+      }
+      updateActiveFiltersIndicator();
+      updateView();
+    });
+
+    // Detección de Ubicación Voluntaria (GPS)
+    btnUseGps.addEventListener('click', () => {
+      if (!navigator.geolocation) {
+        showToast({
+          message: 'Tu navegador no soporta geolocalización. Podés seleccionar tu localidad en el filtro.',
+          type: 'warning',
+          duration: 4000
+        });
+        return;
+      }
+
+      gpsBtnLabel.textContent = 'Buscando...';
+      btnUseGps.disabled = true;
+
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          state.userLocation = {
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude
+          };
+          gpsBtnLabel.textContent = 'Ubicación activa';
+          btnUseGps.disabled = false;
+          btnUseGps.classList.remove('btn--outline');
+          btnUseGps.classList.add('btn--primary');
+
+          showToast({
+            message: 'Ubicación de referencia activada para el orden por cercanía.',
+            type: 'success',
+            duration: 3500
+          });
+
+          if (map) {
+            map.setView([state.userLocation.lat, state.userLocation.lng], 15, { animate: true });
+          }
+          updateView();
+        },
+        (err) => {
+          console.warn('Geolocalización rechazada o no disponible:', err);
+          gpsBtnLabel.textContent = 'Mi ubicación';
+          btnUseGps.disabled = false;
+          showToast({
+            message: 'No pudimos obtener tu ubicación GPS. Podés elegir tu localidad en el selector.',
+            type: 'info',
+            duration: 4000
+          });
+        },
+        { timeout: 8000, maximumAge: 60000 }
+      );
+    });
+
+    // Limpiar Filtros
+    function resetFilters() {
+      state.categoria = 'todas';
+      state.localidad = 'todas';
+      state.estado = 'activos';
+      state.orden = 'recientes';
+      syncControlsWithState();
+      updateView();
+      if (map) {
+        map.setView(MAPA_CONFIG.centroDefault, MAPA_CONFIG.zoomDefault, { animate: true });
+      }
+      showToast({
+        message: 'Filtros restablecidos a la vista predeterminada.',
+        type: 'info',
+        duration: 2500
+      });
+    }
+
+    btnClearFilters.addEventListener('click', resetFilters);
+    btnResetEmpty.addEventListener('click', resetFilters);
+
+    // 12. Puesta en marcha inicial
+    restoreInitialState();
+    updateView();
+
   </script>
 </body>
 </html>
-

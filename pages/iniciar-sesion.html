@@ -285,7 +285,7 @@
 
     // 5. Simulación de Inicio de Sesión con Google
     const btnGoogle = document.getElementById('btn-login-google');
-    btnGoogle.addEventListener('click', () => {
+    btnGoogle.addEventListener('click', async () => {
       btnGoogle.style.opacity = '0.7';
       btnGoogle.style.pointerEvents = 'none';
 
@@ -295,22 +295,20 @@
         duration: 2000
       });
 
-      setTimeout(() => {
-        auth.loginWithGoogle(null, false);
-        showToast({
-          message: '¡Sesión iniciada con éxito! Redirigiendo...',
-          type: 'success',
-          duration: 2500
-        });
+      await auth.loginWithGoogle(null, false);
+      showToast({
+        message: '¡Sesión iniciada con éxito! Redirigiendo...',
+        type: 'success',
+        duration: 2500
+      });
 
-        setTimeout(() => {
-          auth.handleRedirect('../index.html');
-        }, 500);
-      }, 600);
+      setTimeout(() => {
+        auth.handleRedirect('../index.html');
+      }, 400);
     });
 
     // 6. Envío del Formulario con Validación y Feedback
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
       let hasErrors = false;
@@ -351,8 +349,18 @@
       btnText.textContent = 'Iniciando sesión...';
       submitBtn.disabled = true;
 
-      setTimeout(() => {
-        auth.loginWithEmail(emailVal, passVal, null, false);
+      try {
+        const res = await auth.loginWithEmail(emailVal, passVal, null, false);
+        if (!res.success) {
+          submitBtn.classList.remove('is-loading');
+          btnText.textContent = 'Iniciar sesión';
+          submitBtn.disabled = false;
+
+          showError(emailInput, emailError, res.error || 'Correo electrónico o contraseña incorrectos.');
+          showError(passwordInput, passwordError, 'Verificá tu contraseña.');
+          emailInput.focus();
+          return;
+        }
 
         showToast({
           message: '¡Bienvenido/a de nuevo! Redirigiendo...',
@@ -362,8 +370,17 @@
 
         setTimeout(() => {
           auth.handleRedirect('../index.html');
-        }, 450);
-      }, 500);
+        }, 400);
+      } catch (err) {
+        console.error('[Iniciar Sesión] Error:', err);
+        submitBtn.classList.remove('is-loading');
+        btnText.textContent = 'Iniciar sesión';
+        submitBtn.disabled = false;
+        showToast({
+          message: 'Error al iniciar sesión. Intentalo nuevamente.',
+          type: 'error'
+        });
+      }
     });
   </script>
 </body>
