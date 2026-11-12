@@ -101,7 +101,7 @@
 }
 
 /* ==========================================================================
-   Disposición Desktop (>= 1024px): Horizontal conectada con tarjetas simétricas
+   Disposición Desktop (>= 1024px): Tarjeta integrada vertical con nodo
    ========================================================================== */
 @media (min-width: 1024px) {
   .steps-flow {
@@ -111,7 +111,7 @@
     align-items: stretch;
   }
 
-  /* Conector horizontal discreto entre nodos adyacentes a la altura exacta del centro */
+  /* Conector horizontal discreto que une los nodos aéreos */
   .step-item:not(:last-child) .step-node-wrapper::after {
     content: "";
     position: absolute;
@@ -132,7 +132,7 @@
   .steps-flow {
     display: flex;
     flex-direction: column;
-    gap: var(--space-5);
+    gap: var(--space-4);
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
@@ -142,9 +142,9 @@
   .step-item:not(:last-child) .step-node-wrapper::after {
     content: "";
     position: absolute;
-    top: 54px;
-    bottom: calc(-1 * var(--space-5));
-    left: 27px;
+    top: 48px;
+    bottom: calc(-1 * var(--space-4));
+    left: 23px;
     width: 2px;
     background: #BFDBFE;
     z-index: 1;
@@ -164,8 +164,8 @@
 @media (max-width: 1023px) {
   .step-item {
     flex-direction: row;
-    align-items: flex-start;
-    gap: var(--space-4);
+    align-items: stretch;
+    gap: var(--space-3);
   }
 }
 
@@ -177,15 +177,16 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  margin-bottom: 14px;
+  margin-bottom: var(--space-3);
 }
 
 @media (max-width: 1023px) {
   .step-node-wrapper {
     margin-bottom: 0;
     flex-shrink: 0;
-    align-self: stretch;
-    justify-content: flex-start;
+    align-self: flex-start;
+    justify-content: center;
+    padding-top: var(--space-2);
   }
 }
 
@@ -209,8 +210,8 @@
 
 @media (max-width: 1023px) {
   .step-node {
-    width: 54px;
-    height: 54px;
+    width: 48px;
+    height: 48px;
   }
 }
 
@@ -232,9 +233,9 @@
 
 @media (max-width: 1023px) {
   .step-node__badge {
-    top: -6px;
-    font-size: 0.625rem;
-    padding: 1px 6px;
+    top: -5px;
+    font-size: 0.5625rem;
+    padding: 0 5px;
   }
 }
 
@@ -253,8 +254,8 @@
 
 @media (max-width: 1023px) {
   .step-node__icon svg {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
   }
 }
 
@@ -273,6 +274,8 @@
   flex-direction: column;
   justify-content: flex-start;
   flex: 1;
+  min-width: 0;
+  max-width: 100%;
   transition: transform var(--duration-fast) var(--ease-out),
               box-shadow var(--duration-fast) var(--ease-out),
               border-color var(--duration-fast) var(--ease-out);
@@ -281,10 +284,17 @@
 @media (min-width: 1024px) {
   .step-card {
     text-align: center;
-    padding: 22px 20px 20px;
-    min-height: 195px; /* Altura compacta y balanceada en rango 190-210 px */
+    padding: 24px 20px 22px;
+    min-height: 205px;
     height: 100%;
     box-sizing: border-box;
+  }
+}
+
+@media (max-width: 1023px) {
+  .step-card {
+    padding: var(--space-4) var(--space-5);
+    text-align: left;
   }
 }
 
@@ -490,8 +500,32 @@
   }
 
   .mini-status-label {
-    white-space: nowrap;
+    white-space: normal;
     font-size: 0.8125rem; /* 13px */
+  }
+}
+
+@media (max-width: 380px) {
+  .step-item {
+    gap: var(--space-2);
+  }
+
+  .step-node {
+    width: 52px;
+    height: 52px;
+  }
+
+  .step-node svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .mini-status-tracker {
+    gap: 8px;
+  }
+
+  .mini-status-label {
+    font-size: 0.6875rem;
   }
 }
 

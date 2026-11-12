@@ -149,12 +149,18 @@ export function createClaimPopupHtml(claim, basePath = '') {
         <span class="claim-popup__date">${dateFormatted}</span>
       </div>
 
-      <div class="claim-popup__footer">
-        <a href="${claimUrl}" class="btn btn--primary btn--sm claim-popup__btn">
+      <div class="claim-popup__footer" style="display: flex; gap: 8px;">
+        <a href="${claimUrl}" class="btn btn--outline btn--sm" style="flex: 1; justify-content: center; text-decoration: none; font-size: var(--font-size-xs); padding: 6px 10px;">
           <span>Ver detalle</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
+        </a>
+        <a href="${claimUrl}" class="btn btn--primary btn--sm claim-popup__btn-sumarse" style="flex: 1.2; justify-content: center; text-decoration: none; font-size: var(--font-size-xs); padding: 6px 10px; gap: 5px;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <line x1="19" y1="8" x2="19" y2="14"/>
+            <line x1="22" y1="11" x2="16" y2="11"/>
           </svg>
+          <span>Sumarme</span>
         </a>
       </div>
     </article>

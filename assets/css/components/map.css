@@ -613,3 +613,17 @@
   }
 }
 
+/* ==========================================================================
+   Ajuste de controles y atribución de mapa en Mobile
+   Evita que los controles inferiores queden solapados por la barra inferior fija
+   ========================================================================== */
+@media (max-width: 767px) {
+  .leaflet-bottom {
+    bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom, 0px) + 6px) !important;
+  }
+
+  .leaflet-control-zoom {
+    margin-bottom: var(--space-2);
+  }
+}
+

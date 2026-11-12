@@ -132,6 +132,14 @@ export function setupNavigation({ activePage = 'inicio', basePath = '' } = {}) {
       </a>
     `
     : `
+      <div class="notifications-menu-wrapper mobile-only-notif-wrapper">
+        <a href="${pages}iniciar-sesion.html?redirect=${encodeURIComponent(pages + 'notificaciones.html')}" class="icon-btn header-notification-btn mobile-only-notif" id="notif-bell-guest" aria-label="Notificaciones: Iniciar sesión para ver avisos" title="Notificaciones">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+        </a>
+      </div>
       <a href="${pages}iniciar-sesion.html" class="btn btn-header-login" id="btn-header-login">
         Ingresar
       </a>
@@ -164,7 +172,7 @@ export function setupNavigation({ activePage = 'inicio', basePath = '' } = {}) {
     </div>
   `;
 
-  // 2. INYECTAR O ACTUALIZAR NAVEGACIÓN MÓVIL TÁCTIL (Thumb Zone)
+  // 2. INYECTAR O ACTUALIZAR NAVEGACIÓN MÓVIL TÁCTIL (Thumb Zone — App Style 5 items)
   let bottomNav = document.querySelector('.mobile-bottom-nav');
   if (!bottomNav) {
     bottomNav = document.createElement('nav');
@@ -174,24 +182,92 @@ export function setupNavigation({ activePage = 'inicio', basePath = '' } = {}) {
     document.body.appendChild(bottomNav);
   }
 
+  const isInicio = activePage === 'inicio';
+  const isExplorar = activePage === 'explorar';
+  const isReportar = activePage === 'reportar';
+  const isEstadisticas = activePage === 'estadisticas';
+  const isPerfil = activePage === 'perfil' || activePage === 'mis-reclamos';
+
   bottomNav.innerHTML = `
-    <a href="${root}index.html" class="mobile-nav-item ${activePage === 'inicio' ? 'is-active' : ''}" data-page="inicio" ${activePage === 'inicio' ? 'aria-current="page"' : ''}>
-      <span class="mobile-nav-item__icon" aria-hidden="true">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-      </span>
-      <span>Inicio</span>
+    <!-- 1. Inicio -->
+    <a href="${root}index.html" 
+       class="mobile-nav-item ${isInicio ? 'is-active' : ''}" 
+       data-page="inicio" 
+       ${isInicio ? 'aria-current="page"' : ''}
+       aria-label="Inicio">
+      <span class="mobile-nav-item__indicator" aria-hidden="true"></span>
+      <div class="mobile-nav-item__icon-wrap" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+      </div>
+      <span class="mobile-nav-item__label">Inicio</span>
     </a>
-    <a href="${pages}explorar.html" class="mobile-nav-item ${activePage === 'explorar' ? 'is-active' : ''}" data-page="explorar" ${activePage === 'explorar' ? 'aria-current="page"' : ''}>
-      <span class="mobile-nav-item__icon" aria-hidden="true">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-      </span>
-      <span>Explorar</span>
+
+    <!-- 2. Explorar -->
+    <a href="${pages}explorar.html" 
+       class="mobile-nav-item ${isExplorar ? 'is-active' : ''}" 
+       data-page="explorar" 
+       ${isExplorar ? 'aria-current="page"' : ''}
+       aria-label="Explorar reclamos">
+      <span class="mobile-nav-item__indicator" aria-hidden="true"></span>
+      <div class="mobile-nav-item__icon-wrap" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/>
+          <line x1="8" y1="2" x2="8" y2="18"/>
+          <line x1="16" y1="6" x2="16" y2="22"/>
+        </svg>
+      </div>
+      <span class="mobile-nav-item__label">Explorar</span>
     </a>
-    <a href="${pages}nuevo-reclamo.html" class="mobile-nav-item js-btn-reportar ${activePage === 'reportar' ? 'is-active' : ''}" data-page="reportar" ${activePage === 'reportar' ? 'aria-current="page"' : ''}>
-      <span class="mobile-nav-item__icon" aria-hidden="true">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
-      </span>
-      <span>Reportar</span>
+
+    <!-- 3. Reportar (Botón Central Elevado Sobresaliente) -->
+    <a href="${pages}nuevo-reclamo.html" 
+       class="mobile-nav-item mobile-nav-item--reportar js-btn-reportar ${isReportar ? 'is-active' : ''}" 
+       data-page="reportar" 
+       ${isReportar ? 'aria-current="page"' : ''}
+       aria-label="Reportar nuevo reclamo urbano">
+      <div class="mobile-nav-item__reportar-bubble" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+      </div>
+      <span class="mobile-nav-item__label">Reportar</span>
+    </a>
+
+    <!-- 4. Estadísticas -->
+    <a href="${pages}estadisticas.html" 
+       class="mobile-nav-item ${isEstadisticas ? 'is-active' : ''}" 
+       data-page="estadisticas" 
+       ${isEstadisticas ? 'aria-current="page"' : ''}
+       aria-label="Estadísticas cívicas">
+      <span class="mobile-nav-item__indicator" aria-hidden="true"></span>
+      <div class="mobile-nav-item__icon-wrap" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="20" x2="18" y2="10"></line>
+          <line x1="12" y1="20" x2="12" y2="4"></line>
+          <line x1="6" y1="20" x2="6" y2="14"></line>
+        </svg>
+      </div>
+      <span class="mobile-nav-item__label">Estadísticas</span>
+    </a>
+
+    <!-- 5. Perfil -->
+    <a href="${pages}perfil.html" 
+       class="mobile-nav-item js-btn-perfil ${isPerfil ? 'is-active' : ''}" 
+       data-page="perfil" 
+       ${isPerfil ? 'aria-current="page"' : ''}
+       aria-label="Mi perfil y reclamos">
+      <span class="mobile-nav-item__indicator" aria-hidden="true"></span>
+      <div class="mobile-nav-item__icon-wrap" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </div>
+      <span class="mobile-nav-item__label">Perfil</span>
     </a>
   `;
 
@@ -273,7 +349,7 @@ export function setupNavigation({ activePage = 'inicio', basePath = '' } = {}) {
     </div>
   `;
 
-  // 4. INTERCEPTOR ACCIONES DE REPORTE: Comprobar sesión en enlaces con clase .js-btn-reportar
+  // 4. INTERCEPTOR ACCIONES DE REPORTE Y PERFIL: Comprobar sesión en enlaces interactivos
   document.querySelectorAll('.js-btn-reportar').forEach(btn => {
     if (btn.dataset.authBound) return;
     btn.dataset.authBound = 'true';
@@ -292,6 +368,39 @@ export function setupNavigation({ activePage = 'inicio', basePath = '' } = {}) {
       }
     });
   });
+
+  document.querySelectorAll('.js-btn-perfil').forEach(btn => {
+    if (btn.dataset.authBound) return;
+    btn.dataset.authBound = 'true';
+
+    btn.addEventListener('click', (e) => {
+      const href = btn.getAttribute('href');
+      if (!href) return;
+      e.preventDefault();
+
+      const targetUrl = new URL(href, window.location.href).href;
+      if (auth.isLoggedIn()) {
+        window.location.href = targetUrl;
+      } else {
+        auth.setRedirectUrl(targetUrl);
+        window.location.href = `${pages}iniciar-sesion.html?redirect=${encodeURIComponent(targetUrl)}`;
+      }
+    });
+  });
+
+  // 4b. DETECCIÓN DE TECLADO VIRTUAL EN DISPOSITIVOS MÓVILES (VisualViewport)
+  if (typeof window !== 'undefined' && window.visualViewport && !window.__ssKeyboardListenerActive) {
+    window.__ssKeyboardListenerActive = true;
+    const handleViewportResize = () => {
+      const isKeyboardOpen = (window.innerHeight - window.visualViewport.height) > 150;
+      if (isKeyboardOpen) {
+        document.body.classList.add('keyboard-is-open');
+      } else {
+        document.body.classList.remove('keyboard-is-open');
+      }
+    };
+    window.visualViewport.addEventListener('resize', handleViewportResize);
+  }
 
   // 5. INTERACTIVIDAD DEL MENÚ CONTEXTUAL DE PERFIL Y DEL PANEL DE NOTIFICACIONES
   let closeMenuFn = null;

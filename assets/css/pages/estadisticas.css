@@ -1,0 +1,901 @@
+/* ==========================================================================
+   SoluciónSegura — Pantalla de Estadísticas Públicas (Estilos dedicados)
+   Diseño editorial cívico, visualización de datos, accesibilidad y responsive
+   Tokens: #062F66 (azul institucional), #0284C7 (celeste marca), #F98001 (acción)
+   Principios: Emil Kowalski & antislop-ui
+   ========================================================================== */
+
+/* Contenedor principal y espaciado de página */
+.stats-page-container {
+  max-width: var(--max-width-desktop, 1280px);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--space-4);
+  padding-right: var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .stats-page-container {
+    padding-left: var(--space-6);
+    padding-right: var(--space-6);
+  }
+}
+
+@media (min-width: 1024px) {
+  .stats-page-container {
+    padding-left: var(--space-8);
+    padding-right: var(--space-8);
+  }
+}
+
+/* ==========================================================================
+   1. Encabezado de la página
+   ========================================================================== */
+.stats-header {
+  padding-top: var(--space-6);
+  padding-bottom: var(--space-6);
+  margin-bottom: var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .stats-header {
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-6);
+  }
+}
+
+.stats-header__title {
+  font-family: var(--font-family-display);
+  font-size: 1.875rem;
+  font-weight: var(--font-weight-extrabold);
+  line-height: var(--line-height-tight);
+  letter-spacing: -0.025em;
+  color: var(--color-brand-blue);
+  margin: 0 0 var(--space-2) 0;
+  text-wrap: balance;
+}
+
+@media (min-width: 768px) {
+  .stats-header__title {
+    font-size: 2.35rem;
+  }
+}
+
+.stats-header__description {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-secondary);
+  max-width: 65ch;
+  margin: 0;
+  text-wrap: pretty;
+}
+
+@media (min-width: 768px) {
+  .stats-header__description {
+    font-size: 1.0625rem;
+  }
+}
+
+/* ==========================================================================
+   2. Barra de filtros
+   ========================================================================== */
+.stats-filterbar {
+  background-color: var(--color-surface-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-5);
+  margin-bottom: var(--space-8);
+  box-shadow: 0 1px 3px rgba(6, 47, 102, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .stats-filterbar {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.stats-filterbar__controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  flex: 1;
+}
+
+@media (min-width: 640px) {
+  .stats-filterbar__controls {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+}
+
+.stats-filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+@media (min-width: 640px) {
+  .stats-filter-field {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-2);
+  }
+}
+
+.stats-filter-label {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-brand-blue);
+  white-space: nowrap;
+}
+
+.stats-filter-select {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-main);
+  background-color: var(--color-surface-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 8px 36px 8px 12px;
+  min-height: 44px;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23334155' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  transition: border-color 150ms ease-out, box-shadow 150ms ease-out;
+}
+
+.stats-filter-select:hover {
+  border-color: var(--color-border-hover);
+}
+
+.stats-filter-select:focus-visible {
+  outline: none;
+  border-color: var(--color-brand-sky);
+  box-shadow: var(--color-focus-ring-shadow);
+}
+
+/* Control de período por botones segmentados */
+.stats-period-group {
+  display: inline-flex;
+  background-color: var(--color-surface-light, #F1F5F9);
+  padding: 3px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  min-height: 44px;
+  align-items: center;
+}
+
+.stats-period-btn {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  background: transparent;
+  border: none;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color 150ms ease-out, color 150ms ease-out, box-shadow 150ms ease-out, transform 100ms ease-out;
+  min-height: 38px;
+  white-space: nowrap;
+}
+
+.stats-period-btn:hover {
+  color: var(--color-brand-blue);
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+.stats-period-btn:active {
+  transform: scale(0.98);
+}
+
+.stats-period-btn:focus-visible {
+  outline: 2px solid var(--color-brand-sky);
+  outline-offset: 1px;
+}
+
+.stats-period-btn.is-active {
+  background-color: var(--color-surface-card);
+  color: var(--color-brand-blue);
+  font-weight: var(--font-weight-bold);
+  box-shadow: 0 1px 2px rgba(6, 47, 102, 0.08);
+}
+
+.stats-filterbar__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.stats-btn-reset {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 8px 14px;
+  min-height: 44px;
+  cursor: pointer;
+  transition: background-color 150ms ease-out, color 150ms ease-out, border-color 150ms ease-out, transform 100ms ease-out;
+}
+
+.stats-btn-reset:hover {
+  background-color: var(--color-surface-light);
+  color: var(--color-brand-blue);
+  border-color: var(--color-border-hover);
+}
+
+.stats-btn-reset:active {
+  transform: scale(0.98);
+}
+
+.stats-btn-reset:focus-visible {
+  outline: none;
+  border-color: var(--color-brand-sky);
+  box-shadow: var(--color-focus-ring-shadow);
+}
+
+/* ==========================================================================
+   3. Indicadores principales (KPIs)
+   ========================================================================== */
+.stats-kpis-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+@media (min-width: 540px) {
+  .stats-kpis-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .stats-kpis-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.stats-kpi-card {
+  background-color: var(--color-surface-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5) var(--space-6);
+  box-shadow: 0 1px 3px rgba(6, 47, 102, 0.04);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: border-color 150ms ease-out, box-shadow 150ms ease-out;
+}
+
+.stats-kpi-card:hover {
+  border-color: #CBD5E1;
+  box-shadow: 0 3px 8px rgba(6, 47, 102, 0.06);
+}
+
+.stats-kpi-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-2);
+}
+
+.stats-kpi-card__label {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+}
+
+.stats-kpi-card__icon {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.stats-kpi-card__icon--total {
+  background-color: #EFF6FF;
+  color: var(--color-brand-blue);
+}
+
+.stats-kpi-card__icon--activos {
+  background-color: #FEF3C7;
+  color: #B45309;
+}
+
+.stats-kpi-card__icon--resueltos {
+  background-color: #DCFCE7;
+  color: #15803D;
+}
+
+.stats-kpi-card__icon--tasa {
+  background-color: #E0F2FE;
+  color: var(--color-brand-sky-dark);
+}
+
+.stats-kpi-card__value {
+  font-family: var(--font-family-display);
+  font-size: 2.25rem;
+  font-weight: var(--font-weight-extrabold);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--color-brand-blue);
+  margin: var(--space-1) 0 var(--space-1) 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.stats-kpi-card__subtext {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-base);
+}
+
+/* ==========================================================================
+   4. Distribución por Categoría y por Estado (Grilla 2 columnas)
+   ========================================================================== */
+.stats-split-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+  margin-bottom: var(--space-8);
+}
+
+@media (min-width: 900px) {
+  .stats-split-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.stats-panel {
+  background-color: var(--color-surface-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: 0 1px 3px rgba(6, 47, 102, 0.04);
+  display: flex;
+  flex-direction: column;
+}
+
+.stats-panel__header {
+  margin-bottom: var(--space-5);
+}
+
+.stats-panel__title {
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-brand-blue);
+  margin: 0 0 var(--space-1) 0;
+  letter-spacing: -0.01em;
+}
+
+.stats-panel__subtitle {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* Barras horizontales de categorías */
+.stats-cat-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.stats-cat-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.stats-cat-item__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stats-cat-item__info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.stats-cat-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+.stats-cat-dot--pavimento {
+  background-color: var(--cat-pavimento, #C2410C);
+}
+
+.stats-cat-dot--residuos {
+  background-color: var(--cat-residuos, #047857);
+}
+
+.stats-cat-dot--alumbrado {
+  background-color: var(--cat-alumbrado, #6D28D9);
+}
+
+.stats-cat-item__name {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-main);
+}
+
+.stats-cat-item__numbers {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-brand-blue);
+  font-variant-numeric: tabular-nums;
+}
+
+.stats-cat-item__pct {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  margin-left: var(--space-1);
+}
+
+.stats-progress-track {
+  width: 100%;
+  height: 10px;
+  background-color: var(--color-surface-light, #F1F5F9);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  position: relative;
+}
+
+.stats-progress-bar {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 400ms ease-out;
+}
+
+.stats-progress-bar--pavimento {
+  background-color: var(--cat-pavimento, #C2410C);
+}
+
+.stats-progress-bar--residuos {
+  background-color: var(--cat-residuos, #047857);
+}
+
+.stats-progress-bar--alumbrado {
+  background-color: var(--cat-alumbrado, #6D28D9);
+}
+
+/* Panel de Reclamos por Estado */
+.stats-status-bar {
+  display: flex;
+  height: 14px;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  background-color: var(--color-surface-light, #F1F5F9);
+  margin-bottom: var(--space-5);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.stats-status-bar__seg {
+  height: 100%;
+  transition: width 400ms ease-out;
+  position: relative;
+}
+
+.stats-status-bar__seg:first-child {
+  border-top-left-radius: var(--radius-full);
+  border-bottom-left-radius: var(--radius-full);
+}
+
+.stats-status-bar__seg:last-child {
+  border-top-right-radius: var(--radius-full);
+  border-bottom-right-radius: var(--radius-full);
+}
+
+.stats-status-groups {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.stats-status-group-block {
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--space-3);
+}
+
+.stats-status-group-block:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+
+.stats-status-group-heading {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stats-status-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 0;
+  font-size: var(--font-size-xs);
+}
+
+.stats-status-item-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-text-secondary);
+}
+
+.stats-status-item-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+.stats-status-item-counts {
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-brand-blue);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   5. Evolución Mensual
+   ========================================================================== */
+.stats-evolution-panel {
+  background-color: var(--color-surface-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  margin-bottom: var(--space-8);
+  box-shadow: 0 1px 3px rgba(6, 47, 102, 0.04);
+}
+
+.stats-evolution-meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+}
+
+@media (min-width: 640px) {
+  .stats-evolution-meta {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.stats-evolution-legend {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+.stats-evolution-legend__line {
+  width: 20px;
+  height: 3px;
+  background-color: var(--color-brand-sky, #0284C7);
+  border-radius: var(--radius-full);
+  display: inline-block;
+}
+
+.stats-evolution-legend__point {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-brand-sky, #0284C7);
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 0 0 1px var(--color-brand-sky, #0284C7);
+  display: inline-block;
+}
+
+/* Contenedor del gráfico SVG */
+.stats-chart-wrapper {
+  position: relative;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.stats-svg-chart {
+  width: 100%;
+  height: auto;
+  min-height: 240px;
+  display: block;
+}
+
+/* Tooltip dinámico del gráfico */
+.stats-chart-tooltip {
+  position: absolute;
+  pointer-events: none;
+  background-color: var(--color-brand-blue-darker, #041B3B);
+  color: #FFFFFF;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  font-family: var(--font-family-base);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transform: translate(-50%, -100%);
+  margin-top: -10px;
+  transition: opacity 120ms ease-out, transform 120ms ease-out;
+  white-space: nowrap;
+  z-index: 20;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.stats-chart-tooltip.is-visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ==========================================================================
+   6. Distribución territorial por localidad
+   ========================================================================== */
+.stats-territorial-panel {
+  background-color: var(--color-surface-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  margin-bottom: var(--space-8);
+  box-shadow: 0 1px 3px rgba(6, 47, 102, 0.04);
+}
+
+.stats-territorial-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+}
+
+@media (min-width: 640px) {
+  .stats-territorial-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.stats-ranking-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.stats-ranking-item {
+  display: grid;
+  grid-template-columns: 24px 1fr auto;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+}
+
+@media (min-width: 640px) {
+  .stats-ranking-item {
+    grid-template-columns: 32px 180px 1fr 100px;
+    gap: var(--space-4);
+  }
+}
+
+.stats-ranking-pos {
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.stats-ranking-item:nth-child(1) .stats-ranking-pos {
+  color: var(--color-brand-blue);
+  font-weight: var(--font-weight-extrabold);
+}
+
+.stats-ranking-name {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-brand-blue);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stats-ranking-bar-wrap {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .stats-ranking-bar-wrap {
+    display: block;
+    width: 100%;
+    height: 8px;
+    background-color: var(--color-surface-light, #F1F5F9);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+  }
+}
+
+.stats-ranking-bar {
+  height: 100%;
+  background-color: var(--color-brand-sky, #0284C7);
+  border-radius: var(--radius-full);
+  transition: width 400ms ease-out;
+}
+
+.stats-ranking-value {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-brand-blue);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.stats-ranking-value span {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-muted);
+  margin-left: 4px;
+}
+
+/* ==========================================================================
+   7. Llamado a la acción (Acceso a Explorar)
+   ========================================================================== */
+.stats-cta-card {
+  background-color: var(--color-brand-surface-blue, #EFF6FF);
+  border: 1px solid #BFDBFE;
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  margin-bottom: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+@media (min-width: 768px) {
+  .stats-cta-card {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-8);
+  }
+}
+
+.stats-cta-card__content {
+  max-width: 640px;
+}
+
+.stats-cta-card__title {
+  font-family: var(--font-family-display);
+  font-size: 1.35rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-brand-blue);
+  margin: 0 0 var(--space-2) 0;
+  letter-spacing: -0.015em;
+}
+
+.stats-cta-card__text {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.stats-cta-card__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+@media (min-width: 480px) {
+  .stats-cta-card__actions {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+/* ==========================================================================
+   8. Estado Vacío (Empty State cuando no hay datos)
+   ========================================================================== */
+.stats-empty-state {
+  background-color: var(--color-surface-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-12) var(--space-6);
+  text-align: center;
+  margin-bottom: var(--space-8);
+  display: none;
+}
+
+.stats-empty-state.is-visible {
+  display: block;
+}
+
+.stats-empty-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface-light, #F1F5F9);
+  color: var(--color-text-muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-4);
+}
+
+.stats-empty-title {
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-brand-blue);
+  margin: 0 0 var(--space-2) 0;
+}
+
+.stats-empty-text {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  max-width: 460px;
+  margin: 0 auto var(--space-5) auto;
+  line-height: var(--line-height-relaxed);
+}
+
+/* ==========================================================================
+   9. Accesibilidad y prefers-reduced-motion
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .stats-kpi-card,
+  .stats-period-btn,
+  .stats-btn-reset,
+  .stats-progress-bar,
+  .stats-ranking-bar,
+  .stats-chart-tooltip,
+  .stats-status-bar__seg {
+    transition: none !important;
+    animation: none !important;
+  }
+}

@@ -59,7 +59,7 @@
   display: inline-flex;
   background-color: var(--color-surface-light);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-md);
   padding: 3px;
   gap: 2px;
 }
@@ -69,7 +69,7 @@
   align-items: center;
   gap: 6px;
   padding: 6px 14px;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-sm);
   border: none;
   background: transparent;
   color: var(--color-text-secondary);
@@ -77,7 +77,7 @@
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
   cursor: pointer;
-  transition: all var(--duration-fast) var(--ease-out);
+  transition: background-color 140ms ease-out, color 140ms ease-out;
 }
 
 .view-toggle-btn:hover {
@@ -85,9 +85,9 @@
 }
 
 .view-toggle-btn.is-active {
-  background-color: var(--color-accent);
+  background-color: var(--color-brand-blue);
   color: #FFFFFF;
-  box-shadow: 0 2px 6px rgba(2, 132, 199, 0.35);
+  box-shadow: 0 1px 2px rgba(6, 47, 102, 0.12);
 }
 
 .view-toggle-btn svg {
@@ -150,12 +150,12 @@
 }
 
 .category-chip {
-  padding: 5px 11px;
-  border-radius: var(--radius-full);
+  padding: 5px 12px;
+  border-radius: var(--radius-sm, 6px);
   font-size: 0.75rem;
   font-weight: var(--font-weight-semibold);
   cursor: pointer;
-  border: 1px solid transparent;
+  border: 1px solid var(--color-border);
   background-color: var(--color-surface-light);
   color: var(--color-text-secondary);
   transition: all var(--duration-fast) var(--ease-out);
@@ -164,6 +164,7 @@
 
 .category-chip:hover {
   background-color: #E2E8F0;
+  border-color: #CBD5E1;
   color: var(--color-primary-dark);
 }
 
@@ -545,7 +546,7 @@
   text-align: center;
   padding: var(--space-12) var(--space-6);
   background-color: var(--color-surface-card);
-  border: 1px dashed var(--color-border);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   margin: var(--space-6) 0;
 }
@@ -553,8 +554,9 @@
 .explorar-empty-state__icon {
   width: 52px;
   height: 52px;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-md);
   background: var(--color-surface-light);
+  border: 1px solid var(--color-border);
   color: var(--color-accent);
   display: inline-flex;
   align-items: center;
@@ -577,4 +579,19 @@
   margin: 0 auto var(--space-5) auto;
   line-height: var(--line-height-relaxed);
 }
+
+/* ==========================================================================
+   Accesibilidad y Movimiento Reducido
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .view-toggle-btn,
+  .category-chip,
+  .explorar-mobile-card,
+  .claim-list-card,
+  .btn {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
 

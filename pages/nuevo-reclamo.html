@@ -437,11 +437,15 @@
        MODAL DE REVISIÓN Y CONFIRMACIÓN PREVIA AL REGISTRO
        ======================================================== -->
   <div id="modal-review-claim" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modal-review-title">
-    <div class="modal-dialog" style="max-width: 560px;">
+    <div class="modal-dialog">
       <div class="modal-header">
+        <span class="modal-sheet-handle" aria-hidden="true"></span>
         <h3 class="modal-title" id="modal-review-title">Revisá tu reclamo antes de registrarlo</h3>
-        <button type="button" class="icon-btn" id="btn-close-modal-review" aria-label="Cerrar ventana de revisión">
-          ✕
+        <button type="button" class="modal-close-btn" id="btn-close-modal-review" aria-label="Cerrar ventana de revisión">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
         </button>
       </div>
       <div class="modal-body">
@@ -500,11 +504,11 @@
           </div>
         </div>
       </div>
-      <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-2);">
-        <button type="button" class="btn btn--outline btn--sm" id="btn-review-back">
+      <div class="modal-footer">
+        <button type="button" class="btn btn--outline" id="btn-review-back">
           Volver a editar
         </button>
-        <button type="button" class="btn btn--primary btn--sm btn-submit-auth" id="btn-confirm-register">
+        <button type="button" class="btn btn--primary btn-submit-auth" id="btn-confirm-register">
           <span class="btn-spinner" aria-hidden="true"></span>
           <span class="btn-text">Confirmar y registrar</span>
         </button>
@@ -1489,6 +1493,13 @@
     btnReviewBack.addEventListener('click', () => {
       modal.close('modal-review-claim');
       submitBtn.focus();
+    });
+
+    reviewModal.addEventListener('click', (e) => {
+      if (e.target === reviewModal) {
+        modal.close('modal-review-claim');
+        submitBtn.focus();
+      }
     });
 
     // Acción definitiva: Confirmar y registrar (o guardar modificaciones)

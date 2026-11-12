@@ -16,6 +16,7 @@ html {
   height: 100%;
   background-color: var(--color-bg-body);
   color: var(--color-text-main);
+  overflow-x: clip;
 }
 
 body {
@@ -28,7 +29,7 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  overflow-x: clip;
   display: flex;
   flex-direction: column;
   letter-spacing: -0.011em;

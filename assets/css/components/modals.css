@@ -1,25 +1,30 @@
 /* ==========================================================================
    SoluciónSegura — Componente de Modales y Diálogos
-   Criterio Emil Kowalski:
-   - transform-origin: center
-   - Animar desde scale(0.95), nunca scale(0)
-   - Transiciones ágiles (< 250ms) con curva cubic-bezier
+   Criterio Emil Kowalski & Mobile App UX:
+   - transform-origin: center / bottom
+   - Animar desde scale(0.96) o translateY(100%) en móvil
+   - Transiciones ágiles con curva cubic-bezier
+   - Estructura flex con header fijo, body desplazable y footer sticky
+   - Soporte nativo para bottom sheet en pantallas móviles (< 640px)
+   - Controles táctiles accesibles >= 44x44px
    ========================================================================== */
 
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background-color: rgba(6, 47, 102, 0.45);
-  backdrop-filter: blur(3px);
-  z-index: 1000;
+  background-color: rgba(6, 47, 102, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 1200; /* Asegura superposición completa sobre barra móvil (z-index: 900) */
   display: flex;
   align-items: center;
   justify-content: center;
   padding: var(--space-4);
   opacity: 0;
   visibility: hidden;
-  transition: opacity var(--duration-fast) var(--ease-out),
-              visibility var(--duration-fast) var(--ease-out);
+  transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              visibility 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity;
 }
 
 .modal-backdrop.is-open {
@@ -27,51 +32,221 @@
   visibility: visible;
 }
 
+/* Diálogo principal en desktop: centrado, contenido controlado */
 .modal-dialog {
-  background-color: var(--color-surface-card);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-modal);
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-surface-card, #FFFFFF);
+  border-radius: var(--radius-xl, 16px);
+  box-shadow: 0 20px 45px -10px rgba(6, 47, 102, 0.28), 0 0 1px rgba(6, 47, 102, 0.15);
   width: 100%;
-  max-width: 520px;
-  max-height: 90vh;
-  overflow-y: auto;
-  transform: scale(0.95);
+  max-width: 560px;
+  max-height: min(88vh, 760px);
+  overflow: hidden; /* Header y footer permanecen fijos; body scrollea */
+  transform: scale(0.96) translateY(12px);
   transform-origin: center;
-  transition: transform var(--duration-normal) var(--ease-out);
+  transition: transform 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid rgba(226, 232, 240, 0.8);
 }
 
 .modal-backdrop.is-open .modal-dialog {
-  transform: scale(1);
+  transform: scale(1) translateY(0);
 }
 
+/* Cabecera del modal */
 .modal-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--space-5);
-  border-bottom: 1px solid var(--color-border);
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--color-border, #E2E8F0);
+  background-color: var(--color-surface-card, #FFFFFF);
+  flex-shrink: 0;
+  z-index: 2;
+  position: relative;
 }
 
 .modal-title {
-  font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-primary-dark);
+  font-family: var(--font-family-display, inherit);
+  font-size: var(--font-size-lg, 1.125rem);
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--color-primary-dark, #062F66);
+  margin: 0;
+  line-height: var(--line-height-snug, 1.3);
+  flex: 1;
 }
 
+/* Botón de cierre visible y accesible (WCAG 2.2 y antislop-ui) */
+.modal-close-btn,
+.modal-header .icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
+  border-radius: var(--radius-full, 9999px);
+  border: 1px solid var(--color-border, #CBD5E1);
+  background-color: #F8FAFC;
+  color: var(--color-primary-dark, #062F66) !important;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  transition: background-color var(--duration-fast, 150ms) var(--ease-out),
+              color var(--duration-fast, 150ms) var(--ease-out),
+              border-color var(--duration-fast, 150ms) var(--ease-out),
+              transform var(--duration-fast, 150ms) var(--ease-out);
+}
+
+.modal-close-btn:hover,
+.modal-header .icon-btn:hover {
+  background-color: #E2E8F0;
+  color: #021B3D !important;
+  border-color: #94A3B8;
+}
+
+.modal-close-btn:active,
+.modal-header .icon-btn:active {
+  transform: scale(0.92);
+}
+
+.modal-close-btn:focus-visible,
+.modal-header .icon-btn:focus-visible {
+  outline: 2px solid var(--color-accent, #F98001);
+  outline-offset: 2px;
+}
+
+.modal-close-btn svg,
+.modal-header .icon-btn svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+}
+
+/* Indicador táctil de bottom-sheet (oculto en desktop) */
+.modal-sheet-handle {
+  display: none;
+}
+
+/* Cuerpo con scroll independiente */
 .modal-body {
-  padding: var(--space-5);
-  color: var(--color-text-secondary);
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: var(--space-4) var(--space-5);
+  color: var(--color-text-secondary, #475569);
 }
 
+/* Pie con acciones fijas y accesibles */
 .modal-footer {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   gap: var(--space-3);
-  padding: var(--space-4) var(--space-5);
-  border-top: 1px solid var(--color-border);
-  background-color: var(--color-bg-body);
-  border-bottom-left-radius: var(--radius-lg);
-  border-bottom-right-radius: var(--radius-lg);
+  padding: var(--space-3) var(--space-5);
+  border-top: 1px solid var(--color-border, #E2E8F0);
+  background-color: var(--color-surface-card, #FFFFFF);
+  flex-shrink: 0;
+  z-index: 2;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.03);
 }
+
+/* ==========================================================================
+   Modo Móvil (< 640px) — Presentación Nativa Estilo Bottom Sheet
+   ========================================================================== */
+@media (max-width: 640px) {
+  .modal-backdrop {
+    padding: 0;
+    align-items: flex-end; /* Se adhiere al fondo de la pantalla móvil */
+  }
+
+  .modal-dialog {
+    width: 100%;
+    max-width: 100%;
+    max-height: min(88dvh, calc(100vh - 32px));
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-top-left-radius: 22px;
+    border-top-right-radius: 22px;
+    margin: 0;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    box-shadow: 0 -8px 30px rgba(6, 47, 102, 0.28);
+    transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .modal-backdrop.is-open .modal-dialog {
+    transform: translateY(0);
+  }
+
+  .modal-sheet-handle {
+    display: block;
+    width: 40px;
+    height: 4px;
+    background-color: #CBD5E1;
+    border-radius: 2px;
+    margin: 4px auto 8px auto;
+  }
+
+  .modal-header {
+    padding: var(--space-3) var(--space-4);
+    flex-wrap: wrap;
+    border-top-left-radius: 22px;
+    border-top-right-radius: 22px;
+  }
+
+  .modal-header .modal-sheet-handle {
+    order: -1;
+    flex-basis: 100%;
+  }
+
+  .modal-title {
+    font-size: 1.05rem;
+    line-height: var(--line-height-snug, 1.3);
+  }
+
+  .modal-body {
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .modal-footer {
+    padding: var(--space-3) var(--space-4);
+    padding-bottom: max(var(--space-3), calc(env(safe-area-inset-bottom, 0px) + 8px));
+    flex-direction: column-reverse; /* Botón de acción principal arriba, volver a editar abajo */
+    gap: var(--space-2);
+    box-shadow: 0 -4px 14px rgba(6, 47, 102, 0.06);
+  }
+
+  .modal-footer .btn {
+    width: 100%;
+    justify-content: center;
+    min-height: 46px;
+    font-size: var(--font-size-sm, 0.875rem);
+    border-radius: var(--radius-md, 8px);
+  }
+
+  .modal-footer .btn--primary,
+  .modal-footer #btn-confirm-register {
+    min-height: 48px;
+    font-size: 0.9375rem;
+    font-weight: var(--font-weight-bold, 700);
+    background-color: var(--color-action-primary, #F98001);
+    color: var(--color-action-primary-text, #062F66);
+    border: 1px solid var(--color-action-primary-border, #EA7500);
+    box-shadow: 0 3px 10px rgba(249, 128, 1, 0.28);
+  }
+
+  .modal-footer .btn--outline,
+  .modal-footer #btn-review-back {
+    color: var(--color-text-secondary, #475569);
+    border-color: var(--color-border, #CBD5E1);
+  }
+}
+
 
