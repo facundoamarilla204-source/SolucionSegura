@@ -781,10 +781,12 @@ function renderEstados(estados, totales) {
     const pctResueltos = ((totales.resueltos / total) * 100).toFixed(1);
     const pctDesestimados = ((totales.desestimados / total) * 100).toFixed(1);
 
+    barEl.setAttribute('role', 'img');
+    barEl.setAttribute('aria-label', `Distribución de estados: ${totales.resueltos} resueltos (${pctResueltos}%), ${totales.activos} activos en gestión (${pctActivos}%), ${totales.desestimados} rechazados o cancelados (${pctDesestimados}%)`);
     barEl.innerHTML = `
-      <div class="stats-status-bar__seg" style="width: ${pctResueltos}%; background-color: var(--state-resuelto);" title="Resueltos: ${totales.resueltos} (${pctResueltos}%)" aria-label="Resueltos: ${totales.resueltos}"></div>
-      <div class="stats-status-bar__seg" style="width: ${pctActivos}%; background-color: var(--color-brand-sky);" title="Activos en gestión: ${totales.activos} (${pctActivos}%)" aria-label="Activos en gestión: ${totales.activos}"></div>
-      <div class="stats-status-bar__seg" style="width: ${pctDesestimados}%; background-color: var(--color-text-muted);" title="Rechazados o cancelados: ${totales.desestimados} (${pctDesestimados}%)" aria-label="Rechazados o cancelados: ${totales.desestimados}"></div>
+      <div class="stats-status-bar__seg" style="width: ${pctResueltos}%; background-color: var(--state-resuelto);" title="Resueltos: ${totales.resueltos} (${pctResueltos}%)"></div>
+      <div class="stats-status-bar__seg" style="width: ${pctActivos}%; background-color: var(--color-brand-sky);" title="Activos en gestión: ${totales.activos} (${pctActivos}%)"></div>
+      <div class="stats-status-bar__seg" style="width: ${pctDesestimados}%; background-color: var(--color-text-muted);" title="Rechazados o cancelados: ${totales.desestimados} (${pctDesestimados}%)"></div>
     `;
   } else {
     barEl.innerHTML = '';
@@ -918,7 +920,9 @@ function renderEvolucionChart(evolucionData, periodo) {
   `).join('');
 
   const svgHtml = `
-    <svg viewBox="0 0 ${width} ${height}" class="stats-svg-chart" role="img" aria-label="Gráfico de evolución temporal de reclamos">
+    <svg viewBox="0 0 ${width} ${height}" class="stats-svg-chart" role="img" aria-labelledby="stats-chart-title stats-chart-desc">
+      <title id="stats-chart-title">Evolución mensual de reclamos (${periodo})</title>
+      <desc id="stats-chart-desc">Serie temporal con ${evolucionData.length} períodos: ${evolucionData.map(d => `${d.label || d.mes}: ${d.cantidad}`).join(', ')}.</desc>
       <defs>
         <linearGradient id="chartSkyGrad" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stop-color="#0284C7" stop-opacity="0.18" />

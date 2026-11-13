@@ -232,9 +232,9 @@
           : '';
 
         return `
-          <article class="notif-row ${unreadClass} js-notif-row" tabindex="0" role="button" data-notif-id="${n.id}" data-claim-id="${n.claimId || ''}" aria-label="${n.titulo} — ${unreadLabel}">
+          <article class="notif-row ${unreadClass} js-notif-row" data-notif-id="${n.id}" data-claim-id="${n.claimId || ''}">
             <div class="notif-dot-wrap">
-              <span class="notif-dot" title="${unreadLabel}" aria-hidden="true"></span>
+              <span class="notif-dot" title="${unreadLabel}" aria-label="${unreadLabel}"></span>
             </div>
             <div class="notif-body">
               <div class="notif-meta-line">

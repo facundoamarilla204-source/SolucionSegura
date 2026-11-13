@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Política de privacidad de SoluciónSegura: qué datos se solicitan, cómo se almacenan localmente en localStorage y qué servicios externos utiliza el prototipo.">
+  <title>Política de Privacidad — SoluciónSegura</title>
+  <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body class="app-shell">
+
+  <header class="site-header" role="banner"></header>
+
+  <main class="main-content" id="main-content" role="main">
+
+    <section class="legal-hero" aria-labelledby="legal-page-title">
+      <div class="legal-hero__inner">
+        <span class="legal-hero__eyebrow">Transparencia y datos locales</span>
+        <h1 class="legal-hero__title" id="legal-page-title">Política de privacidad</h1>
+        <p class="legal-hero__desc">
+          Explicación clara de qué información utiliza SoluciónSegura en el navegador, qué datos se muestran en reclamos públicos y cómo se gestionan tus preferencias.
+        </p>
+        <p class="legal-hero__meta">Última actualización: noviembre de 2026</p>
+      </div>
+    </section>
+
+    <div class="legal-container">
+      <div class="legal-layout">
+
+        <nav class="legal-toc" aria-label="Índice de secciones">
+          <h2 class="legal-toc__title">Contenido</h2>
+          <ol class="legal-toc__list">
+            <li><a href="#introduccion" class="legal-toc__link">1. Introducción</a></li>
+            <li><a href="#datos-registro" class="legal-toc__link">2. Datos del registro</a></li>
+            <li><a href="#finalidad-datos" class="legal-toc__link">3. Finalidad de los datos</a></li>
+            <li><a href="#visibilidad-publica" class="legal-toc__link">4. Reclamos públicos</a></li>
+            <li><a href="#almacenamiento-local" class="legal-toc__link">5. Almacenamiento local</a></li>
+            <li><a href="#servicios-externos" class="legal-toc__link">6. Mapas y servicios externos</a></li>
+            <li><a href="#preferencias-usuario" class="legal-toc__link">7. Preferencias de usuario</a></li>
+            <li><a href="#conservacion-eliminacion" class="legal-toc__link">8. Conservación y borrado</a></li>
+            <li><a href="#seguridad-limitaciones" class="legal-toc__link">9. Seguridad y limitaciones</a></li>
+            <li><a href="#consultas-privacidad" class="legal-toc__link">10. Consultas</a></li>
+          </ol>
+        </nav>
+
+        <article class="legal-article">
+
+          <section id="introduccion" class="legal-section" aria-labelledby="priv-1">
+            <h2 id="priv-1" class="legal-section__title">1. Introducción</h2>
+            <p>
+              Esta Política de privacidad describe cómo <strong>SoluciónSegura</strong> maneja la información ingresada durante el uso de la aplicación. Al tratarse de un prototipo académico ejecutado íntegramente en el navegador (HTML, CSS y JavaScript Vanilla), no existe un servidor propio ni una base de datos remota que recopile información personal.
+            </p>
+            <div class="legal-note">
+              Este texto cumple un rol informativo y demostrativo acorde al funcionamiento real del código fuente, y no constituye asesoramiento jurídico definitivo.
+            </div>
+          </section>
+
+          <section id="datos-registro" class="legal-section" aria-labelledby="priv-2">
+            <h2 id="priv-2" class="legal-section__title">2. Información solicitada en el registro</h2>
+            <p>
+              Para crear una cuenta ciudadana o simular un acceso, la plataforma únicamente solicita datos básicos de identificación:
+            </p>
+            <ul>
+              <li><strong>Registro con correo:</strong> nombre y apellido, dirección de correo electrónico y contraseña. No se solicita DNI, teléfono ni domicilio particular del usuario.</li>
+              <li><strong>Acceso simulado con Google:</strong> utiliza un perfil de demostración predefinido (<code>mariana.gomez@ejemplo.com</code>) sin conectarse a servidores reales de Google OAuth.</li>
+            </ul>
+          </section>
+
+          <section id="finalidad-datos" class="legal-section" aria-labelledby="priv-3">
+            <h2 id="priv-3" class="legal-section__title">3. Finalidad de los datos</h2>
+            <p>
+              Los datos ingresados se emplean exclusivamente dentro del navegador para habilitar las funciones interactivas de la maqueta:
+            </p>
+            <ul>
+              <li>Identificar al autor de un reclamo y mostrar su inicial o nombre en la cabecera y en <a href="perfil.html">Mi perfil</a>.</li>
+              <li>Registrar adhesiones vecinales sin duplicar apoyos de una misma cuenta sobre el mismo reclamo.</li>
+              <li>Generar avisos locales en el centro de notificaciones cuando avanzan los estados de un caso.</li>
+            </ul>
+          </section>
+
+          <section id="visibilidad-publica" class="legal-section" aria-labelledby="priv-4">
+            <h2 id="priv-4" class="legal-section__title">4. Información visible en reclamos públicos</h2>
+            <p>
+              Cuando registrás un reclamo, la ficha visible en el mapa y en <a href="explorar.html">Explorar</a> muestra la ubicación seleccionada (dirección aproximada y coordenadas), la localidad, la categoría, la descripción opcional, la cantidad de apoyos y el nombre de la cuenta reportante. Tu correo electrónico y tu contraseña nunca se muestran en los reclamos públicos.
+            </p>
+          </section>
+
+          <section id="almacenamiento-local" class="legal-section" aria-labelledby="priv-5">
+            <h2 id="priv-5" class="legal-section__title">5. Almacenamiento local mediante <code>localStorage</code></h2>
+            <p>
+              Toda la persistencia de SoluciónSegura se realiza en el almacenamiento local del navegador (<code>localStorage</code>) mediante claves específicas del proyecto:
+            </p>
+            <ul>
+              <li><code>solucionsegura_current_user</code>: datos de la sesión activa actual.</li>
+              <li><code>solucionsegura_users</code>: cuentas creadas en ese navegador para permitir volver a iniciar sesión.</li>
+              <li><code>solucionsegura_reclamos</code>: reclamos de demostración y reportes nuevos o adhesiones realizadas.</li>
+              <li><code>solucionsegura_borrador</code>: borrador automático mientras completás el formulario de nuevo reclamo.</li>
+              <li><code>solucionsegura_notificaciones</code>: avisos locales asociados al usuario.</li>
+            </ul>
+          </section>
+
+          <section id="servicios-externos" class="legal-section" aria-labelledby="priv-6">
+            <h2 id="priv-6" class="legal-section__title">6. Uso de mapas y servicios externos</h2>
+            <p>
+              Al navegar por la plataforma, tu navegador realiza solicitudes externas únicamente para cargar recursos visuales y cartográficos:
+            </p>
+            <ul>
+              <li><strong>OpenStreetMap y Leaflet:</strong> las teselas del mapa interactivo se descargan desde los servidores públicos de OpenStreetMap (<code>tile.openstreetmap.org</code>).</li>
+              <li><strong>Google Fonts:</strong> las tipografías institucionales <em>Outfit</em> e <em>Inter</em> se cargan desde Google Fonts.</li>
+              <li><strong>Geolocalización del navegador:</strong> si elegís centrar el mapa en tu ubicación actual, el navegador solicita tu permiso explícito mediante la API estándar <code>navigator.geolocation</code>; las coordenadas no se envían a ningún servidor propio.</li>
+            </ul>
+          </section>
+
+          <section id="preferencias-usuario" class="legal-section" aria-labelledby="priv-7">
+            <h2 id="priv-7" class="legal-section__title">7. Preferencias de usuario</h2>
+            <p>
+              Desde <a href="perfil.html">Mi perfil</a> podés actualizar tu nombre, elegir una localidad preferida de La Matanza para centrar el mapa al abrir Explorar y activar o desactivar preferencias de avisos dentro de la aplicación. Estos ajustes se guardan junto a tu registro local en <code>localStorage</code>.
+            </p>
+          </section>
+
+          <section id="conservacion-eliminacion" class="legal-section" aria-labelledby="priv-8">
+            <h2 id="priv-8" class="legal-section__title">8. Conservación y eliminación de datos de demostración</h2>
+            <p>
+              Los datos almacenados en <code>localStorage</code> permanecen en tu dispositivo aunque cierres la pestaña o reinicies el navegador. Al presionar «Cerrar sesión», se elimina únicamente la sesión activa (<code>solucionsegura_current_user</code>).
+            </p>
+            <p>
+              Para eliminar por completo los datos guardados por la aplicación, podés borrar los datos del sitio o el almacenamiento local desde las herramientas de configuración de tu navegador.
+            </p>
+          </section>
+
+          <section id="seguridad-limitaciones" class="legal-section" aria-labelledby="priv-9">
+            <h2 id="priv-9" class="legal-section__title">9. Seguridad y limitaciones del prototipo</h2>
+            <p>
+              En el registro local, la contraseña ingresada se procesa en el navegador mediante hash criptográfico con sal antes de guardarse en <code>localStorage</code>. No obstante, al ejecutarse completamente del lado del cliente y sin cifrado de almacenamiento en servidor, no se recomienda utilizar contraseñas reales que emplees en otros servicios.
+            </p>
+          </section>
+
+          <section id="consultas-privacidad" class="legal-section" aria-labelledby="priv-10">
+            <h2 id="priv-10" class="legal-section__title">10. Consultas sobre privacidad</h2>
+            <p>
+              Para revisar cómo funcionan las cuentas, los reportes y las preferencias de avisos en la plataforma, podés consultar la sección correspondiente en el <a href="ayuda.html">Centro de ayuda</a>.
+            </p>
+          </section>
+
+          <div class="legal-footer-nav">
+            <a href="../index.html" class="btn btn--outline btn--sm">Volver al inicio</a>
+            <div class="legal-footer-nav__links">
+              <a href="terminos-condiciones.html">Términos y condiciones</a>
+              <a href="ayuda.html">Centro de ayuda</a>
+            </div>
+          </div>
+
+        </article>
+
+      </div>
+    </div>
+
+  </main>
+
+  <nav class="mobile-bottom-nav" role="navigation" aria-label="Navegación inferior móvil"></nav>
+  <footer class="site-footer" role="contentinfo"></footer>
+
+  <script type="module">
+    import { setupNavigation } from '../assets/js/main.js';
+    setupNavigation({ activePage: '', basePath: '../' });
+  </script>
+</body>
+</html>
+

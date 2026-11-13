@@ -123,7 +123,7 @@
 }
 
 .help-search-bar__input::placeholder {
-  color: #94A3B8;
+  color: #64748B;
   font-size: 0.925rem;
 }
 
@@ -137,8 +137,8 @@
   align-items: center;
   justify-content: center;
   border-radius: var(--radius-full);
-  min-width: 38px;
-  min-height: 38px;
+  min-width: 44px;
+  min-height: 44px;
 }
 
 .help-search-bar__clear:hover {
@@ -171,11 +171,18 @@
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.18);
   color: #FFFFFF;
-  padding: 4px 10px;
+  padding: 8px 12px;
+  min-height: 36px;
   border-radius: var(--radius-sm, 6px);
   font-size: 0.775rem;
   cursor: pointer;
   transition: background 140ms ease-out, border-color 140ms ease-out;
+}
+
+@media (max-width: 767px) {
+  .help-quick-tag {
+    min-height: 44px;
+  }
 }
 
 .help-quick-tag:hover,

@@ -5,16 +5,16 @@
 
 /* Enlace de accesibilidad para saltar al contenido principal (WCAG 2.2 AA) */
 .skip-link {
-  position: absolute;
+  position: fixed;
   top: -100px;
   left: var(--space-4);
-  background-color: var(--color-accent);
+  background-color: var(--color-brand-sky-hover);
   color: var(--color-text-inverse);
   padding: var(--space-3) var(--space-4);
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-sm);
   border-radius: var(--radius-sm);
-  z-index: 1000;
+  z-index: 2000;
   text-decoration: none;
   box-shadow: var(--shadow-hover);
   transition: top var(--duration-fast) var(--ease-out);
@@ -385,7 +385,7 @@
   height: 18px;
   padding: 0 4px;
   border-radius: var(--radius-full);
-  background-color: var(--color-brand-sky);
+  background-color: var(--color-brand-sky-hover);
   color: #FFFFFF;
   font-family: var(--font-family-base);
   font-size: 10px;

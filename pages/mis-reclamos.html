@@ -158,8 +158,9 @@
                 <h2 class="card__title" style="font-size: var(--font-size-base); font-weight: 700; color: var(--color-primary-dark); margin-bottom: var(--space-1); line-height: var(--line-height-snug);">
                   ${c.titulo}
                 </h2>
-                <p class="card__body" style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin: 0;">
-                  📍 ${c.direccion}
+                <p class="card__body" style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin: 0; display: inline-flex; align-items: center; gap: 4px;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <span>${c.direccion}</span>
                 </p>
               </div>
             </div>
@@ -168,7 +169,7 @@
               <span><strong>${count} ${count === 1 ? 'vecino' : 'vecinos'}</strong> apoyan</span>
               <div style="display: flex; align-items: center; gap: var(--space-3);">
                 <span style="font-weight: var(--font-weight-medium); color: var(--color-primary-dark);">${isMine ? 'Creado por mí' : 'Me sumé'}</span>
-                <span style="color: var(--color-accent); font-weight: var(--font-weight-semibold); display: inline-flex; align-items: center; gap: 2px;">
+                <span style="color: var(--color-link); font-weight: var(--font-weight-semibold); display: inline-flex; align-items: center; gap: 2px;">
                   <span>Ver detalle</span>
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
                 </span>

@@ -636,12 +636,13 @@
   width: 100%;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  padding-bottom: var(--space-1);
 }
 
 .stats-svg-chart {
   width: 100%;
+  min-width: 640px;
   height: auto;
-  min-height: 240px;
   display: block;
 }
 

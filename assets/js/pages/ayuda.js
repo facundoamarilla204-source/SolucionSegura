@@ -790,7 +790,9 @@ export function initHelpCenter() {
 
     // Sincronizar pills móviles
     document.querySelectorAll('.js-help-mobile-pill').forEach(pill => {
-      pill.classList.toggle('is-active', pill.dataset.category === currentCategoryId);
+      const isCurrent = pill.dataset.category === currentCategoryId;
+      pill.classList.toggle('is-active', isCurrent);
+      pill.setAttribute('aria-pressed', isCurrent ? 'true' : 'false');
     });
 
     // Sincronizar select móvil
@@ -815,7 +817,7 @@ export function initHelpCenter() {
           <section class="help-faqs-section" aria-labelledby="faqs-heading">
             <h3 id="faqs-heading" class="help-faqs-section__title">Preguntas frecuentes</h3>
             
-            <div class="help-faq-list" role="list">
+            <div class="help-faq-list">
               ${category.faqs.map(faq => `
                 <details class="help-faq-item js-faq-item" id="${faq.id}">
                   <summary class="help-faq-summary">

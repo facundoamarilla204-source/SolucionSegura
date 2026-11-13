@@ -215,6 +215,12 @@
   border-radius: var(--radius-sm);
 }
 
+@media (max-width: 767px) {
+  .btn--sm {
+    min-height: 44px;
+  }
+}
+
 .btn--lg {
   min-height: 48px;
   padding: 12px 24px;

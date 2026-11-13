@@ -182,12 +182,20 @@
                       <span id="ec-cat-badge" class="badge">Categoría</span>
                       <span id="ec-state-badge" class="badge">Estado</span>
                     </div>
-                    <button type="button" class="existing-claim-panel__close-btn" id="btn-close-ec-panel" aria-label="Cerrar ficha informativa">✕</button>
+                    <button type="button" class="existing-claim-panel__close-btn" id="btn-close-ec-panel" aria-label="Cerrar ficha informativa">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
                   </div>
                   <div class="existing-claim-panel__body">
                     <div id="ec-photo-container" class="existing-claim-panel__photo-container" role="button" tabindex="0" aria-label="Ver fotografía del reclamo ampliada">
                       <img id="ec-photo-img" class="existing-claim-panel__photo-img" src="" alt="Fotografía del reclamo barrial" loading="lazy">
-                      <span class="existing-claim-panel__photo-badge">🔍 Ampliar foto</span>
+                      <span class="existing-claim-panel__photo-badge" style="display: inline-flex; align-items: center; gap: 4px;">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                        <span>Ampliar foto</span>
+                      </span>
                     </div>
 
                     <div>
@@ -203,8 +211,9 @@
                       <span id="ec-address-text">Dirección</span>
                     </p>
 
-                    <div id="ec-supporters" class="existing-claim-panel__support-stat">
-                      👥 <strong id="ec-supporters-count">1</strong> vecinos ya apoyan este reclamo
+                    <div id="ec-supporters" class="existing-claim-panel__support-stat" style="display: inline-flex; align-items: center; gap: 6px;">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                      <span><strong id="ec-supporters-count">1</strong> vecinos ya apoyan este reclamo</span>
                     </div>
 
                     <div id="ec-desc-wrapper">
@@ -375,7 +384,7 @@
                     <span class="claim-block__optional">Opcional</span>
                   </h2>
                   <p class="claim-block__subtitle">
-                    Añadí referencias o detalles útiles y adjuntá fotos para facilitar la verificación vecinal.
+                    Añadí referencias o detalles útiles y revisá las fotografías de ejemplo asociadas a la categoría.
                   </p>
                 </div>
               </div>
@@ -397,14 +406,14 @@
                 </div>
               </div>
 
-              <!-- Fotografías Adjuntas al Reclamo -->
+              <!-- Fotografías de Ejemplo Asociadas al Reclamo -->
               <div class="photos-upload-wrapper">
                 <div class="form-label" style="margin-bottom: var(--space-2);">
-                  <span>Fotografías adjuntas</span>
-                  <span id="photos-counter-badge" class="claim-block__optional">3 fotografías adjuntas</span>
+                  <span>Fotografías de ejemplo</span>
+                  <span id="photos-counter-badge" class="claim-block__optional">3 imágenes ilustrativas</span>
                 </div>
                 <p style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-bottom: var(--space-3); line-height: var(--line-height-normal);">
-                  Imágenes registradas del lugar para la inspección y verificación técnica del caso.
+                  Imágenes de ejemplo generadas según la categoría seleccionada para simular la inspección técnica del caso.
                 </p>
 
                 <!-- Grilla de Fotografías Adjuntas -->
@@ -521,7 +530,12 @@
        ======================================================== -->
   <div id="photo-lightbox" class="photo-lightbox" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Fotografía ampliada">
     <div class="photo-lightbox__content">
-      <button type="button" class="photo-lightbox__close" id="btn-close-lightbox" aria-label="Cerrar imagen">✕</button>
+      <button type="button" class="photo-lightbox__close" id="btn-close-lightbox" aria-label="Cerrar imagen" style="min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
       <img id="lightbox-img" class="photo-lightbox__img" src="" alt="Fotografía en tamaño completo">
       <p id="lightbox-caption" class="photo-lightbox__caption"></p>
     </div>

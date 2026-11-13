@@ -13,6 +13,18 @@ export function setupNavigation({ activePage = 'inicio', basePath = '' } = {}) {
   const root = basePath ? basePath : '';
   const pages = basePath ? '' : 'pages/';
 
+  // 0. ASEGURAR ENLACE DE SALTO AL CONTENIDO PRINCIPAL (WCAG 2.2 SC 2.4.1)
+  if (!document.querySelector('.skip-link')) {
+    const mainEl = document.querySelector('main');
+    if (mainEl && !mainEl.id) mainEl.id = 'main-content';
+    const targetId = (mainEl && mainEl.id) ? mainEl.id : 'main-content';
+    const skipLink = document.createElement('a');
+    skipLink.href = `#${targetId}`;
+    skipLink.className = 'skip-link';
+    skipLink.textContent = 'Saltar al contenido principal';
+    document.body.insertAdjacentElement('afterbegin', skipLink);
+  }
+
   // 1. INYECTAR O ACTUALIZAR HEADER INSTITUCIONAL
   let header = document.querySelector('.site-header');
   if (!header) {
@@ -51,7 +63,7 @@ export function setupNavigation({ activePage = 'inicio', basePath = '' } = {}) {
             </button>
           </div>
 
-          <div class="notif-dropdown__body" id="notif-dropdown-list" role="list">
+          <div class="notif-dropdown__body" id="notif-dropdown-list">
             <!-- Items generados dinámicamente -->
           </div>
 
@@ -342,9 +354,15 @@ export function setupNavigation({ activePage = 'inicio', basePath = '' } = {}) {
         <p class="site-footer__disclaimer">
           SoluciónSegura es una iniciativa ciudadana independiente de gestión de reclamos urbanos barriales orientada a visibilizar incidencias y fortalecer el seguimiento colaborativo en La Matanza.
         </p>
-        <p class="site-footer__copy">
-          © 2026 SoluciónSegura. Todos los derechos reservados.
-        </p>
+        <div class="site-footer__bottom-meta">
+          <nav class="site-footer__legal" aria-label="Información legal">
+            <a href="${pages}terminos-condiciones.html" class="site-footer__link">Términos y condiciones</a>
+            <a href="${pages}politica-privacidad.html" class="site-footer__link">Política de privacidad</a>
+          </nav>
+          <p class="site-footer__copy">
+            © 2026 SoluciónSegura. Todos los derechos reservados.
+          </p>
+        </div>
       </div>
     </div>
   `;
@@ -579,18 +597,18 @@ export function setupNavigation({ activePage = 'inicio', basePath = '' } = {}) {
         const claimBadge = n.claimId ? `<span style="font-size: 10px; font-weight: 700; color: var(--color-brand-sky); margin-left: 4px;">#${n.claimId}</span>` : '';
 
         return `
-          <div class="notif-dropdown__item ${unreadClass}" role="listitem" tabindex="0" data-notif-id="${n.id}" data-claim-id="${n.claimId || ''}" aria-label="${n.titulo} — ${unreadAria}">
-            <div class="notif-dropdown__item-indicator" aria-hidden="true"></div>
-            <div class="notif-dropdown__item-content">
-              <div class="notif-dropdown__item-header">
-                <h4 class="notif-dropdown__item-title">
+          <button type="button" class="notif-dropdown__item ${unreadClass}" data-notif-id="${n.id}" data-claim-id="${n.claimId || ''}" aria-label="${n.titulo} — ${unreadAria}" style="width: 100%; text-align: left; border: 0; background: transparent;">
+            <span class="notif-dropdown__item-indicator" aria-hidden="true"></span>
+            <span class="notif-dropdown__item-content">
+              <span class="notif-dropdown__item-header">
+                <strong class="notif-dropdown__item-title">
                   ${n.titulo}
-                </h4>
+                </strong>
                 <time class="notif-dropdown__item-time">${timeAgo}</time>
-              </div>
-              <p class="notif-dropdown__item-text">${n.mensaje}</p>
-            </div>
-          </div>
+              </span>
+              <span class="notif-dropdown__item-text" style="display: block;">${n.mensaje}</span>
+            </span>
+          </button>
         `;
       }).join('');
 

@@ -173,8 +173,8 @@
   color: var(--color-text-inverse);
   font-size: 2.25rem;
   line-height: 1.12;
-  font-weight: var(--font-weight-extrabold);
-  letter-spacing: -0.035em;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.025em;
   margin-bottom: var(--space-4);
   text-wrap: balance;
   max-width: 18ch;
@@ -573,7 +573,7 @@
   background-color: transparent;
   min-height: 48px;
   box-sizing: border-box;
-  transition: all var(--duration-fast) var(--ease-out);
+  transition: background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out), transform var(--duration-fast) var(--ease-out), opacity var(--duration-fast) var(--ease-out);
 }
 
 .cta-secondary-link:hover {
@@ -764,6 +764,26 @@
   line-height: 1.5;
   max-width: 60ch;
   margin: 0;
+}
+
+.site-footer__bottom-meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+@media (min-width: 768px) {
+  .site-footer__bottom-meta {
+    align-items: flex-end;
+    text-align: right;
+  }
+}
+
+.site-footer__legal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
 }
 
 .site-footer__copy {
