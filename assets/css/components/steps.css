@@ -317,13 +317,26 @@
   font-size: 0.9375rem;
   line-height: 1.5;
   color: var(--color-text-secondary);
-  margin-bottom: 0;
+  margin-bottom: 14px;
   text-wrap: pretty;
 }
 
-/* En el paso 3, la descripción da paso al tracker de estados */
-.step-item[data-step="3"] .step-card__description {
-  margin-bottom: 12px;
+/* Mini ilustración inferior para igualar peso y ritmo en Pasos 01 y 02 */
+.step-card__visual {
+  width: 100%;
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid #E2E8F0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.step-mini-illustration {
+  width: 100%;
+  max-width: 240px;
+  height: auto;
+  display: block;
 }
 
 /* ==========================================================================

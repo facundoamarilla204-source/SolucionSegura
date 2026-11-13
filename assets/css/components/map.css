@@ -255,13 +255,42 @@
   border: 1px solid #BAE6FD;
 }
 
+/* Escenario del Mapa Leaflet + botón flotante */
+.map-stage {
+  position: relative;
+  width: 100%;
+}
+
+.map-floating-cta {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  z-index: 600;
+  box-shadow: 0 8px 20px rgba(6, 47, 102, 0.25), 0 2px 6px rgba(6, 47, 102, 0.14);
+}
+
 /* Contenedor del Mapa Leaflet */
 .home-map {
   width: 100%;
-  height: 380px;
+  height: 320px;
   background-color: #E2E8F0;
   position: relative;
   z-index: 1;
+}
+
+@media (max-width: 767px) {
+  .map-container-card {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+
+  .map-floating-cta {
+    bottom: 12px;
+    right: 12px;
+  }
 }
 
 @media (min-width: 768px) {

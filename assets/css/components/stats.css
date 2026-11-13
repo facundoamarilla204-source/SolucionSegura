@@ -160,6 +160,31 @@
   color: #7C3AED;
 }
 
+/* Etiqueta textual limpia (sin contenedor, color alineado al ícono) */
+.stat-metric-tag {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.stat-metric-tag--primary {
+  color: #0369A1;
+}
+
+.stat-metric-tag--amber {
+  color: #D97706;
+}
+
+.stat-metric-tag--success {
+  color: #16A34A;
+}
+
+.stat-metric-tag--purple {
+  color: #7C3AED;
+}
+
 .stat-metric-card__number {
   font-family: var(--font-family-display);
   font-size: 2.25rem;
