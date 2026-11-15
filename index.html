@@ -65,8 +65,82 @@
     </div>
   </header>
 
-  <!-- Hero Section: Composición Editorial a Dos Columnas -->
+  <!-- Hero Section: Composición Editorial con Fondo Cartográfico y Paneles Diagonales -->
   <section class="hero-section" aria-labelledby="hero-title">
+    <!-- Capa decorativa exclusiva del fondo (sin impacto en flujo, foco ni contenido) -->
+    <div class="hero-bg-layer" aria-hidden="true">
+      <svg class="hero-bg-map" viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice" focusable="false">
+        <defs>
+          <radialGradient id="hero-map-glow" cx="72%" cy="42%" r="55%">
+            <stop offset="0%" stop-color="#0284C7" stop-opacity="0.28" />
+            <stop offset="55%" stop-color="#0B428C" stop-opacity="0.14" />
+            <stop offset="100%" stop-color="#062F66" stop-opacity="0" />
+          </radialGradient>
+          <pattern id="hero-map-grid" width="80" height="80" patternUnits="userSpaceOnUse">
+            <path d="M 80 0 L 0 0 0 80" fill="none" stroke="rgba(125, 211, 252, 0.06)" stroke-width="1" />
+          </pattern>
+        </defs>
+
+        <!-- Profundidad cartográfica base -->
+        <rect width="1440" height="800" fill="url(#hero-map-grid)" />
+        <rect width="1440" height="800" fill="url(#hero-map-glow)" />
+
+        <!-- Calles secundarias y manzanas -->
+        <g stroke="rgba(125, 211, 252, 0.09)" stroke-width="1" fill="none">
+          <path d="M 120 120 L 680 180 L 1060 90" />
+          <path d="M 80 310 L 540 270 L 920 350" />
+          <path d="M 160 540 L 620 490 L 890 610" />
+          <path d="M 410 40 L 340 420 L 450 760" />
+          <path d="M 650 30 L 590 390 L 710 770" />
+          <path d="M 240 160 L 210 640" />
+        </g>
+
+        <!-- Rutas y avenidas principales -->
+        <g fill="none" stroke-linecap="round">
+          <path d="M -40 620 Q 320 480 680 420 T 1220 190" stroke="rgba(2, 132, 199, 0.24)" stroke-width="2" />
+          <path d="M 280 -20 Q 470 280 560 460 T 760 820" stroke="rgba(56, 189, 248, 0.16)" stroke-width="1.5" />
+          <path d="M 140 220 Q 430 260 720 160" stroke="rgba(125, 211, 252, 0.22)" stroke-width="1.5" stroke-dasharray="6 8" />
+        </g>
+
+        <!-- Marcadores geográficos y nodos territoriales -->
+        <g>
+          <circle cx="560" cy="460" r="18" fill="none" stroke="rgba(2, 132, 199, 0.26)" stroke-width="1" />
+          <circle cx="560" cy="460" r="4" fill="rgba(125, 211, 252, 0.45)" />
+
+          <circle cx="680" cy="420" r="24" fill="none" stroke="rgba(125, 211, 252, 0.16)" stroke-width="1" />
+          <circle cx="680" cy="420" r="4.5" fill="#0284C7" fill-opacity="0.7" />
+
+          <circle cx="430" cy="245" r="14" fill="none" stroke="rgba(125, 211, 252, 0.18)" stroke-width="1" />
+          <circle cx="430" cy="245" r="3" fill="rgba(125, 211, 252, 0.4)" />
+
+          <circle cx="340" cy="518" r="16" fill="none" stroke="rgba(2, 132, 199, 0.2)" stroke-width="1" />
+          <circle cx="340" cy="518" r="3.5" fill="rgba(249, 128, 1, 0.5)" />
+        </g>
+      </svg>
+
+      <!-- Tres paneles fotográficos en disposición diagonal (sector derecho) -->
+      <div class="hero-bg-panels">
+        <div class="hero-bg-panel hero-bg-panel--calles">
+          <div class="hero-bg-panel__media">
+            <img src="assets/img/hero/hero-calles.webp" alt="" class="hero-bg-panel__img" loading="eager" decoding="async" fetchpriority="high">
+          </div>
+        </div>
+        <div class="hero-bg-panel hero-bg-panel--residuos">
+          <div class="hero-bg-panel__media">
+            <img src="assets/img/hero/hero-residuos.webp" alt="" class="hero-bg-panel__img" loading="eager" decoding="async">
+          </div>
+        </div>
+        <div class="hero-bg-panel hero-bg-panel--alumbrado">
+          <div class="hero-bg-panel__media">
+            <img src="assets/img/hero/hero-alumbrado.webp" alt="" class="hero-bg-panel__img" loading="eager" decoding="async">
+          </div>
+        </div>
+      </div>
+
+      <!-- Veladura de contraste para preservar lectura despejada en el sector izquierdo -->
+      <div class="hero-bg-scrim"></div>
+    </div>
+
     <div class="container-desktop hero-section__inner">
 
       <!-- Columna Izquierda: Mensaje Directo y Acciones Principales -->
@@ -99,22 +173,6 @@
             </svg>
             <span>Explorar reclamos</span>
           </a>
-        </div>
-      </div>
-
-      <!-- Columna Derecha: Composición de Fotos Superpuestas -->
-      <div class="hero-media-wrapper" aria-hidden="true">
-        <div class="hero-collage">
-          <!-- Foto 1 (Atrás, arriba a la derecha): Mapa de La Matanza -->
-          <div class="hero-collage__item hero-collage__item--map">
-            <img src="assets/img/hero/hero-map.png" alt="Mapa interactivo de localidades de La Matanza"
-              class="hero-collage__img">
-          </div>
-          <!-- Foto 2 (Frente, abajo a la izquierda): Espacio urbano e iluminación -->
-          <div class="hero-collage__item hero-collage__item--urban">
-            <img src="assets/img/hero/hero-urban.png" alt="Espacio público e infraestructura urbana en La Matanza"
-              class="hero-collage__img">
-          </div>
         </div>
       </div>
 

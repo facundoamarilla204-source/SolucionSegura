@@ -406,18 +406,44 @@ export function setupNavigation({ activePage = 'inicio', basePath = '' } = {}) {
     });
   });
 
-  // 4b. DETECCIÓN DE TECLADO VIRTUAL EN DISPOSITIVOS MÓVILES (VisualViewport)
+  // 4b. DETECCIÓN DE TECLADO VIRTUAL EN DISPOSITIVOS MÓVILES (VisualViewport + foco editable)
   if (typeof window !== 'undefined' && window.visualViewport && !window.__ssKeyboardListenerActive) {
     window.__ssKeyboardListenerActive = true;
-    const handleViewportResize = () => {
-      const isKeyboardOpen = (window.innerHeight - window.visualViewport.height) > 150;
-      if (isKeyboardOpen) {
-        document.body.classList.add('keyboard-is-open');
-      } else {
-        document.body.classList.remove('keyboard-is-open');
+    let baseViewportHeight = window.visualViewport.height || window.innerHeight;
+    const isEditableElement = (el) => {
+      if (!el) return false;
+      const tag = el.tagName;
+      if (tag === 'TEXTAREA' || tag === 'SELECT') return true;
+      if (tag === 'INPUT') {
+        const nonTextTypes = new Set(['checkbox', 'radio', 'submit', 'button', 'reset', 'file', 'range', 'color', 'hidden', 'image']);
+        return !nonTextTypes.has((el.type || 'text').toLowerCase());
       }
+      return Boolean(el.isContentEditable);
     };
-    window.visualViewport.addEventListener('resize', handleViewportResize);
+
+    const updateKeyboardState = () => {
+      const hasEditableFocus = isEditableElement(document.activeElement);
+      const currentHeight = window.visualViewport.height;
+      const scale = window.visualViewport.scale || 1;
+      const isZoomed = scale > 1.05;
+      const heightReduced = currentHeight < baseViewportHeight * 0.78 || (window.innerHeight - currentHeight) > 150;
+      const isKeyboardOpen = hasEditableFocus && !isZoomed && heightReduced;
+      document.body.classList.toggle('keyboard-is-open', isKeyboardOpen);
+    };
+
+    window.visualViewport.addEventListener('resize', updateKeyboardState);
+    document.addEventListener('focusin', updateKeyboardState);
+    document.addEventListener('focusout', () => {
+      setTimeout(updateKeyboardState, 60);
+    });
+    window.addEventListener('orientationchange', () => {
+      setTimeout(() => {
+        if (!isEditableElement(document.activeElement)) {
+          baseViewportHeight = window.visualViewport.height || window.innerHeight;
+        }
+        updateKeyboardState();
+      }, 250);
+    });
   }
 
   // 5. INTERACTIVIDAD DEL MENÚ CONTEXTUAL DE PERFIL Y DEL PANEL DE NOTIFICACIONES

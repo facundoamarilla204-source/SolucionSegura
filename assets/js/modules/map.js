@@ -261,9 +261,10 @@ export function renderClaimMarkers(map, claims = [], basePath = '', options = {}
     });
 
     const popupContent = createClaimPopupHtml(claim, basePath);
+    const isNarrowViewport = window.innerWidth < 480;
     marker.bindPopup(popupContent, {
-      maxWidth: 320,
-      minWidth: 260,
+      maxWidth: isNarrowViewport ? Math.min(280, window.innerWidth - 48) : 320,
+      minWidth: isNarrowViewport ? Math.min(220, window.innerWidth - 64) : 260,
       className: 'custom-leaflet-popup'
     });
 

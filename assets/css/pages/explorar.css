@@ -226,6 +226,22 @@
   color: #991B1B;
 }
 
+@media (max-width: 767px) {
+  .view-toggle-btn,
+  .category-chip,
+  .btn-clear-filters {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .explorar-select {
+    font-size: var(--font-size-base);
+    min-height: 44px;
+  }
+}
+
 /* ==========================================================================
    Contenedor del Mapa
    ========================================================================== */

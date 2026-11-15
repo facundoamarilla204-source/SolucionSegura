@@ -430,6 +430,7 @@
     width: auto;
     max-width: none;
     max-height: calc(100vh - var(--header-height-mobile) - var(--bottom-nav-height) - 24px);
+    max-height: calc(100dvh - var(--header-height-mobile) - var(--bottom-nav-height) - 24px);
     border-radius: var(--radius-lg);
   }
 }
@@ -479,6 +480,15 @@
   cursor: pointer;
   border-radius: var(--radius-sm);
   transition: color var(--duration-fast), background-color var(--duration-fast);
+}
+
+@media (max-width: 767px) {
+  .notif-dropdown__mark-all {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 8px;
+  }
 }
 
 .notif-dropdown__mark-all:hover {
@@ -911,6 +921,13 @@ body.keyboard-is-open .mobile-bottom-nav {
   padding: 0 1px;
   transition: color var(--duration-fast) var(--ease-out),
               font-weight var(--duration-fast) var(--ease-out);
+}
+
+@media (max-width: 359px) {
+  .mobile-nav-item__label {
+    font-size: clamp(9.5px, 2.6vw, 11.5px);
+    letter-spacing: -0.025em;
+  }
 }
 
 /* Estado Activo para ítems secundarios */

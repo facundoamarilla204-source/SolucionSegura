@@ -154,6 +154,12 @@
   transition: border-color 150ms ease-out, box-shadow 150ms ease-out;
 }
 
+@media (max-width: 767px) {
+  .stats-filter-select {
+    font-size: var(--font-size-base);
+  }
+}
+
 .stats-filter-select:hover {
   border-color: var(--color-border-hover);
 }
@@ -644,6 +650,22 @@
   min-width: 640px;
   height: auto;
   display: block;
+}
+
+@media (max-width: 639px) {
+  .stats-chart-wrapper::after {
+    content: "Deslizá →";
+    position: sticky;
+    right: 0;
+    bottom: 4px;
+    float: right;
+    font-size: 11px;
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-secondary);
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.94) 28%);
+    padding: 2px 6px 2px 18px;
+    pointer-events: none;
+  }
 }
 
 /* Tooltip dinámico del gráfico */

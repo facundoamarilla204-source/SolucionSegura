@@ -52,6 +52,10 @@
   }
 }
 
+.hero-section + .main-content {
+  padding-top: 0;
+}
+
 /* Encabezado */
 .site-header {
   position: fixed;
@@ -108,7 +112,7 @@
     radial-gradient(ellipse 70% 60% at 85% 35%, rgba(2, 132, 199, 0.22), transparent 75%),
     radial-gradient(ellipse 50% 50% at 15% 85%, rgba(3, 105, 161, 0.12), transparent 70%);
   color: var(--color-text-inverse);
-  padding-top: var(--space-8);
+  padding-top: calc(var(--header-height-mobile) + var(--space-6));
   padding-bottom: var(--space-10);
   border-bottom: 1px solid var(--hero-border-bottom);
   overflow: hidden;
@@ -116,21 +120,25 @@
 
 @media (min-width: 768px) {
   .hero-section {
-    min-height: min(calc(100vh - var(--header-height-desktop)), 760px);
-    padding-top: var(--space-10);
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding-top: calc(var(--header-height-desktop) + var(--space-8));
     padding-bottom: var(--space-10);
   }
 }
 
 @media (min-width: 1024px) {
   .hero-section {
-    min-height: min(calc(100vh - var(--header-height-desktop)), 800px);
-    padding-top: var(--space-12);
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding-top: calc(var(--header-height-desktop) + var(--space-10));
     padding-bottom: var(--space-12);
   }
 }
 
 .hero-section__inner {
+  position: relative;
+  z-index: 2;
   width: 100%;
   display: grid;
   grid-template-columns: 1fr;
@@ -300,94 +308,177 @@
 }
 
 /* ==========================================================================
-   Columna Visual: Collage de Fotos Superpuestas
-   - Foto urbana (Protagonista principal, al frente con elevación)
-   - Mapa satelital de La Matanza (Recurso de contexto secundario, al fondo)
+   Fondo Cartográfico y Paneles Fotográficos Diagonales (Exclusivo del Fondo)
+   - Base azul institucional #062F66 con retícula, rutas y marcadores SVG
+   - Tres paneles diagonales independientes a la derecha con clip-path: polygon()
+   - Separadores finos en celeste #0284C7
+   - Composición simplificada en pantallas pequeñas (< 768px)
    ========================================================================== */
-.hero-media-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  position: relative;
+.hero-bg-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  user-select: none;
 }
 
-@media (min-width: 1024px) {
-  .hero-media-wrapper {
-    justify-content: flex-end;
+.hero-bg-map {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Veladura de contraste: mantiene el sector izquierdo despejado y legible */
+.hero-bg-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(
+    90deg,
+    rgba(6, 47, 102, 0.96) 0%,
+    rgba(6, 47, 102, 0.88) 42%,
+    rgba(6, 47, 102, 0.48) 64%,
+    rgba(6, 47, 102, 0.12) 82%,
+    rgba(4, 27, 59, 0.18) 100%
+  );
+}
+
+/* Móvil (< 768px): composición simplificada sin invadir ni estirar el contenido */
+.hero-bg-panels {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .hero-bg-layer::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 48%;
+    background: linear-gradient(135deg, rgba(2, 132, 199, 0.18) 0%, rgba(11, 66, 140, 0.08) 100%);
+    clip-path: polygon(38% 0%, 100% 0%, 100% 100%, 0% 100%);
+    border-left: 1px solid rgba(2, 132, 199, 0.35);
+    z-index: 1;
+  }
+
+  .hero-bg-scrim {
+    background: linear-gradient(
+      180deg,
+      rgba(6, 47, 102, 0.72) 0%,
+      rgba(6, 47, 102, 0.86) 100%
+    );
   }
 }
 
-.hero-collage {
-  position: relative;
-  width: 100%;
-  max-width: 620px;
-  height: 500px;
+/* Tablet (768px – 1023px): paneles adaptados al margen derecho sin tocar el texto */
+@media (min-width: 768px) {
+  .hero-bg-panels {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 58%;
+    z-index: 1;
+    opacity: 0.78;
+  }
+}
+
+/* Escritorio (1024px+): tres paneles diagonales equilibrados en el sector derecho */
+@media (min-width: 1024px) {
+  .hero-bg-panels {
+    left: 50%;
+    opacity: 1;
+  }
 }
 
 @media (min-width: 1280px) {
-  .hero-collage {
-    max-width: 660px;
-    height: 520px;
-    margin-right: -24px;
+  .hero-bg-panels {
+    left: 47%;
   }
 }
 
-@media (max-width: 1023px) {
-  .hero-collage {
-    max-width: 440px;
-    height: 360px;
-  }
-}
-
-@media (max-width: 639px) {
-  .hero-collage {
-    max-width: 320px;
-    height: 260px;
-    margin-top: var(--space-2);
-  }
-}
-
-/* Foto secundaria: Mapa (Atrás, arriba a la derecha) */
-.hero-collage__item--map {
+/* Cada panel usa background #0284C7 como separador fino bajo el recorte interior */
+.hero-bg-panel {
   position: absolute;
   top: 0;
-  right: 0;
-  width: 72%;
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  z-index: 1;
-  transition: transform var(--duration-normal) var(--ease-out);
-}
-
-.hero-collage__item--map:hover {
-  transform: translateY(-3px);
-}
-
-/* Foto principal: Iluminación y espacio urbano (Al frente, abajo a la izquierda) */
-.hero-collage__item--urban {
-  position: absolute;
   bottom: 0;
-  left: 0;
-  width: 78%;
-  border-radius: var(--radius-md);
+  background-color: #0284C7;
+}
+
+.hero-bg-panel__media {
+  position: absolute;
+  inset: 0;
   overflow: hidden;
-  box-shadow: 0 24px 50px -10px rgba(0, 0, 0, 0.7), 0 4px 12px rgba(0, 0, 0, 0.35);
-  border: 2px solid rgba(255, 255, 255, 0.22);
-  z-index: 2;
-  transition: transform var(--duration-normal) var(--ease-out);
+  background-color: #041B3B;
 }
 
-.hero-collage__item--urban:hover {
-  transform: translateY(-3px);
+/* Integración cromática sutil al azul institucional (evita efecto de tarjeta flotante) */
+.hero-bg-panel__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(6, 47, 102, 0.36) 0%, rgba(6, 47, 102, 0.14) 50%, rgba(4, 27, 59, 0.46) 100%),
+    linear-gradient(90deg, rgba(6, 47, 102, 0.24) 0%, transparent 45%);
+  pointer-events: none;
 }
 
-.hero-collage__img {
+.hero-bg-panel__img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
   display: block;
+  filter: saturate(0.92) contrast(1.04);
+}
+
+/* Panel 1: Calles y pavimento */
+.hero-bg-panel--calles {
+  left: 0%;
+  width: 46%;
+  clip-path: polygon(34.78% 0%, 100% 0%, 65.22% 100%, 0% 100%);
+}
+
+.hero-bg-panel--calles .hero-bg-panel__media {
+  clip-path: polygon(calc(34.78% + 2px) 0%, calc(100% - 1px) 0%, calc(65.22% - 1px) 100%, calc(0% + 2px) 100%);
+}
+
+.hero-bg-panel--calles .hero-bg-panel__img {
+  object-position: 50% 62%;
+}
+
+/* Panel 2: Basura y residuos */
+.hero-bg-panel--residuos {
+  left: 30%;
+  width: 46%;
+  clip-path: polygon(34.78% 0%, 100% 0%, 65.22% 100%, 0% 100%);
+}
+
+.hero-bg-panel--residuos .hero-bg-panel__media {
+  clip-path: polygon(calc(34.78% + 1px) 0%, calc(100% - 1px) 0%, calc(65.22% - 1px) 100%, calc(0% + 1px) 100%);
+}
+
+.hero-bg-panel--residuos .hero-bg-panel__img {
+  object-position: 42% 58%;
+}
+
+/* Panel 3: Alumbrado público */
+.hero-bg-panel--alumbrado {
+  left: 60%;
+  width: 40%;
+  clip-path: polygon(40% 0%, 100% 0%, 100% 100%, 0% 100%);
+}
+
+.hero-bg-panel--alumbrado .hero-bg-panel__media {
+  clip-path: polygon(calc(40% + 1px) 0%, 100% 0%, 100% 100%, calc(0% + 1px) 100%);
+}
+
+.hero-bg-panel--alumbrado .hero-bg-panel__img {
+  object-position: 70% 35%;
 }
 
 /* Barra inferior móvil fija (Ver especificación detallada en components/navigation.css) */
@@ -398,7 +489,6 @@
   right: 0;
   height: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom, 0px));
   padding-bottom: env(safe-area-inset-bottom, 0px);
-  z-index: 950;
 }
 
 @media (min-width: 768px) {
@@ -696,6 +786,13 @@
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
   border-radius: var(--radius-xs);
+}
+
+@media (max-width: 767px) {
+  .site-footer__contact-link {
+    min-height: 44px;
+    padding: 8px 0;
+  }
 }
 
 .site-footer__badge {
