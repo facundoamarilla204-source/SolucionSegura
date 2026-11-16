@@ -299,7 +299,7 @@ export function setupNavigation({ activePage = 'inicio', basePath = '' } = {}) {
         <!-- Columna 1: Identidad, Propósito y Canal de Contacto -->
         <div class="site-footer__col">
           <a href="${root}index.html" class="brand-link" aria-label="SoluciónSegura: Inicio">
-            <img src="${root}assets/img/branding/logo-soluciones-segura.png" alt="SoluciónSegura: Reclamos Urbanos La Matanza" class="site-footer__logo-img">
+            <img src="${root}assets/img/branding/logo-soluciones-segura.png" alt="SoluciónSegura: Reclamos Urbanos La Matanza" class="site-footer__logo-img" width="1085" height="396" loading="lazy" decoding="async">
           </a>
           <p class="site-footer__desc">
             Plataforma comunitaria de reporte, visibilización y seguimiento colaborativo de reclamos urbanos para La Matanza.

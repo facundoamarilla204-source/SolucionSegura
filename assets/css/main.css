@@ -3,8 +3,7 @@
    Agrupa tokens, base, layout, componentes reutilizables y responsive
    ========================================================================== */
 
-/* Tipografía: Outfit (Títulos) + Inter (Interfaz y Texto) */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap");
+/* Tipografía: Outfit (Títulos) + Inter (Interfaz y Texto) — cargada en paralelo desde <head> */
 
 @import url("./variables.css");
 @import url("./base.css");
