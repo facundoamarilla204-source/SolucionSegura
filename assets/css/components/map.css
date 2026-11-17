@@ -438,6 +438,23 @@
   box-shadow: 0 4px 12px rgba(6, 47, 102, 0.15);
 }
 
+@media (max-width: 767px) {
+  .home-map .leaflet-popup-pane {
+    z-index: 700;
+  }
+
+  .custom-leaflet-popup .leaflet-popup-content-wrapper {
+    max-height: 250px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .custom-leaflet-popup img {
+    max-height: 90px;
+    object-fit: cover;
+  }
+}
+
 .custom-leaflet-popup a.leaflet-popup-close-button {
   top: 10px;
   right: 10px;

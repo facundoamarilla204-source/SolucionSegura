@@ -260,13 +260,16 @@ export function renderClaimMarkers(map, claims = [], basePath = '', options = {}
       title: `${claim.titulo} (${formatters.categoryLabel(claim.categoria)})`
     });
 
-    const popupContent = createClaimPopupHtml(claim, basePath);
-    const isNarrowViewport = window.innerWidth < 480;
-    marker.bindPopup(popupContent, {
-      maxWidth: isNarrowViewport ? Math.min(280, window.innerWidth - 48) : 320,
-      minWidth: isNarrowViewport ? Math.min(220, window.innerWidth - 64) : 260,
-      className: 'custom-leaflet-popup'
-    });
+    const useBottomSheetOnly = typeof options.onMarkerSelect === 'function' && window.innerWidth < 768;
+    if (!useBottomSheetOnly) {
+      const popupContent = createClaimPopupHtml(claim, basePath);
+      const isNarrowViewport = window.innerWidth < 480;
+      marker.bindPopup(popupContent, {
+        maxWidth: isNarrowViewport ? Math.min(280, window.innerWidth - 48) : 320,
+        minWidth: isNarrowViewport ? Math.min(220, window.innerWidth - 64) : 260,
+        className: 'custom-leaflet-popup'
+      });
+    }
 
     marker.claimData = claim;
 

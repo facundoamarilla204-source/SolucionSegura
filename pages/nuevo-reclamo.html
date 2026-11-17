@@ -868,7 +868,7 @@
 
       // 8. Meta fecha y autor
       const relDate = formatters.relativeDate(claim.fecha);
-      ecMeta.textContent = `Reportado por ${claim.creadorNombre || 'un vecino'} · ${relDate}`;
+      ecMeta.textContent = `Publicado por un vecino · ${relDate}`;
 
       // 9. Configuración de Acciones según Usuario y Estado del Reclamo
       renderExistingClaimActions(claim);
