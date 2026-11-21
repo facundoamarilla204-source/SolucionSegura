@@ -267,7 +267,7 @@
 }
 
 .btn--primary .btn-spinner {
-  border: 2px solid rgba(6, 47, 102, 0.25);
+  border: 2px solid rgba(255, 255, 255, 0.35);
   border-top-color: var(--color-action-primary-text);
 }
 
