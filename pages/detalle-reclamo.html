@@ -9,7 +9,8 @@
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap">
   <link rel="stylesheet" href="../assets/css/main.css">
   <link rel="stylesheet" href="../assets/css/pages/claim-form.css">
   <style>
@@ -126,6 +127,7 @@
               <div style="display: flex; gap: var(--space-2); flex-wrap: wrap; align-items: center;">
                 <span id="detail-category-badge" class="badge badge--cat-pavimento">Calles y pavimento</span>
                 <span id="detail-state-badge" class="badge badge--recibido">Recibido</span>
+                <span id="detail-urgency-tag" class="tag-urgencia tag-urgencia--media"></span>
                 <span id="detail-owner-badge" class="badge"
                   style="display: none; background-color: #E0F2FE; color: var(--color-accent-dark); border: 1px solid #BAE6FD; font-weight: 700;">Reclamo
                   creado por vos</span>
@@ -580,6 +582,17 @@
       const stateClass = c.estado === 'en_proceso' ? 'proceso' : c.estado === 'en_revision' ? 'revision' : c.estado === 'resuelto' ? 'resuelto' : 'recibido';
       stateBadge.className = `badge badge--${stateClass}`;
       stateBadge.textContent = formatters.stateLabel(c.estado);
+
+      // Etiqueta de urgencia (ícono + texto)
+      const urgencyTag = document.getElementById('detail-urgency-tag');
+      const urgencyKey = formatters.priorityKey(c.prioridad);
+      const urgencyIcons = {
+        alta: '<path d="m17 11-5-5-5 5"/><path d="m17 18-5-5-5 5"/>',
+        media: '<path d="M5 9h14"/><path d="M5 15h14"/>',
+        baja: '<path d="m6 9 6 6 6-6"/>'
+      };
+      urgencyTag.className = `tag-urgencia tag-urgencia--${urgencyKey}`;
+      urgencyTag.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${urgencyIcons[urgencyKey]}</svg>Urgencia ${formatters.priorityLabel(urgencyKey).toLowerCase()}`;
 
       idBadge.textContent = c.id.startsWith('#') ? c.id : `#${c.id}`;
       titleEl.textContent = c.titulo;

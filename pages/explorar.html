@@ -1,24 +1,30 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Explorá los reclamos urbanos de La Matanza en SoluciónSegura. Mapa interactivo con marcadores, listado vecinal y adhesiones comunitarias.">
+  <meta name="description"
+    content="Explorá los reclamos urbanos de La Matanza en SoluciónSegura. Mapa interactivo con marcadores, listado vecinal y adhesiones comunitarias.">
   <title>Explorar Reclamos | SoluciónSegura</title>
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
 
   <!-- Tipografías Outfit e Inter y Estilos Principales -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap">
   <link rel="stylesheet" href="../assets/css/main.css">
 
   <!-- Librería Leaflet y Plugin Oficial de Clustering -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 </head>
+
 <body class="app-shell">
 
   <!-- Cabecera Institucional (inyectada y sincronizada por navbar.js) -->
@@ -27,38 +33,43 @@
   <!-- Contenido Principal -->
   <main class="main-content" id="main-content" role="main">
     <div class="container-desktop section-spacer">
-      
+
       <!-- Encabezado de la Sección -->
       <section class="explorar-header" aria-labelledby="explorar-page-title">
         <h1 id="explorar-page-title" class="explorar-header__title">Explorar reclamos urbanos</h1>
         <p class="explorar-header__desc">
-          Mapa interactivo y listado de reclamos en La Matanza. Filtrá por localidad, tipo de servicio y estado de tramitación.
+          Mapa interactivo y listado de reclamos en La Matanza. Filtrá por localidad, tipo de servicio y estado de
+          tramitación.
         </p>
       </section>
 
       <!-- Barra de Herramientas y Filtros -->
       <section class="explorar-toolbar" aria-label="Controles de búsqueda y filtros de reclamos">
-        
+
         <!-- Fila Superior: Vistas y Resumen Activo -->
         <div class="explorar-toolbar__top">
           <!-- Alternador de Vista (Mapa / Lista) -->
           <div class="view-toggle-group" role="tablist" aria-label="Formato de visualización">
-            <button type="button" class="view-toggle-btn is-active" id="btn-view-map" role="tab" aria-selected="true" aria-controls="view-map-container">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
-                <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/>
-                <line x1="8" y1="2" x2="8" y2="18"/>
-                <line x1="16" y1="6" x2="16" y2="22"/>
+            <button type="button" class="view-toggle-btn is-active" id="btn-view-map" role="tab" aria-selected="true"
+              aria-controls="view-map-container">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                aria-hidden="true">
+                <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6" />
+                <line x1="8" y1="2" x2="8" y2="18" />
+                <line x1="16" y1="6" x2="16" y2="22" />
               </svg>
               <span>Vista Mapa</span>
             </button>
-            <button type="button" class="view-toggle-btn" id="btn-view-list" role="tab" aria-selected="false" aria-controls="view-list-container">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
-                <line x1="8" y1="6" x2="21" y2="6"/>
-                <line x1="8" y1="12" x2="21" y2="12"/>
-                <line x1="8" y1="18" x2="21" y2="18"/>
-                <line x1="3" y1="6" x2="3.01" y2="6"/>
-                <line x1="3" y1="12" x2="3.01" y2="12"/>
-                <line x1="3" y1="18" x2="3.01" y2="18"/>
+            <button type="button" class="view-toggle-btn" id="btn-view-list" role="tab" aria-selected="false"
+              aria-controls="view-list-container">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                aria-hidden="true">
+                <line x1="8" y1="6" x2="21" y2="6" />
+                <line x1="8" y1="12" x2="21" y2="12" />
+                <line x1="8" y1="18" x2="21" y2="18" />
+                <line x1="3" y1="6" x2="3.01" y2="6" />
+                <line x1="3" y1="12" x2="3.01" y2="12" />
+                <line x1="3" y1="18" x2="3.01" y2="18" />
               </svg>
               <span>Vista Lista</span>
             </button>
@@ -73,14 +84,17 @@
 
         <!-- Fila de Filtros y Ordenamiento -->
         <div class="explorar-toolbar__filters">
-          
+
           <div class="explorar-filter-group">
             <!-- Selector de Categoría (Chips accesibles) -->
             <div class="category-filter-chips" role="group" aria-label="Filtrar por categoría">
               <button type="button" class="category-chip is-active" data-cat="todas">Todas</button>
-              <button type="button" class="category-chip category-chip--pavimento" data-cat="pavimento">Calles y baches</button>
-              <button type="button" class="category-chip category-chip--residuos" data-cat="residuos">Basura y residuos</button>
-              <button type="button" class="category-chip category-chip--alumbrado" data-cat="alumbrado">Alumbrado público</button>
+              <button type="button" class="category-chip category-chip--pavimento" data-cat="pavimento">Calles y
+                baches</button>
+              <button type="button" class="category-chip category-chip--residuos" data-cat="residuos">Basura y
+                residuos</button>
+              <button type="button" class="category-chip category-chip--alumbrado" data-cat="alumbrado">Alumbrado
+                público</button>
             </div>
 
             <!-- Selector de Localidad -->
@@ -114,9 +128,12 @@
             </div>
 
             <!-- Botón Voluntario de Detección de Ubicación -->
-            <button type="button" class="btn btn--outline btn--sm" id="btn-use-gps" title="Utilizar mi ubicación geográfica aproximada de forma voluntaria" style="padding: 6px 12px; gap: 4px;">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <polygon points="3 11 22 2 13 21 11 13 3 11"/>
+            <button type="button" class="btn btn--outline btn--sm" id="btn-use-gps"
+              title="Utilizar mi ubicación geográfica aproximada de forma voluntaria"
+              style="padding: 6px 12px; gap: 4px;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                aria-hidden="true">
+                <polygon points="3 11 22 2 13 21 11 13 3 11" />
               </svg>
               <span id="gps-btn-label">Mi ubicación</span>
             </button>
@@ -128,13 +145,14 @@
 
       <!-- VISTA 1: MAPA INTERACTIVO -->
       <section id="view-map-container" class="explorar-map-card" role="tabpanel" aria-labelledby="btn-view-map">
-        
+
         <!-- Barra de Estado del Mapa -->
         <div class="explorar-map-toolbar">
           <div class="explorar-map-toolbar__info">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
-              <circle cx="12" cy="10" r="3"/>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              aria-hidden="true">
+              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+              <circle cx="12" cy="10" r="3" />
             </svg>
             <span id="map-status-text">Cargando reclamos...</span>
           </div>
@@ -157,7 +175,8 @@
         </div>
 
         <!-- Contenedor Leaflet -->
-        <div id="explorar-map" tabindex="0" role="application" aria-label="Mapa interactivo de reclamos urbanos de La Matanza">
+        <div id="explorar-map" tabindex="0" role="application"
+          aria-label="Mapa interactivo de reclamos urbanos de La Matanza">
           <!-- Fallback si Leaflet o red no responden -->
           <div class="map-fallback-box" style="padding: var(--space-6); text-align: center;">
             <p>El mapa interactivo requiere JavaScript y conexión de red para cargar los mapas de OpenStreetMap.</p>
@@ -165,23 +184,34 @@
         </div>
 
         <!-- Ficha Inferior Móvil Accesible (Bottom Card) -->
-        <article id="explorar-mobile-card" class="explorar-mobile-card" aria-hidden="true" role="dialog" aria-labelledby="mobile-card-title">
+        <article id="explorar-mobile-card" class="explorar-mobile-card" aria-hidden="true" role="dialog"
+          aria-labelledby="mobile-card-title">
           <div class="explorar-mobile-card__header">
             <div style="display: flex; gap: var(--space-2); align-items: center;">
               <span id="mobile-card-cat-badge" class="badge badge--cat-pavimento">Calles</span>
               <span id="mobile-card-state-badge" class="badge badge--recibido">Recibido</span>
             </div>
-            <button type="button" class="explorar-mobile-card__close" id="btn-close-mobile-card" aria-label="Cerrar ficha de reclamo">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            <button type="button" class="explorar-mobile-card__close" id="btn-close-mobile-card"
+              aria-label="Cerrar ficha de reclamo">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
             </button>
           </div>
 
           <div class="explorar-mobile-card__content">
-            <img id="mobile-card-img" src="../assets/img/branding/logo-soluciones-segura.png" alt="Foto del reclamo" class="explorar-mobile-card__thumb" style="display: none;">
+            <img id="mobile-card-img" src="../assets/img/branding/logo-soluciones-segura.png" alt="Foto del reclamo"
+              class="explorar-mobile-card__thumb" style="display: none;">
             <div style="flex: 1; min-width: 0;">
               <h2 id="mobile-card-title" class="explorar-mobile-card__title">Título del reclamo</h2>
-              <p id="mobile-card-address" class="explorar-mobile-card__address" style="display: inline-flex; align-items: center; gap: 4px;">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              <p id="mobile-card-address" class="explorar-mobile-card__address"
+                style="display: inline-flex; align-items: center; gap: 4px;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  aria-hidden="true">
+                  <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
                 <span>Dirección</span>
               </p>
               <span id="mobile-card-supporters" class="explorar-mobile-card__meta">1 vecino sumado</span>
@@ -198,8 +228,10 @@
 
       <!-- VISTA 2: LISTA DE TARJETAS -->
       <section id="view-list-container" style="display: none;" role="tabpanel" aria-labelledby="btn-view-list">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4); flex-wrap: wrap; gap: var(--space-2);">
-          <span id="list-status-text" style="font-size: var(--font-size-sm); color: var(--color-text-secondary); font-weight: var(--font-weight-medium);">
+        <div
+          style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4); flex-wrap: wrap; gap: var(--space-2);">
+          <span id="list-status-text"
+            style="font-size: var(--font-size-sm); color: var(--color-text-secondary); font-weight: var(--font-weight-medium);">
             Mostrando reclamos
           </span>
         </div>
@@ -213,9 +245,9 @@
       <section id="explorar-empty-state" class="explorar-empty-state" style="display: none;" role="status">
         <div class="explorar-empty-state__icon" aria-hidden="true">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="11" cy="11" r="8"/>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-            <line x1="8" y1="11" x2="14" y2="11"/>
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            <line x1="8" y1="11" x2="14" y2="11" />
           </svg>
         </div>
         <h2 class="explorar-empty-state__title">No se encontraron reclamos</h2>
@@ -306,7 +338,7 @@
       const savedStateJson = sessionStorage.getItem(STORAGE_KEY_STATE);
       let savedState = null;
       if (savedStateJson) {
-        try { savedState = JSON.parse(savedStateJson); } catch (e) {}
+        try { savedState = JSON.parse(savedStateJson); } catch (e) { }
       }
 
       // Parámetros de URL tienen prioridad máxima
@@ -555,56 +587,43 @@
         const photoSrc = hasPhoto ? (c.fotos[0].startsWith('http') || c.fotos[0].startsWith('../') ? c.fotos[0] : `../${c.fotos[0]}`) : null;
 
         return `
-          <article class="claim-list-card" role="listitem" tabindex="0" aria-label="Reclamo ${c.id}: ${c.titulo}">
-            <div>
-              <div class="claim-list-card__header">
-                <span class="badge badge--cat-${c.categoria}">${formatters.categoryLabel(c.categoria)}</span>
-                <span class="badge badge--${stateClass}">${formatters.stateLabel(c.estado)}</span>
-              </div>
+          <article class="vcard" role="listitem" tabindex="0" aria-label="Reclamo ${c.id}: ${c.titulo}">
+  <div class="vcard__tags">
+    <span class="badge badge--cat-${c.categoria}">${formatters.categoryLabel(c.categoria)}</span>
+    <span class="tag-urgencia tag-urgencia--${formatters.priorityKey(c.prioridad)}">Urgencia ${formatters.priorityLabel(c.prioridad).toLowerCase()}</span>
+    <span class="badge badge--${stateClass}">${formatters.stateLabel(c.estado)}</span>
+  </div>
 
-              <div class="claim-list-card__body">
-                <div class="claim-list-card__thumb-wrap">
-                  ${hasPhoto ? `
-                    <img src="${photoSrc}" alt="${c.titulo}" class="claim-list-card__thumb" loading="lazy">
-                  ` : `
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--color-text-muted);" aria-hidden="true">
-                      <rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
-                    </svg>
-                  `}
-                </div>
-                <div class="claim-list-card__info">
-                  <h3 class="claim-list-card__title">
-                    <a href="detalle-reclamo.html?id=${encodeURIComponent(c.id)}&from=explorar" class="js-claim-link" data-id="${c.id}">
-                      ${c.titulo}
-                    </a>
-                  </h3>
-                  <p class="claim-list-card__address">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-                    <span>${c.direccion}</span>
-                  </p>
-                  <span class="claim-list-card__date">${formatters.relativeDate(c.fecha)}</span>
-                </div>
-              </div>
-            </div>
+  <div class="vcard__media">
+    ${hasPhoto ? `
+      <img src="${photoSrc}" alt="${c.titulo}" loading="lazy">
+    ` : `
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+    `}
+  </div>
 
-            <div class="claim-list-card__footer">
-              <span class="claim-list-card__support-count" title="Vecinos que respaldan este reclamo">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-                </svg>
-                <span><strong>${count}</strong> ${count === 1 ? 'vecino' : 'vecinos'}</span>
-              </span>
+  <div class="vcard__body">
+    <h3 class="vcard__title">
+      <a href="detalle-reclamo.html?id=${encodeURIComponent(c.id)}&from=explorar" class="js-claim-link" data-id="${c.id}">${c.titulo}</a>
+    </h3>
+    <p class="vcard__address">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+      <span>${c.direccion}</span>
+    </p>
+    <span class="vcard__date">${formatters.relativeDate(c.fecha)}</span>
+  </div>
 
-              <div class="claim-list-card__actions">
-                <button type="button" class="btn btn--primary btn--sm js-btn-support" data-id="${c.id}">
-                  Sumarme
-                </button>
-                <a href="detalle-reclamo.html?id=${encodeURIComponent(c.id)}&from=explorar" class="btn btn--ghost btn--sm js-claim-link" data-id="${c.id}" style="color: var(--color-accent); font-weight: 600;">
-                  Detalle →
-                </a>
-              </div>
-            </div>
-          </article>
+  <div class="vcard__footer">
+    <span class="vcard__support" title="Vecinos que respaldan este reclamo">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span><strong>${count}</strong> ${count === 1 ? 'vecino' : 'vecinos'}</span>
+    </span>
+    <div class="vcard__actions">
+      <button type="button" class="btn btn--primary btn--sm js-btn-support" data-id="${c.id}">Sumarme</button>
+      <a href="detalle-reclamo.html?id=${encodeURIComponent(c.id)}&from=explorar" class="btn btn--ghost btn--sm js-claim-link" data-id="${c.id}" style="color: var(--color-accent); font-weight: 600;">Detalle →</a>
+    </div>
+  </div>
+</article>
         `;
       }).join('');
 
@@ -894,4 +913,5 @@
 
   </script>
 </body>
+
 </html>
