@@ -59,6 +59,18 @@ export const formatters = {
     return map[estado] || 'recibido';
   },
 
+  /**
+   * Urgencia (campo `prioridad` del reclamo). Si falta o es inválida, se toma 'media'.
+   */
+  priorityKey(prioridad) {
+    return ['alta', 'media', 'baja'].includes(prioridad) ? prioridad : 'media';
+  },
+
+  priorityLabel(prioridad) {
+    const labels = { alta: 'Alta', media: 'Media', baja: 'Baja' };
+    return labels[this.priorityKey(prioridad)];
+  },
+
   categoryLabel(categoria) {
     const labels = {
       pavimento: 'Calles y pavimento',
