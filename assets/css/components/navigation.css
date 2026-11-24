@@ -42,6 +42,54 @@
   transition: opacity var(--duration-fast) var(--ease-out);
 }
 
+.brand-institutional {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  margin-left: var(--space-3);
+  padding-left: var(--space-3);
+  border-left: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+@media (min-width: 768px) {
+  .brand-institutional {
+    display: inline-flex;
+  }
+}
+
+.brand-institutional__img {
+  display: block;
+  height: auto;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.88;
+  filter: brightness(0) invert(1);
+}
+
+.brand-institutional__img--left {
+  max-height: 22px;
+  max-width: 128px;
+}
+
+.brand-institutional__img--right {
+  max-height: 28px;
+  max-width: 72px;
+  filter: grayscale(1) brightness(1.2) contrast(0.95);
+  opacity: 0.72;
+  border-radius: 50%;
+}
+
+@media (min-width: 1200px) {
+  .brand-institutional__img--left {
+    max-height: 24px;
+    max-width: 140px;
+  }
+  .brand-institutional__img--right {
+    max-height: 30px;
+    max-width: 78px;
+  }
+}
+
 .brand-link:hover {
   text-decoration: none;
   color: var(--color-text-inverse);

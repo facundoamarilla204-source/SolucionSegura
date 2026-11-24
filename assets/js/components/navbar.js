@@ -169,6 +169,10 @@ export function setupNavigation({ activePage = 'inicio', basePath = '' } = {}) {
         <a href="${root}index.html" class="brand-link" aria-label="SoluciónSegura: Inicio">
           <img src="${root}assets/img/branding/logo-soluciones-segura.png" alt="SoluciónSegura: Reclamos Urbanos La Matanza" class="brand-logo-img">
         </a>
+        <div class="brand-institutional" aria-label="Instituciones participantes">
+          <img src="${root}assets/img/imgi_4_logo-left.png" alt="Logo institucional" class="brand-institutional__img brand-institutional__img--left" width="1505" height="246" loading="eager" decoding="async">
+          <img src="${root}assets/img/imgi_5_logo-right.png" alt="Logo institucional" class="brand-institutional__img brand-institutional__img--right" width="2648" height="1059" loading="eager" decoding="async">
+        </div>
       </div>
 
       <nav class="desktop-nav header-zone header-zone--nav" role="navigation" aria-label="Navegación principal">
@@ -304,6 +308,10 @@ export function setupNavigation({ activePage = 'inicio', basePath = '' } = {}) {
           <p class="site-footer__desc">
             Plataforma comunitaria de reporte, visibilización y seguimiento colaborativo de reclamos urbanos para La Matanza.
           </p>
+          <div class="site-footer__institutional" aria-label="Instituciones participantes">
+            <img src="${root}assets/img/imgi_4_logo-left.png" alt="Logo institucional" class="site-footer__institutional-img" width="1505" height="246" loading="lazy" decoding="async">
+            <img src="${root}assets/img/imgi_5_logo-right.png" alt="Logo institucional" class="site-footer__institutional-img site-footer__institutional-img--round" width="2648" height="1059" loading="lazy" decoding="async">
+          </div>
           <div class="site-footer__contact" aria-label="Canales de contacto y ayuda">
             <a href="mailto:contacto@solucionsegura.org.ar" class="site-footer__contact-link">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">

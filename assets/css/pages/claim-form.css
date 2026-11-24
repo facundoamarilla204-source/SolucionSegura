@@ -83,26 +83,20 @@
 
 .claim-form-title {
   font-family: var(--font-family-display);
-  font-size: 1.85rem;
+  font-size: clamp(1.85rem, 3vw, 2.4rem);
   font-weight: 700;
   color: var(--color-primary-dark);
-  line-height: var(--line-height-tight);
-  margin-bottom: var(--space-2);
-  letter-spacing: -0.02em;
-}
-
-@media (min-width: 768px) {
-  .claim-form-title {
-    font-size: 2.25rem;
-  }
+  line-height: 1.1;
+  margin-bottom: var(--space-3);
+  letter-spacing: -0.03em;
 }
 
 .claim-form-subtitle {
-  font-size: var(--font-size-base);
+  font-size: 1rem;
   color: var(--color-text-secondary);
-  line-height: var(--line-height-relaxed);
+  line-height: 1.6;
   margin-bottom: var(--space-4);
-  max-width: 65ch;
+  max-width: 58ch;
 }
 
 /* ==========================================================================

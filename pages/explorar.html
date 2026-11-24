@@ -177,10 +177,11 @@
         <!-- Contenedor Leaflet -->
         <div id="explorar-map" tabindex="0" role="application"
           aria-label="Mapa interactivo de reclamos urbanos de La Matanza">
-          <!-- Fallback si Leaflet o red no responden -->
-          <div class="map-fallback-box" style="padding: var(--space-6); text-align: center;">
-            <p>El mapa interactivo requiere JavaScript y conexión de red para cargar los mapas de OpenStreetMap.</p>
-          </div>
+          <noscript>
+            <div class="map-fallback-box" style="padding: var(--space-6); text-align: center;">
+              <p>El mapa interactivo requiere JavaScript habilitado y conexión para cargar OpenStreetMap.</p>
+            </div>
+          </noscript>
         </div>
 
         <!-- Ficha Inferior Móvil Accesible (Bottom Card) -->

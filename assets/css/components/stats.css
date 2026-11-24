@@ -28,20 +28,14 @@
 
 .section-stats__title {
   font-family: var(--font-family-display);
-  font-size: 2rem;
+  font-size: clamp(2rem, 3.4vw, 2.75rem);
   font-weight: 700;
-  line-height: 1.15;
-  letter-spacing: -0.025em;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
   color: var(--color-primary-dark);
   margin-top: var(--space-2);
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--space-4);
   text-wrap: balance;
-}
-
-@media (min-width: 768px) {
-  .section-stats__title {
-    font-size: 2.35rem;
-  }
 }
 
 .section-stats__subtitle {
